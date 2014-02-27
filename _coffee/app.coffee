@@ -17,7 +17,7 @@ $ ->
 
   exampleData = ->
     keys = ["Transportation Cost", "Housing Cost", "Income Taxes", "Discretionary Income"]
-    stream_layers(4,10+Math.random()*10,.1).map((data, i)-> {key: keys[i], values: data})
+    stream_layers(4,10+Math.random()*4,.1).map((data, i)-> {key: keys[i], values: data})
   nv.addGraph(->
     chart = nv.models.multiBarChart()
       .transitionDuration(150)

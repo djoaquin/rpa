@@ -11,7 +11,7 @@
     exampleData = function() {
       var keys;
       keys = ["Transportation Cost", "Housing Cost", "Income Taxes", "Discretionary Income"];
-      return stream_layers(4, 10 + Math.random() * 10, .1).map(function(data, i) {
+      return stream_layers(4, 10 + Math.random() * 4, .1).map(function(data, i) {
         return {
           key: keys[i],
           values: data
