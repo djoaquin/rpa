@@ -1,18 +1,18 @@
 
 
 $ ->
+
+  # DISCRETIONARY INCOME
+  maps = {}
   cartodb
-    .createVis('discretionaryIncome', 'http://rpa.cartodb.com/api/v2/viz/62e94d78-9f1e-11e3-b420-0ed66c7bc7f3/viz.json')
+    .createVis('discretionaryIncome', 'http://rpa.cartodb.com/api/v2/viz/62e94d78-9f1e-11e3-b420-0ed66c7bc7f3/viz.json', legends: true, searchControl: true, zoom: 8, infowindow: true, layer_selector: true)
     .done (vis,layers)->
-      layers[1].setInteraction(true)
-      layers[1].on('featureOver', (e, latlng, pos, data, layerNumber)->
-        # cartodb.log.log(e, latlng, pos, data, layerNumber)
-        # TODO: create a bar chart below the map from the data for the clicked feature
-      )
-      map = vis.getNativeMap()
-      map.setZoom(8)
-      # TODO: Create the sublayer for the census tracts
-      # cartodb.createLayer(map, "http://rpa.cartodb.com/api/v2/viz/4ad76c8c-9f38-11e3-89a8-0e49973114de/viz.json")
+
+      # layers[1].setInteraction(true)
+      # layers[1].on('featureOver', (e, latlng, pos, data, layerNumber)->
+      #   # cartodb.log.log(e, latlng, pos, data, layerNumber)
+      #   # TODO: create a bar chart below the map from the data for the clicked feature
+      # )
 
 
   exampleData = ->
@@ -43,3 +43,31 @@ $ ->
 
     chart
   )
+
+
+  # VULNERABLE INFRASTRUCTURE
+  # =============================================================
+
+  cartodb
+    .createVis('vulnerableInfra', 'http://rpa.cartodb.com/api/v2/viz/533c5970-9f4f-11e3-ad24-0ed66c7bc7f3/viz.json', zoom: 8, searchControl: true, layer_selector: false)
+    .done (vis,layers)->
+
+      maps.vulnerableInfra = vis.getNativeMap()
+
+      # Create the sublayer for subway routes
+      layer = layers[1]
+      layer.createSubLayer({
+        sql: "SELECT * FROM rpa_subwayroutes_flood",
+        cartocss: '#rpa_subwayroutes_flood {marker-fill: #000;}'
+      })
+
+      # TODO: Create the sublayer for power plants, hospitals, nursing homes, public housing, train stations, train tracks and power plants
+
+      layer.createSubLayer({
+        sql: "SELECT * FROM rpa_subwaystations",
+        cartocss: '#rpa_subwaystations {marker-fill: yellow;}'
+      })
+      # layer.createSubLayer({
+      #   sql: "SELECT * FROM ny_rpa_nursinghomesnamesbedsflood",
+      #   cartocss: '#ny_rpa_nursinghomesnamesbedsflood {marker-fill: yellow;}'
+      # })
