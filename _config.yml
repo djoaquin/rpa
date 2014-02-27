@@ -1,0 +1,4 @@
+name: Regional Planning Association
+markdown: redcarpet
+destination: public
+exclude: ["CNAME", "Rakefile", "README.md", "public", "Guardfile", "Gemfile", "Gemfile.lock", ".sass-cache", "tmp"]
