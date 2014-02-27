@@ -8,4 +8,3 @@ gem "guard"
 gem "bootstrap-sass", github: "twbs/bootstrap-sass"
 gem "powder"
 gem 'guard-jekyll'
-gem "s3_website"
