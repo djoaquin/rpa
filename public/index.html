@@ -13,18 +13,15 @@
         <![endif]-->
 
         <!-- Custom CSS -->
-        <link rel="stylesheet" href="http://volkanunsal.github.io/rpa//components/leaflet-dist/leaflet.css">
-        <link rel="stylesheet" href="http://volkanunsal.github.io/rpa//components/nvd3/nv.d3.min.css">
         <link rel="stylesheet" href="http://volkanunsal.github.io/rpa//css/main.css">
 
         <!-- JS dependencies -->
-        <script src="http://volkanunsal.github.io/rpa//components/leaflet-dist/leaflet.js" type="text/javascript" charset="utf-8" async defer></script>
+        <script type="text/javascript"
+              src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAv_1ubjVfxNg3v7SUrNcgfZ6OUjkjBujM&sensor=true">
+            </script>
         <script src="http://volkanunsal.github.io/rpa//components/jquery/dist/jquery.min.js" type="text/javascript" charset="utf-8" async defer></script>
-        <script src="http://volkanunsal.github.io/rpa//components/d3/d3.min.js" type="text/javascript" charset="utf-8" async defer></script>
-        <script src="http://volkanunsal.github.io/rpa//components/nvd3/nv.d3.min.js" type="text/javascript" charset="utf-8" async defer></script>
         <script src="http://volkanunsal.github.io/rpa//components/holderjs/holder.js" type="text/javascript" charset="utf-8" async defer></script>
-        <script src="http://volkanunsal.github.io/rpa//js/stream_layers.js" type="text/javascript" charset="utf-8" async defer></script>
-
+        
         <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script>
 
         <script src="http://volkanunsal.github.io/rpa//js/app.js" type="text/javascript" charset="utf-8" async defer></script>
@@ -44,18 +41,6 @@
     <div class="map" id="discretionaryIncome" style="width:100%;height:500px">
       <!-- <img data-src="holder.js/100%x500/text:map"> -->
     </div>
-    <div class="clearfix">
-      <div id="chart1" class="pull-left" style="width:50%">
-        <h3>Income Components by Subregion</h3>
-        <svg style='height:500px;'> </svg>
-      </div>
-      <div id="chart2" class="pull-left" style="width:50%">
-        <h3>Medium Household Income</h3>
-        <svg style='height:500px;'> </svg>
-      </div>
-
-    </div>
-
 
     <h1>Infrastructure Susceptibility</h1>
     <div class="map" id="vulnerableInfra" style="width:100%;height:500px">
@@ -67,6 +52,22 @@
       <img data-src="holder.js/100%x500/text:map">
     </div>
   </div>
+
+  <script type="infowindow/html" id="infowindow_template">
+    <span> custom </span>
+    <div class="cartodb-popup">
+      <a href="#close" class="cartodb-popup-close-button close">x</a>
+      
+       <div class="cartodb-popup-content-wrapper">
+         <div class="cartodb-popup-content">
+           <img style="width: 100%" src="http://rambo.webcindario.com/images/18447755.jpg"></src>
+           <!-- content.data contains the field info -->
+           <h4></h4>
+         </div>
+       </div>
+       <div class="cartodb-popup-tip-container"></div>
+    </div>
+  </script>
 </div>
 
 <footer class="footer"></footer>
