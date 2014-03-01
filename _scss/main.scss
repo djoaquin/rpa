@@ -2,167 +2,217 @@
 
 
 
-// LEGEND
-//
 
-div.cartodb-legend.custom{
-  width:125px;
-  li.graph{
-    height:100px;
-    border:none;
-  }
-  div.colors{
-    div.quartile{
-      display:block;
-      margin-bottom:1px;
-      height:20px;
-      width:20px;
-      &:after{
-        width: 150px;
-        float: left;
-        display: block;
-        margin: 5px 0 0 25px;
-        text-transform:lowercase;
+#vulnerableInfra{
+  // LEGEND
+
+  div.cartodb-legend.custom{
+    width:145px;
+    li.graph{
+      height:145px;
+      border:none;
+    }
+    div.colors{
+      div.quartile{
+        display:block;
+        margin-bottom:1px;
+        height:20px;
+        width:20px;
+        &:after{
+          width: 150px;
+          float: left;
+          display: block;
+          margin: 5px 0 0 25px;
+          text-transform:lowercase;
+        }
       }
     }
-  }
-  $i:1;
-  $blue1: #52eaff;
-  $blue2: #4dcfe9;
-  $blue3: #47b3d2;
-  $blue4: #259abc;
-  $blue5: #0280a5;
-  $col_text: $blue1 "$16,000 and under", $blue2 "$16,001 - $24,000", $blue3 "$24,001 - $32,000", $blue4 "$32,001 - $40,000", $blue5 "$40,000 and over";
-  @each $value in $col_text {
-    .col#{$i}{
-      background-color:nth($value,1);
-      &:after{
-        content:nth($value,2);
+    $i:1;
+    $facility1: #000;
+    $facility2: #333;
+    $facility3: #666;
+    $facility4: #999;
+    $facility5: #aaa;
+    $facility6: #ccc;
+    $facility7: #eee;
+    $col_text: $facility1 "Power plants", $facility2 "Hospitals", $facility3 "Nursing homes", $facility4 "Public housing buildings", $facility5 "Train stations", $facility6 "Train tracks", $facility7 "Power plants";
+    @each $value in $col_text {
+      .col#{$i}{
+        background-color:nth($value,1);
+        &:after{
+          content:nth($value,2);
+        }
       }
+      $i: $i + 1;
     }
-    $i: $i + 1;
+
   }
 
 }
 
+#discretionaryIncome{
+  // LEGEND
+
+  div.cartodb-legend.custom{
+    width:125px;
+    li.graph{
+      height:100px;
+      border:none;
+    }
+    div.colors{
+      div.quartile{
+        display:block;
+        margin-bottom:1px;
+        height:20px;
+        width:20px;
+        &:after{
+          width: 150px;
+          float: left;
+          display: block;
+          margin: 5px 0 0 25px;
+          text-transform:lowercase;
+        }
+      }
+    }
+    $i:1;
+    $blue1: #52eaff;
+    $blue2: #4dcfe9;
+    $blue3: #47b3d2;
+    $blue4: #259abc;
+    $blue5: #0280a5;
+    $col_text: $blue1 "$16,000 and under", $blue2 "$16,001 - $24,000", $blue3 "$24,001 - $32,000", $blue4 "$32,001 - $40,000", $blue5 "$40,000 and over";
+    @each $value in $col_text {
+      .col#{$i}{
+        background-color:nth($value,1);
+        &:after{
+          content:nth($value,2);
+        }
+      }
+      $i: $i + 1;
+    }
+
+  }
 
 
 
-// INFOWINDOW
 
-$infowindow_width: 530px * 3/4;
-$infowindow_height: $infowindow_width/2 + 10px;
-$blue: #47b3d2;
-$reddish: #f12b15;
-$brown: #b92b15;
-$dark_brown: #7c2b15;
+  // INFOWINDOW
 
-div.cartodb-infowindow{
-  width: $infowindow_width !important;
-  height: $infowindow_height !important;
-  max-height: $infowindow_height !important;
+  $infowindow_width: 530px * 3/4;
+  $infowindow_height: $infowindow_width/2 + 10px;
+  $blue: #47b3d2;
+  $reddish: #f12b15;
+  $brown: #b92b15;
+  $dark_brown: #7c2b15;
 
-  .leftColumn{
-    float:left;
-    width:179px;
-    font-size:0.7em;
-    & > div:before{
-      content: '\00B7';
-      padding-right: 5px;
-      font-size: 42px;
-      line-height: 10px;
+  div.cartodb-infowindow{
+    width: $infowindow_width !important;
+    height: $infowindow_height !important;
+    max-height: $infowindow_height !important;
+
+    .leftColumn{
       float:left;
-      margin-top:3px;
-      height:24px;
+      width:179px;
+      font-size:0.7em;
+      & > div:before{
+        content: '\00B7';
+        padding-right: 5px;
+        font-size: 42px;
+        line-height: 10px;
+        float:left;
+        margin-top:3px;
+        height:24px;
+      }
+
+      & > .discretionary:before{
+        color: $blue;
+      }
+      & > .trans:before{
+        color: $reddish;
+      }
+      & > .housing:before{
+        color: $brown;
+      }
+      & > .taxes:before{
+        color: $dark_brown;
+      }
+    }
+    .rightColumn{
+      float:right;
+      position:relative;
+      width:172px;
+    }
+    .mhi{
+      position: absolute;
+      left: 27px;
+      z-index: 99;
+      top: 50px;
+      font-size: 0.8em;
+    }
+    a.cartodb-popup-close-button{
+      top: 18px;
+      right:13px;
+
+    }
+    // Bubble triangle
+    &:after {
+      content: ' ';
+      position: absolute;
+      width: 0;
+      height: 0;
+      left: 5%;
+      bottom: -15px;
+      border: 15px solid;
+      border-color: #fff transparent transparent #fff;
     }
 
-    & > .discretionary:before{
-      color: $blue;
-    }
-    & > .trans:before{
-      color: $reddish;
-    }
-    & > .housing:before{
-      color: $brown;
-    }
-    & > .taxes:before{
-      color: $dark_brown;
-    }
   }
-  .rightColumn{
-    float:right;
-    position:relative;
-    width:172px;
-  }
-  .mhi{
-    position: absolute;
-    left: 27px;
-    z-index: 99;
-    top: 50px;
-    font-size: 0.8em;
-  }
-  a.cartodb-popup-close-button{
-    top: 18px;
-    right:13px;
-
-  }
-  // Bubble triangle
-  &:after {
-    content: ' ';
-    position: absolute;
-    width: 0;
-    height: 0;
-    left: 5%;
-    bottom: -15px;
-    border: 15px solid;
-    border-color: #fff transparent transparent #fff;
-  }
-
-}
-div.cartodb-popup{
-  width:$infowindow_width;
-  height: $infowindow_height !important;
-  max-height: $infowindow_height !important;
-  background: white;
-  max-width:$infowindow_width;
-  padding:0;
-
-  div.cartodb-popup-content-wrapper{
+  div.cartodb-popup{
     width:$infowindow_width;
     height: $infowindow_height !important;
     max-height: $infowindow_height !important;
     background: white;
     max-width:$infowindow_width;
+    padding:0;
 
-    @include border-left-radius(5px);
-    @include border-right-radius(5px);
-    @include border-top-radius(5px);
-    @include border-bottom-radius(5px);
-
-    box-shadow: 1px 1px 6px black;
-
-    .cartodb-popup-content{
-      overflow:hidden;
-    }
-    .cartodb-popup-content, .jspContainer, .jspPane{
-      width:$infowindow_width - 30px !important;
-      max-width:$infowindow_width;
+    div.cartodb-popup-content-wrapper{
+      width:$infowindow_width;
       height: $infowindow_height !important;
       max-height: $infowindow_height !important;
-    }
-    .jspPane {
-      font-size: 1.2em;
-      & > div, & > h2{
-        padding-left:3px;
+      background: white;
+      max-width:$infowindow_width;
+
+      @include border-left-radius(5px);
+      @include border-right-radius(5px);
+      @include border-top-radius(5px);
+      @include border-bottom-radius(5px);
+
+      box-shadow: 1px 1px 6px black;
+
+      .cartodb-popup-content{
+        overflow:hidden;
+      }
+      .cartodb-popup-content, .jspContainer, .jspPane{
+        width:$infowindow_width - 30px !important;
+        max-width:$infowindow_width;
+        height: $infowindow_height !important;
+        max-height: $infowindow_height !important;
+      }
+      .jspPane {
+        font-size: 1.2em;
+        & > div, & > h2{
+          padding-left:3px;
+        }
+      }
+      .jspVerticalBar{display:none;}
+
+      .title{
+        border-bottom: solid 1px #ccc;
+        line-height: 1.6em;
+        font-size: 1.6em;
+        margin-bottom:10px;
       }
     }
-    .jspVerticalBar{display:none;}
-
-    .title{
-      border-bottom: solid 1px #ccc;
-      line-height: 1.6em;
-      font-size: 1.6em;
-      margin-bottom:10px;
-    }
   }
+
 }

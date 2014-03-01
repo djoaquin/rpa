@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script type="text/javascript">
+            var root = "/rpa";
+        </script>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title>RPA</title>
@@ -13,57 +16,40 @@
         <![endif]-->
 
         <!-- Custom CSS -->
-        <link rel="stylesheet" href="http://volkanunsal.github.io/rpa//css/main.css">
+        <link rel="stylesheet" href="/rpa/css/main.css">
 
         <!-- JS dependencies -->
         <script type="text/javascript"
               src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAv_1ubjVfxNg3v7SUrNcgfZ6OUjkjBujM&sensor=true">
             </script>
-        <script src="http://volkanunsal.github.io/rpa//components/jquery-legacy/jquery.min.js" type="text/javascript" charset="utf-8" async defer></script>
-        <script src="http://volkanunsal.github.io/rpa//components/chartjs/Chart.min.js" type="text/javascript" charset="utf-8" async defer></script>
-        <script src="http://volkanunsal.github.io/rpa//components/holderjs/holder.js" type="text/javascript" charset="utf-8" async defer></script>
-        <script src="http://volkanunsal.github.io/rpa//components/accounting/accounting.min.js" type="text/javascript" charset="utf-8" async defer></script>
-        <script src="http://volkanunsal.github.io/rpa//components/underscore/underscore.js" type="text/javascript" charset="utf-8" async defer></script>
-        <script src="http://volkanunsal.github.io/rpa//components/backbone/backbone.js" type="text/javascript" charset="utf-8" async defer></script>
-        <script src="http://volkanunsal.github.io/rpa//js/settings.js" type="text/javascript" charset="utf-8" async defer></script>
+        <script src="/rpa/components/jquery-legacy/jquery.min.js" type="text/javascript" charset="utf-8" async defer></script>
+        <script src="/rpa/components/chartjs/Chart.min.js" type="text/javascript" charset="utf-8" async defer></script>
+        <script src="/rpa/components/holderjs/holder.js" type="text/javascript" charset="utf-8" async defer></script>
+        <script src="/rpa/components/accounting/accounting.min.js" type="text/javascript" charset="utf-8" async defer></script>
+        <script src="/rpa/components/underscore/underscore.js" type="text/javascript" charset="utf-8" async defer></script>
+        <script src="/rpa/components/backbone/backbone.js" type="text/javascript" charset="utf-8" async defer></script>
+        <script src="/rpa/js/settings.js" type="text/javascript" charset="utf-8" async defer></script>
 
 
-        <script src="http://volkanunsal.github.io/rpa//components/cartodb/cartodb.js" type="text/javascript" charset="utf-8" async defer></script>
-
-        <!-- <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script> -->
-
-
-        <script src="http://volkanunsal.github.io/rpa//js/app.js" type="text/javascript" charset="utf-8" async defer></script>
+        <script src="/rpa/components/cartodb/cartodb.js" type="text/javascript" charset="utf-8" async defer></script>
+        
+        <script src="/rpa/js/app.js" type="text/javascript" charset="utf-8" async defer></script>
     </head>
     <body>
         <nav class="navbar navbar-default">
   <div class="container-fluid">
     <div class="navbar-header">
-      <a href="/" class="navbar-brand">Regional Planning Association</a>
+      <a href="/rpa/" class="navbar-brand">Regional Planning Association</a>
     </div>
   </div>
 </nav>
 
 <div class="site container">
-    <div id="home">
-
-        <h1>Discretionary Income</h1>
-        <div class="map" id="discretionaryIncome" style="width:100%;height:500px"></div>
-
-        <h1>
-            Infrastructure Susceptibility
-        </h1>
-        <div class="map" id="vulnerableInfra" style="width:100%;height:500px">
-        </div>
-        <h1>
-            School Performance
-        </h1>
-        <div class="map">
-            <img data-src="holder.js/100%x500/text:map">
-        </div>
-    </div>
+  <a href="/vulnerable" title=""><img data-src="holder.js/200x200/text:vunerable infrastructure/vine" /></a>
+  <a href="/discretionary" title=""><img data-src="holder.js/200x200/text:discretionary income/social" /></a>
+  <a href="/schools" title=""><img data-src="holder.js/200x200/text:schools/sky" /></a>
 </div>
-<footer class="footer">
-</footer>
+
+<footer class="footer"></footer>
     </body>
 </html>

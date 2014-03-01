@@ -1,6 +1,9 @@
 <!DOCTYPE html>
 <html>
     <head>
+        <script type="text/javascript">
+            var root = "{{ site.root }}";
+        </script>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
         <title>{{ page.title }}</title>
@@ -13,27 +16,24 @@
         <![endif]-->
 
         <!-- Custom CSS -->
-        <link rel="stylesheet" href="{{ site.url }}/css/main.css">
+        <link rel="stylesheet" href="{{ site.root }}/css/main.css">
 
         <!-- JS dependencies -->
         <script type="text/javascript"
               src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAv_1ubjVfxNg3v7SUrNcgfZ6OUjkjBujM&sensor=true">
             </script>
-        <script src="{{ site.url }}/components/jquery-legacy/jquery.min.js" type="text/javascript" charset="utf-8" async defer></script>
-        <script src="{{ site.url }}/components/chartjs/Chart.min.js" type="text/javascript" charset="utf-8" async defer></script>
-        <script src="{{ site.url }}/components/holderjs/holder.js" type="text/javascript" charset="utf-8" async defer></script>
-        <script src="{{ site.url }}/components/accounting/accounting.min.js" type="text/javascript" charset="utf-8" async defer></script>
-        <script src="{{ site.url }}/components/underscore/underscore.js" type="text/javascript" charset="utf-8" async defer></script>
-        <script src="{{ site.url }}/components/backbone/backbone.js" type="text/javascript" charset="utf-8" async defer></script>
-        <script src="{{ site.url }}/js/settings.js" type="text/javascript" charset="utf-8" async defer></script>
+        <script src="{{ site.root }}/components/jquery-legacy/jquery.min.js" type="text/javascript" charset="utf-8" async defer></script>
+        <script src="{{ site.root }}/components/chartjs/Chart.min.js" type="text/javascript" charset="utf-8" async defer></script>
+        <script src="{{ site.root }}/components/holderjs/holder.js" type="text/javascript" charset="utf-8" async defer></script>
+        <script src="{{ site.root }}/components/accounting/accounting.min.js" type="text/javascript" charset="utf-8" async defer></script>
+        <script src="{{ site.root }}/components/underscore/underscore.js" type="text/javascript" charset="utf-8" async defer></script>
+        <script src="{{ site.root }}/components/backbone/backbone.js" type="text/javascript" charset="utf-8" async defer></script>
+        <script src="{{ site.root }}/js/settings.js" type="text/javascript" charset="utf-8" async defer></script>
 
 
-        <script src="{{ site.url }}/components/cartodb/cartodb.js" type="text/javascript" charset="utf-8" async defer></script>
-
-        <!-- <script src="http://libs.cartocdn.com/cartodb.js/v3/cartodb.js"></script> -->
-
-
-        <script src="{{ site.url }}/js/app.js" type="text/javascript" charset="utf-8" async defer></script>
+        <script src="{{ site.root }}/components/cartodb/cartodb.js" type="text/javascript" charset="utf-8" async defer></script>
+        
+        <script src="{{ site.root }}/js/app.js" type="text/javascript" charset="utf-8" async defer></script>
     </head>
     <body>
         {{ content }}

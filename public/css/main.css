@@ -5000,52 +5000,96 @@ button.close {
 @media print {
   .hidden-print {
     display: none !important; } }
-div.cartodb-legend.custom {
-  width: 125px; }
-  div.cartodb-legend.custom li.graph {
-    height: 100px;
+#vulnerableInfra div.cartodb-legend.custom {
+  width: 145px; }
+  #vulnerableInfra div.cartodb-legend.custom li.graph {
+    height: 145px;
     border: none; }
-  div.cartodb-legend.custom div.colors div.quartile {
+  #vulnerableInfra div.cartodb-legend.custom div.colors div.quartile {
     display: block;
     margin-bottom: 1px;
     height: 20px;
     width: 20px; }
-    div.cartodb-legend.custom div.colors div.quartile:after {
+    #vulnerableInfra div.cartodb-legend.custom div.colors div.quartile:after {
       width: 150px;
       float: left;
       display: block;
       margin: 5px 0 0 25px;
       text-transform: lowercase; }
-  div.cartodb-legend.custom .col1 {
-    background-color: #52eaff; }
-    div.cartodb-legend.custom .col1:after {
-      content: "$16,000 and under"; }
-  div.cartodb-legend.custom .col2 {
-    background-color: #4dcfe9; }
-    div.cartodb-legend.custom .col2:after {
-      content: "$16,001 - $24,000"; }
-  div.cartodb-legend.custom .col3 {
-    background-color: #47b3d2; }
-    div.cartodb-legend.custom .col3:after {
-      content: "$24,001 - $32,000"; }
-  div.cartodb-legend.custom .col4 {
-    background-color: #259abc; }
-    div.cartodb-legend.custom .col4:after {
-      content: "$32,001 - $40,000"; }
-  div.cartodb-legend.custom .col5 {
-    background-color: #0280a5; }
-    div.cartodb-legend.custom .col5:after {
-      content: "$40,000 and over"; }
+  #vulnerableInfra div.cartodb-legend.custom .col1 {
+    background-color: black; }
+    #vulnerableInfra div.cartodb-legend.custom .col1:after {
+      content: "Power plants"; }
+  #vulnerableInfra div.cartodb-legend.custom .col2 {
+    background-color: #333333; }
+    #vulnerableInfra div.cartodb-legend.custom .col2:after {
+      content: "Hospitals"; }
+  #vulnerableInfra div.cartodb-legend.custom .col3 {
+    background-color: #666666; }
+    #vulnerableInfra div.cartodb-legend.custom .col3:after {
+      content: "Nursing homes"; }
+  #vulnerableInfra div.cartodb-legend.custom .col4 {
+    background-color: #999999; }
+    #vulnerableInfra div.cartodb-legend.custom .col4:after {
+      content: "Public housing buildings"; }
+  #vulnerableInfra div.cartodb-legend.custom .col5 {
+    background-color: #aaaaaa; }
+    #vulnerableInfra div.cartodb-legend.custom .col5:after {
+      content: "Train stations"; }
+  #vulnerableInfra div.cartodb-legend.custom .col6 {
+    background-color: #cccccc; }
+    #vulnerableInfra div.cartodb-legend.custom .col6:after {
+      content: "Train tracks"; }
+  #vulnerableInfra div.cartodb-legend.custom .col7 {
+    background-color: #eeeeee; }
+    #vulnerableInfra div.cartodb-legend.custom .col7:after {
+      content: "Power plants"; }
 
-div.cartodb-infowindow {
+#discretionaryIncome div.cartodb-legend.custom {
+  width: 125px; }
+  #discretionaryIncome div.cartodb-legend.custom li.graph {
+    height: 100px;
+    border: none; }
+  #discretionaryIncome div.cartodb-legend.custom div.colors div.quartile {
+    display: block;
+    margin-bottom: 1px;
+    height: 20px;
+    width: 20px; }
+    #discretionaryIncome div.cartodb-legend.custom div.colors div.quartile:after {
+      width: 150px;
+      float: left;
+      display: block;
+      margin: 5px 0 0 25px;
+      text-transform: lowercase; }
+  #discretionaryIncome div.cartodb-legend.custom .col1 {
+    background-color: #52eaff; }
+    #discretionaryIncome div.cartodb-legend.custom .col1:after {
+      content: "$16,000 and under"; }
+  #discretionaryIncome div.cartodb-legend.custom .col2 {
+    background-color: #4dcfe9; }
+    #discretionaryIncome div.cartodb-legend.custom .col2:after {
+      content: "$16,001 - $24,000"; }
+  #discretionaryIncome div.cartodb-legend.custom .col3 {
+    background-color: #47b3d2; }
+    #discretionaryIncome div.cartodb-legend.custom .col3:after {
+      content: "$24,001 - $32,000"; }
+  #discretionaryIncome div.cartodb-legend.custom .col4 {
+    background-color: #259abc; }
+    #discretionaryIncome div.cartodb-legend.custom .col4:after {
+      content: "$32,001 - $40,000"; }
+  #discretionaryIncome div.cartodb-legend.custom .col5 {
+    background-color: #0280a5; }
+    #discretionaryIncome div.cartodb-legend.custom .col5:after {
+      content: "$40,000 and over"; }
+#discretionaryIncome div.cartodb-infowindow {
   width: 397.5px !important;
   height: 208.75px !important;
   max-height: 208.75px !important; }
-  div.cartodb-infowindow .leftColumn {
+  #discretionaryIncome div.cartodb-infowindow .leftColumn {
     float: left;
     width: 179px;
     font-size: 0.7em; }
-    div.cartodb-infowindow .leftColumn > div:before {
+    #discretionaryIncome div.cartodb-infowindow .leftColumn > div:before {
       content: '\00B7';
       padding-right: 5px;
       font-size: 42px;
@@ -5053,28 +5097,28 @@ div.cartodb-infowindow {
       float: left;
       margin-top: 3px;
       height: 24px; }
-    div.cartodb-infowindow .leftColumn > .discretionary:before {
+    #discretionaryIncome div.cartodb-infowindow .leftColumn > .discretionary:before {
       color: #47b3d2; }
-    div.cartodb-infowindow .leftColumn > .trans:before {
+    #discretionaryIncome div.cartodb-infowindow .leftColumn > .trans:before {
       color: #f12b15; }
-    div.cartodb-infowindow .leftColumn > .housing:before {
+    #discretionaryIncome div.cartodb-infowindow .leftColumn > .housing:before {
       color: #b92b15; }
-    div.cartodb-infowindow .leftColumn > .taxes:before {
+    #discretionaryIncome div.cartodb-infowindow .leftColumn > .taxes:before {
       color: #7c2b15; }
-  div.cartodb-infowindow .rightColumn {
+  #discretionaryIncome div.cartodb-infowindow .rightColumn {
     float: right;
     position: relative;
     width: 172px; }
-  div.cartodb-infowindow .mhi {
+  #discretionaryIncome div.cartodb-infowindow .mhi {
     position: absolute;
     left: 27px;
     z-index: 99;
     top: 50px;
     font-size: 0.8em; }
-  div.cartodb-infowindow a.cartodb-popup-close-button {
+  #discretionaryIncome div.cartodb-infowindow a.cartodb-popup-close-button {
     top: 18px;
     right: 13px; }
-  div.cartodb-infowindow:after {
+  #discretionaryIncome div.cartodb-infowindow:after {
     content: ' ';
     position: absolute;
     width: 0;
@@ -5083,15 +5127,14 @@ div.cartodb-infowindow {
     bottom: -15px;
     border: 15px solid;
     border-color: #fff transparent transparent #fff; }
-
-div.cartodb-popup {
+#discretionaryIncome div.cartodb-popup {
   width: 397.5px;
   height: 208.75px !important;
   max-height: 208.75px !important;
   background: white;
   max-width: 397.5px;
   padding: 0; }
-  div.cartodb-popup div.cartodb-popup-content-wrapper {
+  #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper {
     width: 397.5px;
     height: 208.75px !important;
     max-height: 208.75px !important;
@@ -5106,20 +5149,20 @@ div.cartodb-popup {
     border-bottom-right-radius: 5px;
     border-bottom-left-radius: 5px;
     box-shadow: 1px 1px 6px black; }
-    div.cartodb-popup div.cartodb-popup-content-wrapper .cartodb-popup-content {
+    #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .cartodb-popup-content {
       overflow: hidden; }
-    div.cartodb-popup div.cartodb-popup-content-wrapper .cartodb-popup-content, div.cartodb-popup div.cartodb-popup-content-wrapper .jspContainer, div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane {
+    #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .cartodb-popup-content, #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .jspContainer, #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane {
       width: 367.5px !important;
       max-width: 397.5px;
       height: 208.75px !important;
       max-height: 208.75px !important; }
-    div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane {
+    #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane {
       font-size: 1.2em; }
-      div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane > div, div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane > h2 {
+      #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane > div, #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane > h2 {
         padding-left: 3px; }
-    div.cartodb-popup div.cartodb-popup-content-wrapper .jspVerticalBar {
+    #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .jspVerticalBar {
       display: none; }
-    div.cartodb-popup div.cartodb-popup-content-wrapper .title {
+    #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .title {
       border-bottom: solid 1px #ccc;
       line-height: 1.6em;
       font-size: 1.6em;
