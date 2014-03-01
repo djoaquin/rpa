@@ -24,12 +24,47 @@
       };
       censusLayer.infowindow.set('template', tmpl("Census Tract", "namelsad10", "mhi", "disp_inc", "avg_transc", "housingcos", "avg_ttl"));
       countyLayer.infowindow.set('template', tmpl("County", "county", "avg_mhi", "disp_inc", "avg_trans", "avg_hous", "avg_ttl"));
+      vent.on("infowindow:rendered", function(obj) {
+        var chartData, ctx, data, options;
+        if (obj["null"] === "Loading content...") {
+          return;
+        }
+        data = $(".cartodb-popup-content").data();
+        chartData = [
+          {
+            value: data["taxes"],
+            color: "#47b3d2"
+          }, {
+            value: data["housing"],
+            color: "#f12b15"
+          }, {
+            value: data["trans"],
+            color: "#b92b15"
+          }, {
+            value: data["disp_inc"],
+            color: "#7c2b15"
+          }
+        ];
+        ctx = $("#donut").get(0).getContext("2d");
+        options = {
+          percentageInnerCutout: 70
+        };
+        new Chart(ctx).Doughnut(chartData, options);
+        return $(".currency").each(function() {
+          var c;
+          c = $(this).text();
+          c = accounting.formatMoney(Number(c), {
+            precision: 0
+          });
+          return $(this).text(c);
+        });
+      });
       map = vis.getNativeMap();
       map.on('zoomstart', function(a, b, c) {
         censusLayer.infowindow.set('visibility', false);
         return countyLayer.infowindow.set('visibility', false);
       });
-      map.on('zoomend', function(a, b, c) {
+      return map.on('zoomend', function(a, b, c) {
         var zoomLevel;
         zoomLevel = map.getZoom();
         if (zoomLevel > 10) {
@@ -39,40 +74,6 @@
           censusLayer.hide();
           return countyLayer.show();
         }
-      });
-      return dataLayers.on('featureClick', function(e, latlng, pos, data, layerNumber) {
-        return setTimeout((function() {
-          var chartData, ctx, options;
-          data = $(".cartodb-popup-content").data();
-          chartData = [
-            {
-              value: data["taxes"],
-              color: "#47b3d2"
-            }, {
-              value: data["housing"],
-              color: "#f12b15"
-            }, {
-              value: data["trans"],
-              color: "#b92b15"
-            }, {
-              value: data["disp_inc"],
-              color: "#7c2b15"
-            }
-          ];
-          ctx = $("#donut").get(0).getContext("2d");
-          options = {
-            percentageInnerCutout: 70
-          };
-          new Chart(ctx).Doughnut(chartData, options);
-          return $(".currency").each(function() {
-            var c;
-            c = $(this).text();
-            c = accounting.formatMoney(Number(c), {
-              precision: 0
-            });
-            return $(this).text(c);
-          });
-        }), 500);
       });
     });
   });

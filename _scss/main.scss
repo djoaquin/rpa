@@ -2,13 +2,49 @@
 
 $infowindow_width: 530px;
 $infowindow_height: 260px;
+
+$blue: #47b3d2;
+$reddish: #f12b15;
+$brown: #b92b15;
+$dark_brown: #7c2b15;
+
+$blue1: #52eaff;
+$blue2: #4dcfe9;
+$blue3: #47b3d2;
+$blue4: #259abc;
+$blue5: #0280a5;
+
 div.cartodb-infowindow{
   width: $infowindow_width !important;
   height: $infowindow_height !important;
   max-height: $infowindow_height !important;
+
   .leftColumn{
     float:left;
     width:248px;
+
+    & > div:before{
+      content: '\00B7';
+      padding-right: 5px;
+      font-size: 42px;
+      line-height: 10px;
+      float:left;
+      margin-top:3px;
+      height:30px;
+    }
+
+    & > .discretionary:before{
+      color: $blue;
+    }
+    & > .trans:before{
+      color: $reddish;
+    }
+    & > .housing:before{
+      color: $brown;
+    }
+    & > .taxes:before{
+      color: $dark_brown;
+    }
   }
   .rightColumn{
     float:right;
@@ -27,6 +63,18 @@ div.cartodb-infowindow{
     right:13px;
 
   }
+  // Bubble triangle
+  &:after {
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: 5%;
+    bottom: -15px;
+    border: 15px solid;
+    border-color: #fff transparent transparent #fff;
+  }
+
 }
 div.cartodb-popup{
   width:$infowindow_width;
@@ -34,82 +82,44 @@ div.cartodb-popup{
   max-height: $infowindow_height !important;
   background: white;
   max-width:$infowindow_width;
+  padding:0;
 
-}
-div.cartodb-popup div.cartodb-popup-content-wrapper{
-  width:$infowindow_width;
-  height: $infowindow_height !important;
-  max-height: $infowindow_height !important;
-  background: white;
-  max-width:$infowindow_width;
-
-  @include border-left-radius(5px);
-  @include border-right-radius(5px);
-  @include border-top-radius(5px);
-  @include border-bottom-radius(5px);
-
-  box-shadow: 1px 1px 6px black;
-
-  .cartodb-popup-content, .jspContainer, .jspPane{
-    width:$infowindow_width - 30px !important;
-    max-width:$infowindow_width;
+  div.cartodb-popup-content-wrapper{
+    width:$infowindow_width;
     height: $infowindow_height !important;
     max-height: $infowindow_height !important;
-  }
-  .jspPane {
-    font-size: 1.2em;
-    & > div, & > h2{
-      padding-left:3px;
+    background: white;
+    max-width:$infowindow_width;
+
+    @include border-left-radius(5px);
+    @include border-right-radius(5px);
+    @include border-top-radius(5px);
+    @include border-bottom-radius(5px);
+
+    box-shadow: 1px 1px 6px black;
+
+    .cartodb-popup-content{
+      overflow:hidden;
+    }
+    .cartodb-popup-content, .jspContainer, .jspPane{
+      width:$infowindow_width - 30px !important;
+      max-width:$infowindow_width;
+      height: $infowindow_height !important;
+      max-height: $infowindow_height !important;
+    }
+    .jspPane {
+      font-size: 1.2em;
+      & > div, & > h2{
+        padding-left:3px;
+      }
+    }
+    .jspVerticalBar{display:none;}
+
+    .title{
+      border-bottom: solid 1px #ccc;
+      line-height: 1.6em;
+      font-size: 1.6em;
+      margin-bottom:10px;
     }
   }
-  .jspVerticalBar{display:none;}
-
-  $blue: #47b3d2;
-  $reddish: #f12b15;
-  $brown: #b92b15;
-  $dark_brown: #7c2b15;
-
-  .leftColumn{
-
-    & > div:before{
-      content: '\00B7';
-      padding-right: 5px;
-      font-size: 42px;
-      line-height: 10px;
-      float:left;
-      margin-top:3px;
-      height:30px;
-    }
-
-    
-    & > .discretionary:before{
-      color: $blue;
-    }
-    & > .trans:before{
-      color: $reddish;
-    }
-    & > .housing:before{
-      color: $brown;
-    }
-    & > .taxes:before{
-      color: $dark_brown;
-    }
-  }
-
-  $blue1: #52eaff;
-  $blue2: #4dcfe9;
-  $blue3: #47b3d2;
-  $blue4: #259abc;
-  $blue5: #0280a5;
-
-
-  .title{
-    border-bottom: solid 1px #ccc;
-    line-height: 1.6em;
-    font-size: 1.6em;
-    margin-bottom:10px;
-  }
-}
-div.cartodb-popup {
-  padding:0;
 }
