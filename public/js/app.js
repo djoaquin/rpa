@@ -25,6 +25,10 @@
       censusLayer.infowindow.set('template', tmpl("Census Tract", "namelsad10", "mhi", "disp_inc", "avg_transc", "housingcos", "avg_ttl"));
       countyLayer.infowindow.set('template', tmpl("County", "county", "avg_mhi", "disp_inc", "avg_trans", "avg_hous", "avg_ttl"));
       map = vis.getNativeMap();
+      map.on('zoomstart', function(a, b, c) {
+        censusLayer.infowindow.set('visibility', false);
+        return countyLayer.infowindow.set('visibility', false);
+      });
       map.on('zoomend', function(a, b, c) {
         var zoomLevel;
         zoomLevel = map.getZoom();
@@ -68,7 +72,7 @@
             });
             return $(this).text(c);
           });
-        }), 300);
+        }), 500);
       });
     });
   });

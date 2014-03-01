@@ -70,10 +70,17 @@ $ ->
 
 
 
-      map = vis.getNativeMap()
-      map.on('zoomend', (a,b,c)->
 
-        # TODO: close any open infowindows
+
+      map = vis.getNativeMap()
+      map.on('zoomstart', (a,b,c)->
+          # FIXME: this doesn't work
+          censusLayer.infowindow.set('visibility',false)
+          countyLayer.infowindow.set('visibility',false)
+        )
+
+
+      map.on('zoomend', (a,b,c)->
 
         zoomLevel = map.getZoom()
         if zoomLevel > 10
@@ -112,7 +119,7 @@ $ ->
                 $(this).text(c)
               )
 
-          ),300)
+          ),500)
 
       )
 
