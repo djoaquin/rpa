@@ -5000,3 +5000,81 @@ button.close {
 @media print {
   .hidden-print {
     display: none !important; } }
+div.cartodb-infowindow {
+  width: 530px !important;
+  height: 260px !important;
+  max-height: 260px !important; }
+  div.cartodb-infowindow .leftColumn {
+    float: left;
+    width: 248px; }
+  div.cartodb-infowindow .rightColumn {
+    float: right;
+    position: relative;
+    width: 200px; }
+  div.cartodb-infowindow .mhi {
+    position: absolute;
+    left: 38px;
+    z-index: 99;
+    top: 65px;
+    background: transparent; }
+  div.cartodb-infowindow a.cartodb-popup-close-button {
+    top: 18px;
+    right: 13px; }
+
+div.cartodb-popup {
+  width: 530px;
+  height: 260px !important;
+  max-height: 260px !important;
+  background: white;
+  max-width: 530px; }
+
+div.cartodb-popup div.cartodb-popup-content-wrapper {
+  width: 530px;
+  height: 260px !important;
+  max-height: 260px !important;
+  background: white;
+  max-width: 530px;
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  box-shadow: 1px 1px 6px black; }
+  div.cartodb-popup div.cartodb-popup-content-wrapper .cartodb-popup-content, div.cartodb-popup div.cartodb-popup-content-wrapper .jspContainer, div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane {
+    width: 500px !important;
+    max-width: 530px;
+    height: 260px !important;
+    max-height: 260px !important; }
+  div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane {
+    font-size: 1.2em; }
+    div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane > div, div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane > h2 {
+      padding-left: 3px; }
+  div.cartodb-popup div.cartodb-popup-content-wrapper .jspVerticalBar {
+    display: none; }
+  div.cartodb-popup div.cartodb-popup-content-wrapper .leftColumn > div:before {
+    content: '\00B7';
+    padding-right: 5px;
+    font-size: 42px;
+    line-height: 10px;
+    float: left;
+    margin-top: 3px;
+    height: 30px; }
+  div.cartodb-popup div.cartodb-popup-content-wrapper .leftColumn > .discretionary:before {
+    color: #47b3d2; }
+  div.cartodb-popup div.cartodb-popup-content-wrapper .leftColumn > .trans:before {
+    color: #f12b15; }
+  div.cartodb-popup div.cartodb-popup-content-wrapper .leftColumn > .housing:before {
+    color: #b92b15; }
+  div.cartodb-popup div.cartodb-popup-content-wrapper .leftColumn > .taxes:before {
+    color: #7c2b15; }
+  div.cartodb-popup div.cartodb-popup-content-wrapper .title {
+    border-bottom: solid 1px #ccc;
+    line-height: 1.6em;
+    font-size: 1.6em;
+    margin-bottom: 10px; }
+
+div.cartodb-popup {
+  padding: 0; }
