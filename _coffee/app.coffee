@@ -68,8 +68,7 @@ $ ->
       censusLayer.infowindow.set('template', tmpl("Census Tract", "namelsad10", "mhi", "disp_inc", "avg_transc", "housingcos", "avg_ttl"))
       countyLayer.infowindow.set('template', tmpl("County", "county", "avg_mhi", "disp_inc", "avg_trans", "avg_hous", "avg_ttl"))
 
-
-
+      
 
       vent.on "infowindow:rendered", (obj)->
 
