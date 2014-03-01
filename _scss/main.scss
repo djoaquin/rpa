@@ -50,8 +50,8 @@ div.cartodb-legend.custom{
 
 // INFOWINDOW
 
-$infowindow_width: 530px;
-$infowindow_height: 260px;
+$infowindow_width: 530px * 3/4;
+$infowindow_height: $infowindow_width/2 + 10px;
 $blue: #47b3d2;
 $reddish: #f12b15;
 $brown: #b92b15;
@@ -64,8 +64,8 @@ div.cartodb-infowindow{
 
   .leftColumn{
     float:left;
-    width:248px;
-
+    width:179px;
+    font-size:0.7em;
     & > div:before{
       content: '\00B7';
       padding-right: 5px;
@@ -73,7 +73,7 @@ div.cartodb-infowindow{
       line-height: 10px;
       float:left;
       margin-top:3px;
-      height:30px;
+      height:24px;
     }
 
     & > .discretionary:before{
@@ -92,14 +92,14 @@ div.cartodb-infowindow{
   .rightColumn{
     float:right;
     position:relative;
-    width:200px;
+    width:172px;
   }
   .mhi{
     position: absolute;
-    left: 38px;
+    left: 32px;
     z-index: 99;
-    top: 65px;
-    background: transparent;
+    top: 56px;
+    font-size: 0.8em;
   }
   a.cartodb-popup-close-button{
     top: 18px;

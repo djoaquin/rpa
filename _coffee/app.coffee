@@ -57,7 +57,7 @@ $ ->
                     <b class="median-income currency"><%=Math.round(Number(content.data.#{mhi}))%></b>
                   </div>
 
-                  <canvas id="donut" width="170" height="170"></canvas>
+                  <canvas id="donut" width="130" height="130"></canvas>
 
                 </div>
                </div>
@@ -68,7 +68,7 @@ $ ->
       censusLayer.infowindow.set('template', tmpl("Census Tract", "namelsad10", "mhi", "disp_inc", "avg_transc", "housingcos", "avg_ttl"))
       countyLayer.infowindow.set('template', tmpl("County", "county", "avg_mhi", "disp_inc", "avg_trans", "avg_hous", "avg_ttl"))
 
-      
+
 
       vent.on "infowindow:rendered", (obj)->
 
@@ -84,12 +84,13 @@ $ ->
           {value : data["disp_inc"],  color : "#7c2b15"}
         ]
         ctx = $("#donut").get(0).getContext("2d");
-        options = {percentageInnerCutout: 70}
-        new Chart(ctx).Doughnut(chartData,options)
+        options =
+          percentageInnerCutout: 70
+          animationEasing : "easeOutQuart"
+          animationSteps : 30
 
-        # income = $(".median-income").text()
-        # income = Math.round(Number(income))
-        # $(".median-income").text(income)
+        new Chart(ctx).Doughnut(chartData,options)
+        
         $(".currency").each(()->
             c = $(this).text()
             c = accounting.formatMoney(Number(c), precision:0)
@@ -97,12 +98,6 @@ $ ->
           )
 
       map = vis.getNativeMap()
-      map.on('zoomstart', (a,b,c)->
-          # FIXME: this doesn't work
-          censusLayer.infowindow.set('visibility',false)
-          countyLayer.infowindow.set('visibility',false)
-        )
-
 
       map.on('zoomend', (a,b,c)->
 
