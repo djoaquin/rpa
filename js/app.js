@@ -5,43 +5,6 @@
 
   $(function() {
     var maps;
-    $(document).on("DOMNodeInserted", function(e) {
-      if (e.target.className === "cartodb-popup-content") {
-        return setTimeout((function() {
-          var chartData, ctx, data, options;
-          data = $(".cartodb-popup-content").data();
-          console.log(data[0]);
-          chartData = [
-            {
-              value: data["taxes"],
-              color: "#47b3d2"
-            }, {
-              value: data["housing"],
-              color: "#f12b15"
-            }, {
-              value: data["trans"],
-              color: "#b92b15"
-            }, {
-              value: data["disp_inc"],
-              color: "#7c2b15"
-            }
-          ];
-          ctx = $("#donut").get(0).getContext("2d");
-          options = {
-            percentageInnerCutout: 70
-          };
-          new Chart(ctx).Doughnut(chartData, options);
-          return $(".currency").each(function() {
-            var c;
-            c = $(this).text();
-            c = accounting.formatMoney(Number(c), {
-              precision: 0
-            });
-            return $(this).text(c);
-          });
-        }), 100);
-      }
-    });
     maps = {};
     return cartodb.createVis('discretionaryIncome', 'http://rpa.cartodb.com/api/v2/viz/62e94d78-9f1e-11e3-b420-0ed66c7bc7f3/viz.json', {
       legends: true,
@@ -73,7 +36,40 @@
           return countyLayer.show();
         }
       });
-      return dataLayers.on('featureClick', function(e, latlng, pos, data, layerNumber) {});
+      return dataLayers.on('featureClick', function(e, latlng, pos, data, layerNumber) {
+        return setTimeout((function() {
+          var chartData, ctx, options;
+          data = $(".cartodb-popup-content").data();
+          chartData = [
+            {
+              value: data["taxes"],
+              color: "#47b3d2"
+            }, {
+              value: data["housing"],
+              color: "#f12b15"
+            }, {
+              value: data["trans"],
+              color: "#b92b15"
+            }, {
+              value: data["disp_inc"],
+              color: "#7c2b15"
+            }
+          ];
+          ctx = $("#donut").get(0).getContext("2d");
+          options = {
+            percentageInnerCutout: 70
+          };
+          new Chart(ctx).Doughnut(chartData, options);
+          return $(".currency").each(function() {
+            var c;
+            c = $(this).text();
+            c = accounting.formatMoney(Number(c), {
+              precision: 0
+            });
+            return $(this).text(c);
+          });
+        }), 100);
+      });
     });
   });
 

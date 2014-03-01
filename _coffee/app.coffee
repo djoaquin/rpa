@@ -2,40 +2,6 @@ GOOGLE_API_KEY = "AIzaSyAv_1ubjVfxNg3v7SUrNcgfZ6OUjkjBujM"
 
 
 $ ->
-
-  $( document ).on( "DOMNodeInserted", ( e )->
-    if e.target.className is "cartodb-popup-content"
-      setTimeout((->
-
-          data = $(".cartodb-popup-content").data()
-          console.log data[0]
-
-
-
-
-          chartData = [
-            {value : data["taxes"],  color : "#47b3d2"}
-            {value : data["housing"],  color : "#f12b15"}
-            {value : data["trans"], color : "#b92b15"}
-            {value : data["disp_inc"],  color : "#7c2b15"}
-          ]
-          ctx = $("#donut").get(0).getContext("2d");
-          options = {percentageInnerCutout: 70}
-          new Chart(ctx).Doughnut(chartData,options)
-
-          # income = $(".median-income").text()
-          # income = Math.round(Number(income))
-          # $(".median-income").text(income)
-          $(".currency").each(()->
-              c = $(this).text()
-              c = accounting.formatMoney(Number(c), precision:0)
-              $(this).text(c)
-            )
-
-        ),100)
-  )
-
-
   # DISCRETIONARY INCOME
   maps = {}
   cartodb
@@ -122,10 +88,31 @@ $ ->
 
       dataLayers.on('featureClick', (e, latlng, pos, data, layerNumber)->
 
-        # TODO: create a bar chart in the infowindow for the clicked feature
-        # console.log dataLayers.getSubLayer(layerNumber), data
+        # Create a bar chart in the infowindow for the clicked feature
+        setTimeout((->
 
+            data = $(".cartodb-popup-content").data()
 
+            chartData = [
+              {value : data["taxes"],  color : "#47b3d2"}
+              {value : data["housing"],  color : "#f12b15"}
+              {value : data["trans"], color : "#b92b15"}
+              {value : data["disp_inc"],  color : "#7c2b15"}
+            ]
+            ctx = $("#donut").get(0).getContext("2d");
+            options = {percentageInnerCutout: 70}
+            new Chart(ctx).Doughnut(chartData,options)
+
+            # income = $(".median-income").text()
+            # income = Math.round(Number(income))
+            # $(".median-income").text(income)
+            $(".currency").each(()->
+                c = $(this).text()
+                c = accounting.formatMoney(Number(c), precision:0)
+                $(this).text(c)
+              )
+
+          ),100)
 
       )
 
