@@ -14,11 +14,11 @@ opts = {
 guard 'coffeescript', opts["coffeescript"]
 guard 'sass', opts["sass"]
 
-guard 'livereload' do
-  watch(%r{.+(html|coffee|scss)})
-end
-
 guard 'jekyll' do
   watch %r{.*}
   ignore %r{public}
+end
+  
+guard 'livereload' do
+  watch(%r{.+(html|js|css)})
 end

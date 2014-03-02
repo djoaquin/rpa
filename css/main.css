@@ -5000,6 +5000,47 @@ button.close {
 @media print {
   .hidden-print {
     display: none !important; } }
+.map {
+  width: 100%;
+  height: 500px; }
+
+#schoolPerf div.cartodb-legend.custom {
+  width: 125px; }
+  #schoolPerf div.cartodb-legend.custom li.graph {
+    height: 100px;
+    border: none; }
+  #schoolPerf div.cartodb-legend.custom div.colors div.quartile {
+    display: block;
+    margin-bottom: 1px;
+    height: 20px;
+    width: 20px; }
+    #schoolPerf div.cartodb-legend.custom div.colors div.quartile:after {
+      width: 150px;
+      float: left;
+      display: block;
+      margin: 5px 0 0 25px;
+      text-transform: lowercase; }
+  #schoolPerf div.cartodb-legend.custom .col1 {
+    background-color: #52eaff; }
+    #schoolPerf div.cartodb-legend.custom .col1:after {
+      content: "xxxxxx"; }
+  #schoolPerf div.cartodb-legend.custom .col2 {
+    background-color: #4dcfe9; }
+    #schoolPerf div.cartodb-legend.custom .col2:after {
+      content: "xxxxxx"; }
+  #schoolPerf div.cartodb-legend.custom .col3 {
+    background-color: #47b3d2; }
+    #schoolPerf div.cartodb-legend.custom .col3:after {
+      content: "xxxxxx"; }
+  #schoolPerf div.cartodb-legend.custom .col4 {
+    background-color: #259abc; }
+    #schoolPerf div.cartodb-legend.custom .col4:after {
+      content: "xxxxxx"; }
+  #schoolPerf div.cartodb-legend.custom .col5 {
+    background-color: #0280a5; }
+    #schoolPerf div.cartodb-legend.custom .col5:after {
+      content: "xxxxxx"; }
+
 #vulnerableInfra div.cartodb-legend.custom {
   width: 145px; }
   #vulnerableInfra div.cartodb-legend.custom li.graph {
@@ -5019,19 +5060,19 @@ button.close {
   #vulnerableInfra div.cartodb-legend.custom .col1 {
     background-color: black; }
     #vulnerableInfra div.cartodb-legend.custom .col1:after {
-      content: "Power plants"; }
+      content: "Hospitals"; }
   #vulnerableInfra div.cartodb-legend.custom .col2 {
     background-color: #333333; }
     #vulnerableInfra div.cartodb-legend.custom .col2:after {
-      content: "Hospitals"; }
+      content: "Nursing homes"; }
   #vulnerableInfra div.cartodb-legend.custom .col3 {
     background-color: #666666; }
     #vulnerableInfra div.cartodb-legend.custom .col3:after {
-      content: "Nursing homes"; }
+      content: "Rail lines"; }
   #vulnerableInfra div.cartodb-legend.custom .col4 {
     background-color: #999999; }
     #vulnerableInfra div.cartodb-legend.custom .col4:after {
-      content: "Public housing buildings"; }
+      content: "Subway stations"; }
   #vulnerableInfra div.cartodb-legend.custom .col5 {
     background-color: #aaaaaa; }
     #vulnerableInfra div.cartodb-legend.custom .col5:after {
@@ -5039,11 +5080,11 @@ button.close {
   #vulnerableInfra div.cartodb-legend.custom .col6 {
     background-color: #cccccc; }
     #vulnerableInfra div.cartodb-legend.custom .col6:after {
-      content: "Train tracks"; }
+      content: "UNDETERMINED"; }
   #vulnerableInfra div.cartodb-legend.custom .col7 {
     background-color: #eeeeee; }
     #vulnerableInfra div.cartodb-legend.custom .col7:after {
-      content: "Power plants"; }
+      content: "UNDETERMINED"; }
 
 #discretionaryIncome div.cartodb-legend.custom {
   width: 125px; }
@@ -5140,6 +5181,7 @@ button.close {
     max-height: 208.75px !important;
     background: white;
     max-width: 397.5px;
+    overflow: hidden;
     border-bottom-left-radius: 5px;
     border-top-left-radius: 5px;
     border-bottom-right-radius: 5px;

@@ -1,13 +1,17 @@
 class Workspace extends Backbone.Router
   routes:
-    "schools/" : "schools"
-    "vulnerable/" : "vulnerable"
-    "discretionary/" : "discretionary"
+    "schools.html" : "schools"
+    "vulnerable.html" : "vulnerable"
+    "discretionary.html" : "discretionary"
   schools: ->
-    console.log "schools"
+    cartodb
+      .createVis('schoolPerf', 'http://rpa.cartodb.com/api/v2/viz/5bc0d9be-a264-11e3-bc17-0e10bcd91c2b/viz.json', searchControl: true, layer_selector: false, legends: true)
+      .done (vis,layers)->
+
+
   vulnerable: ->
     cartodb
-      .createVis('vulnerableInfra', 'http://rpa.cartodb.com/api/v2/viz/533c5970-9f4f-11e3-ad24-0ed66c7bc7f3/viz.json', zoom: 9, searchControl: true, layer_selector: false, legends: true)
+      .createVis('vulnerableInfra', 'http://rpa.cartodb.com/api/v2/viz/533c5970-9f4f-11e3-ad24-0ed66c7bc7f3/viz.json', zoom: 11, searchControl: true, layer_selector: false, legends: true)
       .done (vis,layers)->
 
         map = vis.getNativeMap()
@@ -18,31 +22,61 @@ class Workspace extends Backbone.Router
 
 
         # [√] rpa_trainstations
-        # [√] rpa_subwayroutes_flood
         # [√] rpa_subwaystations
         # [√] rpa_nj_hsip_hospitals_compressed
         # [√] rpa_ct_nursinghomes_namesaddressesbeds
         # [√] rpa_raillines_flood
+        # xxx rpa_subwayroutes_flood
         # ??? power plants
         # ??? public housing
         # ??? train tracks
 
 
         dbs = [
-          {name: "rpa_nj_hsip_hospitals_compressed", color: "#000"}
-          {name: "rpa_ct_nursinghomes_namesaddressesbeds", color: "#333"}
-          {name: "rpa_raillines_flood", color: "#666"}
-          {name: "rpa_subwayroutes_flood", color: "#999"}
-          {name: "rpa_subwaystations", color: "#aaa"}
-          {name: "rpa_trainstations", color: "#ccc"}
+          {
+            color: "#000"
+            tables: [
+              "rpa_nj_hsip_hospitals_compressed"
+            ]
+          }
+          {
+            color: "#333"
+            tables: [
+              "rpa_nj_hsip_nursinghomes_compressed"
+              "ny_rpa_nursinghomesnamesbedsflood"
+              "rpa_ct_nursinghomes_namesaddressesbeds"
+            ]
+          }
+          # {color: "#666", tables: ["rpa_raillines_flood"]}
+          {color: "#999", tables: ["rpa_subwaystations"]}
+          {color: "#aaa", tables: ["rpa_trainstations"]}
+
         ]
+
+        # TODO: set interactivity of the infowindow. The column names will be different for every layer.
 
         # Add dots
         dbs.forEach((item)->
-          layer.createSubLayer({
-            sql: "SELECT * FROM #{item['name']}",
-            cartocss: "##{item['name']} {marker-fill: #{item['color']};}"
-          })
+          # Take a union of all the tables
+          sql = _.map(item["tables"], (table)-> "SELECT #{table}.flood, #{table}.the_geom FROM #{table}")
+          sql = sql.join(" UNION ALL ")
+          console.log sql
+          # Create the CSS
+          css = _.map(item["tables"], (table)->  "##{table} {marker-fill: #{item['color']};} ##{table}[flood = 0] { opacity: 0.6;}")
+          css = css.join(" ")
+
+
+          if sql and css
+            sublayer = layer.createSubLayer({
+              sql: sql,
+              cartocss: css
+              interactivity: "cartodb_id"
+            })
+
+          # sublayer.infowindow.set('template', "hi there")
+          sublayer.on("featureOver", ->
+              console.log "over"
+            )
         )
   discretionary: ->
     # DISCRETIONARY INCOME
@@ -67,10 +101,7 @@ class Workspace extends Backbone.Router
                <div class="cartodb-popup-content-wrapper">
                  <div class="cartodb-popup-content" data-disp_inc="<%=content.data.#{disp_inc}%>" data-trans="<%=content.data.#{trans}%>" data-housing="<%=content.data.#{housing}%>" data-taxes="<%=content.data.#{taxes}%>">
 
-
-
                   <h2 class="title"><%=content.data.#{type_name}%></h2>
-
 
                   <div class="leftColumn">
                     <div class="discretionary">
