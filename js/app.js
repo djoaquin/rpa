@@ -26,7 +26,7 @@
 
     Workspace.prototype.vulnerable = function() {
       return cartodb.createVis('vulnerableInfra', 'http://rpa.cartodb.com/api/v2/viz/533c5970-9f4f-11e3-ad24-0ed66c7bc7f3/viz.json', {
-        zoom: 11,
+        zoom: 9,
         searchControl: true,
         layer_selector: false,
         legends: true
