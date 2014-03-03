@@ -7,45 +7,20 @@
 
 #schoolPerf{
 
-  // LEGEND
-  div.cartodb-legend.custom{
-    width:125px;
-    li.graph{
-      height:100px;
-      border:none;
-    }
-    div.colors{
-      div.quartile{
-        display:block;
-        margin-bottom:1px;
-        height:20px;
-        width:20px;
-        &:after{
-          width: 150px;
-          float: left;
-          display: block;
-          margin: 5px 0 0 25px;
-          text-transform:lowercase;
-        }
-      }
-    }
+  $color1: #beb4aa;
+  $color2: rgba($color1, 0.8);
+  $color3: rgba($color1, 0.6);
+  $color4: rgba($color1, 0.4);
+  $color5: rgba($color1, 0.2);
+
+  .colors{
     $i:1;
-    $col1: #52eaff "xxxxxx";
-    $col2: #4dcfe9 "xxxxxx";
-    $col3: #47b3d2 "xxxxxx";
-    $col4: #259abc "xxxxxx";
-    $col5: #0280a5 "xxxxxx";
-    $col_text: $col1, $col2, $col3, $col4, $col5;
-    @each $value in $col_text {
-      .col#{$i}{
-        background-color:nth($value,1);
-        &:after{
-          content:nth($value,2);
-        }
+    @each $color in $color1, $color2, $color3, $color4, $color5 {
+      div:nth-child(#{$i}){
+        background-color: $color;
       }
       $i: $i + 1;
     }
-
   }
 
 }

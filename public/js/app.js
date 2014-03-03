@@ -67,7 +67,7 @@
           });
           sql = sql.join(" UNION ALL ");
           css = _.map(item["tables"], function(table) {
-            return "  #" + table + " {\n    marker-fill: " + item['color'] + ";\n    line-width: 0;\n\n    ::line {\n      line-width: 1;\n      line-color: " + item['color'] + ";\n    }\n\n    [flood < 1]{\n      marker-opacity: 0.2;\n    }\n\n    [zoom <= 13] {\n       marker-width: 5;\n    }\n    [zoom > 13] {\n       marker-width: 15;\n    }\n}";
+            return "  #" + table + " {\n    marker-fill: " + item['color'] + ";\n    marker-line-width:0;\n\n    ::line {\n      line-width: 1;\n      line-color: " + item['color'] + ";\n    }\n\n    [flood < 1]{\n      marker-opacity: 0.4;\n    }\n\n    [zoom <= 13] {\n       marker-width: 5;\n    }\n    [zoom > 13] {\n       marker-width: 15;\n    }\n}";
           });
           css = css.join(" ");
           if (sql && css) {
@@ -97,6 +97,18 @@
         dataLayers.setInteraction(true);
         countyLayer = dataLayers.getSubLayer(0);
         censusLayer = dataLayers.getSubLayer(1);
+        censusLayer.hide();
+        map.on('zoomend', function(a, b, c) {
+          var zoomLevel;
+          zoomLevel = map.getZoom();
+          if (zoomLevel > 10) {
+            censusLayer.show();
+            return countyLayer.hide();
+          } else {
+            censusLayer.hide();
+            return countyLayer.show();
+          }
+        });
         tmpl = function(type, type_name, mhi, disp_inc, trans, housing, taxes) {
           return _.template("<div class=\"cartodb-popup\">\n  <a href=\"#close\" class=\"cartodb-popup-close-button close\">x</a>\n   <div class=\"cartodb-popup-content-wrapper\">\n     <div class=\"cartodb-popup-content\" data-disp_inc=\"<%=content.data." + disp_inc + "%>\" data-trans=\"<%=content.data." + trans + "%>\" data-housing=\"<%=content.data." + housing + "%>\" data-taxes=\"<%=content.data." + taxes + "%>\">\n\n      <h2 class=\"title\"><%=content.data." + type_name + "%></h2>\n\n      <div class=\"leftColumn\">\n        <div class=\"discretionary\">\n          <div>Discretionary Income</div>\n          <b class=\"currency\"><%=content.data." + disp_inc + "%></b>\n        </div>\n\n        <div class=\"trans\">\n          <div>Transportation</div>\n          <b class=\"currency\"><%=content.data." + trans + "%></b>\n        </div>\n\n        <div class=\"housing\">\n          <div>Housing and other related costs</div>\n          <b class=\"currency\"><%=content.data." + housing + "%></b>\n        </div>\n\n        <div class=\"taxes\">\n          <div>State and local personal income tax</div>\n          <b class=\"currency\"><%=content.data." + taxes + "%></b>\n        </div>\n      </div>\n\n      <div class=\"rightColumn\">\n        <div class=\"mhi text-center\">\n          <div>Median <br/> Income</div>\n          <b class=\"median-income currency\"><%=Math.round(Number(content.data." + mhi + "))%></b>\n        </div>\n\n        <canvas id=\"donut\" width=\"130\" height=\"130\"></canvas>\n\n      </div>\n     </div>\n   </div>\n</div>");
         };

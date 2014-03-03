@@ -81,7 +81,7 @@ class Workspace extends Backbone.Router
               """
                 ##{table} {
                   marker-fill: #{item['color']};
-                  line-width: 0;
+                  marker-line-width:0;
 
                   ::line {
                     line-width: 1;
@@ -89,7 +89,7 @@ class Workspace extends Backbone.Router
                   }
 
                   [flood < 1]{
-                    marker-opacity: 0.2;
+                    marker-opacity: 0.4;
                   }
 
                   [zoom <= 13] {
@@ -128,6 +128,16 @@ class Workspace extends Backbone.Router
         censusLayer = dataLayers.getSubLayer(1)
 
 
+        censusLayer.hide()
+        map.on('zoomend', (a,b,c)->
+          zoomLevel = map.getZoom()
+          if zoomLevel > 10
+            censusLayer.show()
+            countyLayer.hide()
+          else
+            censusLayer.hide()
+            countyLayer.show()
+        )
 
 
         # Customize the infowindows
