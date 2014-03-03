@@ -1,0 +1,28 @@
+/** choropleth visualization */
+
+#schoolrank2012_racepoverty_income_rparegion{
+  polygon-opacity: 1;
+  
+  line-color: #FFF;
+  line-width: 0;
+  line-opacity: 1;
+
+
+  polygon-fill: #ee3124;
+
+  [ hh_median <= 40125] {
+     polygon-opacity: 1;
+  }
+  [ hh_median > 40125][ hh_median <= 57344] {
+     polygon-opacity: 0.8;
+  }
+  [ hh_median > 57344][ hh_median <= 76061] {
+     polygon-opacity: 0.6;
+  }
+  [ hh_median > 76061][ hh_median <= 99075] {
+     polygon-opacity: 0.4;
+  }
+  [ hh_median > 99075][ hh_median <= 250000] {
+     polygon-opacity: 0.2;
+  }
+}

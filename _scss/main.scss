@@ -6,6 +6,7 @@
 
 
 #schoolPerf{
+
   // LEGEND
   div.cartodb-legend.custom{
     width:125px;
@@ -71,15 +72,22 @@
         }
       }
     }
+
+
+
+
+
+
+
+
     $i:1;
-    $facility1: #000 "Hospitals"; //rpa_nj_hsip_hospitals_compressed
-    $facility2: #333 "Nursing homes"; //rpa_ct_nursinghomes_namesaddressesbeds
-    $facility3: #666 "Rail lines"; //rpa_raillines_flood
-    $facility4: #999 "Subway stations"; //rpa_subwaystations
-    $facility5: #aaa "Train stations"; //rpa_trainstations
-    $facility6: #ccc "UNDETERMINED"; //???
-    $facility7: #eee "UNDETERMINED"; //???
-    $col_text: $facility1, $facility2, $facility3, $facility4, $facility5, $facility6, $facility7;
+    $facility1: #ffb900 "Hospitals"; //rpa_nj_hsip_hospitals_compressed
+    $facility2: #8fb669 "Nursing homes"; //rpa_ct_nursinghomes_namesaddressesbeds
+    $facility3: #f12b15 "Rail lines and train stations"; //rpa_trainstations, rpa_raillines_flood
+    $facility4: #9c6679 "Subway stations"; //rpa_subwaystations
+    $facility5: #ffa481 "Power plants"; //rpa_powerplants_eia_latlong_2013
+    $facility6: #eee "UNDETERMINED"; //???
+    $col_text: $facility1, $facility2, $facility3, $facility4, $facility5, $facility6;
     @each $value in $col_text {
       .col#{$i}{
         background-color:nth($value,1);
@@ -187,9 +195,9 @@
     }
     .mhi{
       position: absolute;
-      left: 27px;
+      left: 45px;
       z-index: 99;
-      top: 50px;
+      top: 36px;
       font-size: 0.8em;
     }
     a.cartodb-popup-close-button{

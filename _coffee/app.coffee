@@ -8,6 +8,16 @@ class Workspace extends Backbone.Router
       .createVis('schoolPerf', 'http://rpa.cartodb.com/api/v2/viz/5bc0d9be-a264-11e3-bc17-0e10bcd91c2b/viz.json', searchControl: true, layer_selector: false, legends: true)
       .done (vis,layers)->
 
+        # Create the sublayer for subway routes
+        layer = layers[1]
+        layer.setInteraction(true)
+
+        # FIXME: how can I access the sublayers correctly?
+        # poverty_layer = layer.getSubLayer(0)
+        # schools_layer = layer.getSubLayer(1)
+
+
+
 
   vulnerable: ->
     cartodb
@@ -32,39 +42,67 @@ class Workspace extends Backbone.Router
         # ??? train tracks
 
 
+
+
+
+
+
+
         dbs = [
           {
-            color: "#000"
+            color: "#ffb900"
             tables: [
               "rpa_nj_hsip_hospitals_compressed"
             ]
           }
           {
-            color: "#333"
+            color: "#8fb669"
             tables: [
               "rpa_nj_hsip_nursinghomes_compressed"
               "ny_rpa_nursinghomesnamesbedsflood"
               "rpa_ct_nursinghomes_namesaddressesbeds"
             ]
           }
-          # {color: "#666", tables: ["rpa_raillines_flood"]}
-          {color: "#999", tables: ["rpa_subwaystations"]}
-          {color: "#aaa", tables: ["rpa_trainstations"]}
-
+          # TODO: this should be a polygon
+          {color: "#f12b15", tables: ["rpa_raillines_flood"]}
+          {color: "#9c6679", tables: ["rpa_subwaystations"]}
+          {color: "#f12b15", tables: ["rpa_trainstations"]}
+          {color: "#ffa481", tables: ["rpa_powerplants_eia_latlong_2013"]}
         ]
-
-        # TODO: set interactivity of the infowindow. The column names will be different for every layer.
 
         # Add dots
         dbs.forEach((item)->
           # Take a union of all the tables
-          sql = _.map(item["tables"], (table)-> "SELECT #{table}.flood, #{table}.the_geom FROM #{table}")
+          sql = _.map(item["tables"], (table)-> "SELECT #{table}.cartodb_id,#{table}.flood, #{table}.the_geom, #{table}.the_geom_webmercator FROM #{table}")
           sql = sql.join(" UNION ALL ")
-          console.log sql
-          # Create the CSS
-          css = _.map(item["tables"], (table)->  "##{table} {marker-fill: #{item['color']};} ##{table}[flood = 0] { opacity: 0.6;}")
-          css = css.join(" ")
 
+          # Create the CSS
+          css = _.map(item["tables"], (table)->
+              """
+                ##{table} {
+                  marker-fill: #{item['color']};
+                  line-width: 0;
+
+                  ::line {
+                    line-width: 1;
+                    line-color: #{item['color']};
+                  }
+
+                  [flood < 1]{
+                    marker-opacity: 0.2;
+                  }
+
+                  [zoom <= 13] {
+                     marker-width: 5;
+                  }
+                  [zoom > 13] {
+                     marker-width: 15;
+                  }
+              }
+              """
+
+            )
+          css = css.join(" ")
 
           if sql and css
             sublayer = layer.createSubLayer({
@@ -73,10 +111,6 @@ class Workspace extends Backbone.Router
               interactivity: "cartodb_id"
             })
 
-          # sublayer.infowindow.set('template', "hi there")
-          sublayer.on("featureOver", ->
-              console.log "over"
-            )
         )
   discretionary: ->
     # DISCRETIONARY INCOME
@@ -84,6 +118,8 @@ class Workspace extends Backbone.Router
     cartodb
       .createVis('discretionaryIncome', 'http://rpa.cartodb.com/api/v2/viz/62e94d78-9f1e-11e3-b420-0ed66c7bc7f3/viz.json', legends: true, searchControl: true, zoom: 8, infowindow: true, layer_selector: true)
       .done (vis,layers)->
+        map = vis.getNativeMap()
+
         dataLayers = layers[1]
         dataLayers.setInteraction(true)
 
@@ -92,7 +128,7 @@ class Workspace extends Backbone.Router
         censusLayer = dataLayers.getSubLayer(1)
 
 
-        censusLayer.hide()
+
 
         # Customize the infowindows
         tmpl= (type,type_name,mhi,disp_inc,trans,housing,taxes)-> _.template("""
@@ -127,7 +163,7 @@ class Workspace extends Backbone.Router
 
                   <div class="rightColumn">
                     <div class="mhi text-center">
-                      <div>Median Income</div>
+                      <div>Median <br/> Income</div>
                       <b class="median-income currency"><%=Math.round(Number(content.data.#{mhi}))%></b>
                     </div>
 
@@ -143,7 +179,19 @@ class Workspace extends Backbone.Router
         countyLayer.infowindow.set('template', tmpl("County", "county", "avg_mhi", "disp_inc", "avg_trans", "avg_hous", "avg_ttl"))
 
 
+        # WIP
+        # countyLayer.set(interactivity: ["disp_inc"])
+        # countyTooltip = vis.addOverlay(
+        #   type: "tooltip"
+        #   template: """
+        #     <div id="tooltip">
+        #       {{county}} - {{disp_inc}}
+        #     </div>
+        #   """
+        # )
 
+
+        # HACK: the code below requires a feature added to a customized version of the cartodb.js liburary
         vent.on "infowindow:rendered", (obj)->
 
           return if obj["null"] is "Loading content..."
@@ -171,18 +219,8 @@ class Workspace extends Backbone.Router
               $(this).text(c)
             )
 
-        map = vis.getNativeMap()
 
-        map.on('zoomend', (a,b,c)->
 
-          zoomLevel = map.getZoom()
-          if zoomLevel > 10
-            censusLayer.show()
-            countyLayer.hide()
-          else
-            censusLayer.hide()
-            countyLayer.show()
-        )
 
 
 $ ->

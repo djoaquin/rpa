@@ -21,7 +21,11 @@
         searchControl: true,
         layer_selector: false,
         legends: true
-      }).done(function(vis, layers) {});
+      }).done(function(vis, layers) {
+        var layer;
+        layer = layers[1];
+        return layer.setInteraction(true);
+      });
     };
 
     Workspace.prototype.vulnerable = function() {
@@ -37,40 +41,42 @@
         layer.setInteraction(true);
         dbs = [
           {
-            color: "#000",
+            color: "#ffb900",
             tables: ["rpa_nj_hsip_hospitals_compressed"]
           }, {
-            color: "#333",
+            color: "#8fb669",
             tables: ["rpa_nj_hsip_nursinghomes_compressed", "ny_rpa_nursinghomesnamesbedsflood", "rpa_ct_nursinghomes_namesaddressesbeds"]
           }, {
-            color: "#999",
+            color: "#f12b15",
+            tables: ["rpa_raillines_flood"]
+          }, {
+            color: "#9c6679",
             tables: ["rpa_subwaystations"]
           }, {
-            color: "#aaa",
+            color: "#f12b15",
             tables: ["rpa_trainstations"]
+          }, {
+            color: "#ffa481",
+            tables: ["rpa_powerplants_eia_latlong_2013"]
           }
         ];
         return dbs.forEach(function(item) {
           var css, sql, sublayer;
           sql = _.map(item["tables"], function(table) {
-            return "SELECT " + table + ".flood, " + table + ".the_geom FROM " + table;
+            return "SELECT " + table + ".cartodb_id," + table + ".flood, " + table + ".the_geom, " + table + ".the_geom_webmercator FROM " + table;
           });
           sql = sql.join(" UNION ALL ");
-          console.log(sql);
           css = _.map(item["tables"], function(table) {
-            return "#" + table + " {marker-fill: " + item['color'] + ";} #" + table + "[flood = 0] { opacity: 0.6;}";
+            return "  #" + table + " {\n    marker-fill: " + item['color'] + ";\n    line-width: 0;\n\n    ::line {\n      line-width: 1;\n      line-color: " + item['color'] + ";\n    }\n\n    [flood < 1]{\n      marker-opacity: 0.2;\n    }\n\n    [zoom <= 13] {\n       marker-width: 5;\n    }\n    [zoom > 13] {\n       marker-width: 15;\n    }\n}";
           });
           css = css.join(" ");
           if (sql && css) {
-            sublayer = layer.createSubLayer({
+            return sublayer = layer.createSubLayer({
               sql: sql,
               cartocss: css,
               interactivity: "cartodb_id"
             });
           }
-          return sublayer.on("featureOver", function() {
-            return console.log("over");
-          });
         });
       });
     };
@@ -86,17 +92,17 @@
         layer_selector: true
       }).done(function(vis, layers) {
         var censusLayer, countyLayer, dataLayers, map, tmpl;
+        map = vis.getNativeMap();
         dataLayers = layers[1];
         dataLayers.setInteraction(true);
         countyLayer = dataLayers.getSubLayer(0);
         censusLayer = dataLayers.getSubLayer(1);
-        censusLayer.hide();
         tmpl = function(type, type_name, mhi, disp_inc, trans, housing, taxes) {
-          return _.template("<div class=\"cartodb-popup\">\n  <a href=\"#close\" class=\"cartodb-popup-close-button close\">x</a>\n   <div class=\"cartodb-popup-content-wrapper\">\n     <div class=\"cartodb-popup-content\" data-disp_inc=\"<%=content.data." + disp_inc + "%>\" data-trans=\"<%=content.data." + trans + "%>\" data-housing=\"<%=content.data." + housing + "%>\" data-taxes=\"<%=content.data." + taxes + "%>\">\n\n      <h2 class=\"title\"><%=content.data." + type_name + "%></h2>\n\n      <div class=\"leftColumn\">\n        <div class=\"discretionary\">\n          <div>Discretionary Income</div>\n          <b class=\"currency\"><%=content.data." + disp_inc + "%></b>\n        </div>\n\n        <div class=\"trans\">\n          <div>Transportation</div>\n          <b class=\"currency\"><%=content.data." + trans + "%></b>\n        </div>\n\n        <div class=\"housing\">\n          <div>Housing and other related costs</div>\n          <b class=\"currency\"><%=content.data." + housing + "%></b>\n        </div>\n\n        <div class=\"taxes\">\n          <div>State and local personal income tax</div>\n          <b class=\"currency\"><%=content.data." + taxes + "%></b>\n        </div>\n      </div>\n\n      <div class=\"rightColumn\">\n        <div class=\"mhi text-center\">\n          <div>Median Income</div>\n          <b class=\"median-income currency\"><%=Math.round(Number(content.data." + mhi + "))%></b>\n        </div>\n\n        <canvas id=\"donut\" width=\"130\" height=\"130\"></canvas>\n\n      </div>\n     </div>\n   </div>\n</div>");
+          return _.template("<div class=\"cartodb-popup\">\n  <a href=\"#close\" class=\"cartodb-popup-close-button close\">x</a>\n   <div class=\"cartodb-popup-content-wrapper\">\n     <div class=\"cartodb-popup-content\" data-disp_inc=\"<%=content.data." + disp_inc + "%>\" data-trans=\"<%=content.data." + trans + "%>\" data-housing=\"<%=content.data." + housing + "%>\" data-taxes=\"<%=content.data." + taxes + "%>\">\n\n      <h2 class=\"title\"><%=content.data." + type_name + "%></h2>\n\n      <div class=\"leftColumn\">\n        <div class=\"discretionary\">\n          <div>Discretionary Income</div>\n          <b class=\"currency\"><%=content.data." + disp_inc + "%></b>\n        </div>\n\n        <div class=\"trans\">\n          <div>Transportation</div>\n          <b class=\"currency\"><%=content.data." + trans + "%></b>\n        </div>\n\n        <div class=\"housing\">\n          <div>Housing and other related costs</div>\n          <b class=\"currency\"><%=content.data." + housing + "%></b>\n        </div>\n\n        <div class=\"taxes\">\n          <div>State and local personal income tax</div>\n          <b class=\"currency\"><%=content.data." + taxes + "%></b>\n        </div>\n      </div>\n\n      <div class=\"rightColumn\">\n        <div class=\"mhi text-center\">\n          <div>Median <br/> Income</div>\n          <b class=\"median-income currency\"><%=Math.round(Number(content.data." + mhi + "))%></b>\n        </div>\n\n        <canvas id=\"donut\" width=\"130\" height=\"130\"></canvas>\n\n      </div>\n     </div>\n   </div>\n</div>");
         };
         censusLayer.infowindow.set('template', tmpl("Census Tract", "namelsad10", "mhi", "disp_inc", "avg_transc", "housingcos", "avg_ttl"));
         countyLayer.infowindow.set('template', tmpl("County", "county", "avg_mhi", "disp_inc", "avg_trans", "avg_hous", "avg_ttl"));
-        vent.on("infowindow:rendered", function(obj) {
+        return vent.on("infowindow:rendered", function(obj) {
           var chartData, ctx, data, options;
           if (obj["null"] === "Loading content...") {
             return;
@@ -132,18 +138,6 @@
             });
             return $(this).text(c);
           });
-        });
-        map = vis.getNativeMap();
-        return map.on('zoomend', function(a, b, c) {
-          var zoomLevel;
-          zoomLevel = map.getZoom();
-          if (zoomLevel > 10) {
-            censusLayer.show();
-            return countyLayer.hide();
-          } else {
-            censusLayer.hide();
-            return countyLayer.show();
-          }
         });
       });
     };

@@ -5058,32 +5058,28 @@ button.close {
       margin: 5px 0 0 25px;
       text-transform: lowercase; }
   #vulnerableInfra div.cartodb-legend.custom .col1 {
-    background-color: black; }
+    background-color: #ffb900; }
     #vulnerableInfra div.cartodb-legend.custom .col1:after {
       content: "Hospitals"; }
   #vulnerableInfra div.cartodb-legend.custom .col2 {
-    background-color: #333333; }
+    background-color: #8fb669; }
     #vulnerableInfra div.cartodb-legend.custom .col2:after {
       content: "Nursing homes"; }
   #vulnerableInfra div.cartodb-legend.custom .col3 {
-    background-color: #666666; }
+    background-color: #f12b15; }
     #vulnerableInfra div.cartodb-legend.custom .col3:after {
-      content: "Rail lines"; }
+      content: "Rail lines and train stations"; }
   #vulnerableInfra div.cartodb-legend.custom .col4 {
-    background-color: #999999; }
+    background-color: #9c6679; }
     #vulnerableInfra div.cartodb-legend.custom .col4:after {
       content: "Subway stations"; }
   #vulnerableInfra div.cartodb-legend.custom .col5 {
-    background-color: #aaaaaa; }
+    background-color: #ffa481; }
     #vulnerableInfra div.cartodb-legend.custom .col5:after {
-      content: "Train stations"; }
+      content: "Power plants"; }
   #vulnerableInfra div.cartodb-legend.custom .col6 {
-    background-color: #cccccc; }
-    #vulnerableInfra div.cartodb-legend.custom .col6:after {
-      content: "UNDETERMINED"; }
-  #vulnerableInfra div.cartodb-legend.custom .col7 {
     background-color: #eeeeee; }
-    #vulnerableInfra div.cartodb-legend.custom .col7:after {
+    #vulnerableInfra div.cartodb-legend.custom .col6:after {
       content: "UNDETERMINED"; }
 
 #discretionaryIncome div.cartodb-legend.custom {
@@ -5152,9 +5148,9 @@ button.close {
     width: 172px; }
   #discretionaryIncome div.cartodb-infowindow .mhi {
     position: absolute;
-    left: 27px;
+    left: 45px;
     z-index: 99;
-    top: 50px;
+    top: 36px;
     font-size: 0.8em; }
   #discretionaryIncome div.cartodb-infowindow a.cartodb-popup-close-button {
     top: 18px;
