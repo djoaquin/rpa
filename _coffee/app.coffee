@@ -89,7 +89,7 @@ class Workspace extends Backbone.Router
                   }
 
                   [flood < 1]{
-                    marker-opacity: 0.4;
+                    marker-opacity: 0.6;
                   }
 
                   [zoom <= 13] {

@@ -67,7 +67,7 @@
           });
           sql = sql.join(" UNION ALL ");
           css = _.map(item["tables"], function(table) {
-            return "  #" + table + " {\n    marker-fill: " + item['color'] + ";\n    marker-line-width:0;\n\n    ::line {\n      line-width: 1;\n      line-color: " + item['color'] + ";\n    }\n\n    [flood < 1]{\n      marker-opacity: 0.4;\n    }\n\n    [zoom <= 13] {\n       marker-width: 5;\n    }\n    [zoom > 13] {\n       marker-width: 15;\n    }\n}";
+            return "  #" + table + " {\n    marker-fill: " + item['color'] + ";\n    marker-line-width:0;\n\n    ::line {\n      line-width: 1;\n      line-color: " + item['color'] + ";\n    }\n\n    [flood < 1]{\n      marker-opacity: 0.6;\n    }\n\n    [zoom <= 13] {\n       marker-width: 5;\n    }\n    [zoom > 13] {\n       marker-width: 15;\n    }\n}";
           });
           css = css.join(" ");
           if (sql && css) {
