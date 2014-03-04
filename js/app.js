@@ -32,7 +32,7 @@
           }
           rank = $(".school-ranking").text();
           rank = (parseFloat(rank) * 100).toFixed(2);
-          return $(".school-ranking").text("%" + rank);
+          return $(".school-ranking").text("" + rank + "%");
         });
       });
     };

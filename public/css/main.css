@@ -5004,7 +5004,7 @@ button.close {
   width: 100%;
   height: 500px; }
 
-#schoolPerf .cartodb-legend.school-rank-legend b {
+#schoolPerf .cartodb-legend b {
   display: block;
   margin-bottom: 10px; }
 #schoolPerf .cartodb-legend.school-rank-legend div p:nth-child(1) {
@@ -5029,7 +5029,7 @@ button.close {
   max-height: 150px !important; }
   #schoolPerf div.cartodb-infowindow .leftColumn {
     float: left;
-    width: 179px;
+    width: 205px;
     font-size: 0.7em; }
     #schoolPerf div.cartodb-infowindow .leftColumn > div:before {
       content: '\00B7';
@@ -5048,9 +5048,9 @@ button.close {
     #schoolPerf div.cartodb-infowindow .leftColumn > .taxes:before {
       color: #7c2b15; }
   #schoolPerf div.cartodb-infowindow .rightColumn {
-    float: right;
+    float: left;
     position: relative;
-    width: 172px; }
+    width: 143px; }
   #schoolPerf div.cartodb-infowindow .mhi {
     position: absolute;
     left: 45px;
@@ -5188,7 +5188,7 @@ button.close {
   max-height: 208.75px !important; }
   #discretionaryIncome div.cartodb-infowindow .leftColumn {
     float: left;
-    width: 179px;
+    width: 205px;
     font-size: 0.7em; }
     #discretionaryIncome div.cartodb-infowindow .leftColumn > div:before {
       content: '\00B7';
@@ -5207,9 +5207,9 @@ button.close {
     #discretionaryIncome div.cartodb-infowindow .leftColumn > .taxes:before {
       color: #7c2b15; }
   #discretionaryIncome div.cartodb-infowindow .rightColumn {
-    float: right;
+    float: left;
     position: relative;
-    width: 172px; }
+    width: 143px; }
   #discretionaryIncome div.cartodb-infowindow .mhi {
     position: absolute;
     left: 45px;

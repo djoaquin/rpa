@@ -22,7 +22,7 @@ class Workspace extends Backbone.Router
 
           rank = $(".school-ranking").text()
           rank = (parseFloat(rank) * 100).toFixed(2)
-          $(".school-ranking").text("%#{rank}")
+          $(".school-ranking").text("#{rank}%")
 
 
   vulnerable: ->

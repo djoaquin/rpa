@@ -24,7 +24,7 @@
 
     .leftColumn{
       float:left;
-      width:179px;
+      width:205px;
       font-size:0.7em;
       & > div:before{
         content: '\00B7';
@@ -50,9 +50,9 @@
       }
     }
     .rightColumn{
-      float:right;
+      float:left;
       position:relative;
-      width:172px;
+      width:143px;
     }
     .mhi{
       position: absolute;
@@ -141,11 +141,14 @@
   $top: #0082ac;
 
   // LEGEND
-  .cartodb-legend.school-rank-legend{
+  .cartodb-legend{
     b{
       display:block;
       margin-bottom:10px;
     }
+    
+  }
+  .cartodb-legend.school-rank-legend{
     div{
       p{
         &:nth-child(1){ color: $top;}
