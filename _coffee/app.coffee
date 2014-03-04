@@ -16,7 +16,13 @@ class Workspace extends Backbone.Router
         # poverty_layer = layer.getSubLayer(0)
         # schools_layer = layer.getSubLayer(1)
 
+        vent.on "infowindow:rendered", (obj)->
 
+          return if obj["null"] is "Loading content..."
+
+          rank = $(".school-ranking").text()
+          rank = (parseFloat(rank) * 100).toFixed(2)
+          $(".school-ranking").text("%#{rank}")
 
 
   vulnerable: ->
@@ -41,22 +47,65 @@ class Workspace extends Backbone.Router
         # ??? public housing
         # ??? train tracks
 
+        tmpl= -> _.template("""
+            <div class="cartodb-popup">
+              <a href="#close" class="cartodb-popup-close-button close">x</a>
+               <div class="cartodb-popup-content-wrapper">
+                 <div class="cartodb-popup-content">
+
+                  <h2 class="title"><%=content.data.#{type_name}%></h2>
+
+                  <div class="leftColumn">
+                    <div class="discretionary">
+                      <div>Discretionary Income</div>
+                      <b class="currency"><%=content.data.#{disp_inc}%></b>
+                    </div>
+
+                    <div class="trans">
+                      <div>Transportation</div>
+                      <b class="currency"><%=content.data.#{trans}%></b>
+                    </div>
+
+                    <div class="housing">
+                      <div>Housing and other related costs</div>
+                      <b class="currency"><%=content.data.#{housing}%></b>
+                    </div>
+
+                    <div class="taxes">
+                      <div>State and local personal income tax</div>
+                      <b class="currency"><%=content.data.#{taxes}%></b>
+                    </div>
+                  </div>
+
+                  <div class="rightColumn">
+                    <div class="mhi text-center">
+                      <div>Median <br/> Income</div>
+                      <b class="median-income currency"><%=Math.round(Number(content.data.#{mhi}))%></b>
+                    </div>
+
+                    <canvas id="donut" width="130" height="130"></canvas>
+
+                  </div>
+                 </div>
+               </div>
+            </div>
+          """)
 
 
 
 
 
 
-
+        red = "#ba0000"
         dbs = [
           {
-            color: "#ffb900"
+            color: red
             tables: [
               "rpa_nj_hsip_hospitals_compressed"
             ]
           }
           {
-            color: "#8fb669"
+            color: red
             tables: [
               "rpa_nj_hsip_nursinghomes_compressed"
               "ny_rpa_nursinghomesnamesbedsflood"
@@ -64,10 +113,10 @@ class Workspace extends Backbone.Router
             ]
           }
           # TODO: this should be a polygon
-          {color: "#f12b15", tables: ["rpa_raillines_flood"]}
-          {color: "#9c6679", tables: ["rpa_subwaystations"]}
-          {color: "#f12b15", tables: ["rpa_trainstations"]}
-          {color: "#ffa481", tables: ["rpa_powerplants_eia_latlong_2013"]}
+          {color: red, tables: ["rpa_raillines_flood"]}
+          {color: red, tables: ["rpa_subwaystations"]}
+          {color: red, tables: ["rpa_trainstations"]}
+          {color: red, tables: ["rpa_powerplants_eia_latlong_2013"]}
         ]
 
         # Add dots
@@ -89,7 +138,7 @@ class Workspace extends Backbone.Router
                   }
 
                   [flood < 1]{
-                    marker-opacity: 0.6;
+                    marker-fill: #575757;
                   }
 
                   [zoom <= 13] {

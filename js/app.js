@@ -24,7 +24,16 @@
       }).done(function(vis, layers) {
         var layer;
         layer = layers[1];
-        return layer.setInteraction(true);
+        layer.setInteraction(true);
+        return vent.on("infowindow:rendered", function(obj) {
+          var rank;
+          if (obj["null"] === "Loading content...") {
+            return;
+          }
+          rank = $(".school-ranking").text();
+          rank = (parseFloat(rank) * 100).toFixed(2);
+          return $(".school-ranking").text("%" + rank);
+        });
       });
     };
 
@@ -35,28 +44,32 @@
         layer_selector: false,
         legends: true
       }).done(function(vis, layers) {
-        var dbs, layer, map;
+        var dbs, layer, map, red, tmpl;
         map = vis.getNativeMap();
         layer = layers[1];
         layer.setInteraction(true);
+        tmpl = function() {
+          return _.template("<div class=\"cartodb-popup\">\n  <a href=\"#close\" class=\"cartodb-popup-close-button close\">x</a>\n   <div class=\"cartodb-popup-content-wrapper\">\n     <div class=\"cartodb-popup-content\">\n\n      <h2 class=\"title\"><%=content.data." + type_name + "%></h2>\n\n      <div class=\"leftColumn\">\n        <div class=\"discretionary\">\n          <div>Discretionary Income</div>\n          <b class=\"currency\"><%=content.data." + disp_inc + "%></b>\n        </div>\n\n        <div class=\"trans\">\n          <div>Transportation</div>\n          <b class=\"currency\"><%=content.data." + trans + "%></b>\n        </div>\n\n        <div class=\"housing\">\n          <div>Housing and other related costs</div>\n          <b class=\"currency\"><%=content.data." + housing + "%></b>\n        </div>\n\n        <div class=\"taxes\">\n          <div>State and local personal income tax</div>\n          <b class=\"currency\"><%=content.data." + taxes + "%></b>\n        </div>\n      </div>\n\n      <div class=\"rightColumn\">\n        <div class=\"mhi text-center\">\n          <div>Median <br/> Income</div>\n          <b class=\"median-income currency\"><%=Math.round(Number(content.data." + mhi + "))%></b>\n        </div>\n\n        <canvas id=\"donut\" width=\"130\" height=\"130\"></canvas>\n\n      </div>\n     </div>\n   </div>\n</div>");
+        };
+        red = "#ba0000";
         dbs = [
           {
-            color: "#ffb900",
+            color: red,
             tables: ["rpa_nj_hsip_hospitals_compressed"]
           }, {
-            color: "#8fb669",
+            color: red,
             tables: ["rpa_nj_hsip_nursinghomes_compressed", "ny_rpa_nursinghomesnamesbedsflood", "rpa_ct_nursinghomes_namesaddressesbeds"]
           }, {
-            color: "#f12b15",
+            color: red,
             tables: ["rpa_raillines_flood"]
           }, {
-            color: "#9c6679",
+            color: red,
             tables: ["rpa_subwaystations"]
           }, {
-            color: "#f12b15",
+            color: red,
             tables: ["rpa_trainstations"]
           }, {
-            color: "#ffa481",
+            color: red,
             tables: ["rpa_powerplants_eia_latlong_2013"]
           }
         ];
@@ -67,7 +80,7 @@
           });
           sql = sql.join(" UNION ALL ");
           css = _.map(item["tables"], function(table) {
-            return "  #" + table + " {\n    marker-fill: " + item['color'] + ";\n    marker-line-width:0;\n\n    ::line {\n      line-width: 1;\n      line-color: " + item['color'] + ";\n    }\n\n    [flood < 1]{\n      marker-opacity: 0.6;\n    }\n\n    [zoom <= 13] {\n       marker-width: 5;\n    }\n    [zoom > 13] {\n       marker-width: 15;\n    }\n}";
+            return "  #" + table + " {\n    marker-fill: " + item['color'] + ";\n    marker-line-width:0;\n\n    ::line {\n      line-width: 1;\n      line-color: " + item['color'] + ";\n    }\n\n    [flood < 1]{\n      marker-fill: #575757;\n    }\n\n    [zoom <= 13] {\n       marker-width: 5;\n    }\n    [zoom > 13] {\n       marker-width: 15;\n    }\n}";
           });
           css = css.join(" ");
           if (sql && css) {

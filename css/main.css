@@ -5004,6 +5004,15 @@ button.close {
   width: 100%;
   height: 500px; }
 
+#schoolPerf .cartodb-legend.school-rank-legend b {
+  display: block;
+  margin-bottom: 10px; }
+#schoolPerf .cartodb-legend.school-rank-legend div p:nth-child(1) {
+  color: #0082ac; }
+#schoolPerf .cartodb-legend.school-rank-legend div p:nth-child(2) {
+  color: #736960; }
+#schoolPerf .cartodb-legend.school-rank-legend div p:nth-child(3) {
+  color: #ba0000; }
 #schoolPerf .colors div:nth-child(1) {
   background-color: #beb4aa; }
 #schoolPerf .colors div:nth-child(2) {
@@ -5014,6 +5023,97 @@ button.close {
   background-color: rgba(190, 180, 170, 0.4); }
 #schoolPerf .colors div:nth-child(5) {
   background-color: rgba(190, 180, 170, 0.2); }
+#schoolPerf div.cartodb-infowindow {
+  width: 397.5px !important;
+  height: 150px !important;
+  max-height: 150px !important; }
+  #schoolPerf div.cartodb-infowindow .leftColumn {
+    float: left;
+    width: 179px;
+    font-size: 0.7em; }
+    #schoolPerf div.cartodb-infowindow .leftColumn > div:before {
+      content: '\00B7';
+      padding-right: 5px;
+      font-size: 42px;
+      line-height: 10px;
+      float: left;
+      margin-top: 3px;
+      height: 24px; }
+    #schoolPerf div.cartodb-infowindow .leftColumn > .discretionary:before {
+      color: #47b3d2; }
+    #schoolPerf div.cartodb-infowindow .leftColumn > .trans:before {
+      color: #f12b15; }
+    #schoolPerf div.cartodb-infowindow .leftColumn > .housing:before {
+      color: #b92b15; }
+    #schoolPerf div.cartodb-infowindow .leftColumn > .taxes:before {
+      color: #7c2b15; }
+  #schoolPerf div.cartodb-infowindow .rightColumn {
+    float: right;
+    position: relative;
+    width: 172px; }
+  #schoolPerf div.cartodb-infowindow .mhi {
+    position: absolute;
+    left: 45px;
+    z-index: 99;
+    top: 36px;
+    font-size: 0.8em; }
+  #schoolPerf div.cartodb-infowindow a.cartodb-popup-close-button {
+    top: 18px;
+    right: 13px; }
+  #schoolPerf div.cartodb-infowindow:after {
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: 5%;
+    bottom: -15px;
+    border: 15px solid;
+    border-color: #fff transparent transparent #fff; }
+#schoolPerf div.cartodb-popup {
+  width: 397.5px;
+  height: 150px !important;
+  max-height: 150px !important;
+  background: white;
+  max-width: 397.5px;
+  padding: 0; }
+  #schoolPerf div.cartodb-popup div.cartodb-popup-tip-container {
+    display: none; }
+  #schoolPerf div.cartodb-popup div.cartodb-popup-content-wrapper {
+    width: 397.5px;
+    height: 150px !important;
+    max-height: 150px !important;
+    background: white;
+    max-width: 397.5px;
+    overflow: hidden;
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    box-shadow: 1px 1px 6px black; }
+    #schoolPerf div.cartodb-popup div.cartodb-popup-content-wrapper .cartodb-popup-content {
+      overflow: hidden; }
+    #schoolPerf div.cartodb-popup div.cartodb-popup-content-wrapper .cartodb-popup-content, #schoolPerf div.cartodb-popup div.cartodb-popup-content-wrapper .jspContainer, #schoolPerf div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane {
+      width: 367.5px !important;
+      max-width: 397.5px;
+      height: 150px !important;
+      max-height: 150px !important; }
+    #schoolPerf div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane {
+      font-size: 1.2em; }
+      #schoolPerf div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane > div, #schoolPerf div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane > h2 {
+        padding-left: 3px; }
+    #schoolPerf div.cartodb-popup div.cartodb-popup-content-wrapper .jspVerticalBar {
+      display: none; }
+    #schoolPerf div.cartodb-popup div.cartodb-popup-content-wrapper .title {
+      border-bottom: solid 1px #ccc;
+      line-height: 1.6em;
+      font-size: 1.6em;
+      margin-bottom: 10px; }
+#schoolPerf .school-ranking {
+  font-weight: bold; }
 
 #vulnerableInfra div.cartodb-legend.custom {
   width: 145px; }
@@ -5022,44 +5122,34 @@ button.close {
     border: none; }
   #vulnerableInfra div.cartodb-legend.custom div.colors div.quartile {
     display: block;
-    margin-bottom: 1px;
-    height: 20px;
-    width: 20px; }
+    margin-bottom: 1px; }
     #vulnerableInfra div.cartodb-legend.custom div.colors div.quartile:after {
       width: 150px;
       float: left;
       display: block;
-      margin: 5px 0 0 25px;
+      margin: 5px 0 10px 0;
       text-transform: lowercase; }
-  #vulnerableInfra div.cartodb-legend.custom .col1 {
-    background-color: #ffb900; }
-    #vulnerableInfra div.cartodb-legend.custom .col1:after {
-      content: "Hospitals"; }
-  #vulnerableInfra div.cartodb-legend.custom .col2 {
-    background-color: #8fb669; }
-    #vulnerableInfra div.cartodb-legend.custom .col2:after {
-      content: "Nursing homes"; }
-  #vulnerableInfra div.cartodb-legend.custom .col3 {
-    background-color: #f12b15; }
-    #vulnerableInfra div.cartodb-legend.custom .col3:after {
-      content: "Rail lines and train stations"; }
-  #vulnerableInfra div.cartodb-legend.custom .col4 {
-    background-color: #9c6679; }
-    #vulnerableInfra div.cartodb-legend.custom .col4:after {
-      content: "Subway stations"; }
-  #vulnerableInfra div.cartodb-legend.custom .col5 {
-    background-color: #ffa481; }
-    #vulnerableInfra div.cartodb-legend.custom .col5:after {
-      content: "Power plants"; }
-  #vulnerableInfra div.cartodb-legend.custom .col6 {
-    background-color: #eeeeee; }
-    #vulnerableInfra div.cartodb-legend.custom .col6:after {
-      content: "UNDETERMINED"; }
+  #vulnerableInfra div.cartodb-legend.custom .col1:after {
+    content: "Hospitals"; }
+  #vulnerableInfra div.cartodb-legend.custom .col2:after {
+    content: "Nursing homes"; }
+  #vulnerableInfra div.cartodb-legend.custom .col3:after {
+    content: "Rail lines and train stations"; }
+  #vulnerableInfra div.cartodb-legend.custom .col4:after {
+    content: "Subway stations"; }
+  #vulnerableInfra div.cartodb-legend.custom .col5:after {
+    content: "Power plants"; }
+  #vulnerableInfra div.cartodb-legend.custom .col6:after {
+    content: "UNDETERMINED"; }
 
 #discretionaryIncome div.cartodb-legend.custom {
-  width: 125px; }
+  width: 150px; }
+  #discretionaryIncome div.cartodb-legend.custom h5 {
+    margin-top: 0;
+    font-weight: bold;
+    font-size: 1em; }
   #discretionaryIncome div.cartodb-legend.custom li.graph {
-    height: 100px;
+    height: 120px;
     border: none; }
   #discretionaryIncome div.cartodb-legend.custom div.colors div.quartile {
     display: block;
@@ -5145,6 +5235,8 @@ button.close {
   background: white;
   max-width: 397.5px;
   padding: 0; }
+  #discretionaryIncome div.cartodb-popup div.cartodb-popup-tip-container {
+    display: none; }
   #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper {
     width: 397.5px;
     height: 208.75px !important;

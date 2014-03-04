@@ -5,127 +5,13 @@
 }
 
 
-#schoolPerf{
-
-  $color1: #beb4aa;
-  $color2: rgba($color1, 0.8);
-  $color3: rgba($color1, 0.6);
-  $color4: rgba($color1, 0.4);
-  $color5: rgba($color1, 0.2);
-
-  .colors{
-    $i:1;
-    @each $color in $color1, $color2, $color3, $color4, $color5 {
-      div:nth-child(#{$i}){
-        background-color: $color;
-      }
-      $i: $i + 1;
-    }
-  }
-
-}
-#vulnerableInfra{
-  // LEGEND
-  div.cartodb-legend.custom{
-    width:145px;
-    li.graph{
-      height:145px;
-      border:none;
-    }
-    div.colors{
-      div.quartile{
-        display:block;
-        margin-bottom:1px;
-        height:20px;
-        width:20px;
-        &:after{
-          width: 150px;
-          float: left;
-          display: block;
-          margin: 5px 0 0 25px;
-          text-transform:lowercase;
-        }
-      }
-    }
-
-
-
-
-
-
-
-
-    $i:1;
-    $facility1: #ffb900 "Hospitals"; //rpa_nj_hsip_hospitals_compressed
-    $facility2: #8fb669 "Nursing homes"; //rpa_ct_nursinghomes_namesaddressesbeds
-    $facility3: #f12b15 "Rail lines and train stations"; //rpa_trainstations, rpa_raillines_flood
-    $facility4: #9c6679 "Subway stations"; //rpa_subwaystations
-    $facility5: #ffa481 "Power plants"; //rpa_powerplants_eia_latlong_2013
-    $facility6: #eee "UNDETERMINED"; //???
-    $col_text: $facility1, $facility2, $facility3, $facility4, $facility5, $facility6;
-    @each $value in $col_text {
-      .col#{$i}{
-        background-color:nth($value,1);
-        &:after{
-          content:nth($value,2);
-        }
-      }
-      $i: $i + 1;
-    }
-
-  }
-
-}
-
-#discretionaryIncome{
-  // LEGEND
-  div.cartodb-legend.custom{
-    width:125px;
-    li.graph{
-      height:100px;
-      border:none;
-    }
-    div.colors{
-      div.quartile{
-        display:block;
-        margin-bottom:1px;
-        height:20px;
-        width:20px;
-        &:after{
-          width: 150px;
-          float: left;
-          display: block;
-          margin: 5px 0 0 25px;
-          text-transform:lowercase;
-        }
-      }
-    }
-    $i:1;
-    $blue1: #52eaff "$16,000 and under";
-    $blue2: #4dcfe9 "$16,001 - $24,000";
-    $blue3: #47b3d2 "$24,001 - $32,000";
-    $blue4: #259abc "$32,001 - $40,000";
-    $blue5: #0280a5 "$40,000 and over";
-    $col_text: $blue1, $blue2, $blue3, $blue4, $blue5;
-    @each $value in $col_text {
-      .col#{$i}{
-        background-color:nth($value,1);
-        &:after{
-          content:nth($value,2);
-        }
-      }
-      $i: $i + 1;
-    }
-
-  }
-
-
-
+@mixin popup($infowindow_width: 397.5px, $infowindow_height: $infowindow_width/2 + 10px) {
 
   // INFOWINDOW
 
-  $infowindow_width: 530px * 3/4;
-  $infowindow_height: $infowindow_width/2 + 10px;
+  // $infowindow_width: 530px * 3/4;
+  // $infowindow_height: $infowindow_width/2 + 10px;
+
   $blue: #47b3d2;
   $reddish: #f12b15;
   $brown: #b92b15;
@@ -201,6 +87,10 @@
     max-width:$infowindow_width;
     padding:0;
 
+    div.cartodb-popup-tip-container{
+      display:none;
+    }
+
     div.cartodb-popup-content-wrapper{
       width:$infowindow_width;
       height: $infowindow_height !important;
@@ -241,5 +131,145 @@
       }
     }
   }
+}
+
+#schoolPerf{
+
+  // School rank colors
+  $bottom: #ba0000;
+  $middle: #736960;
+  $top: #0082ac;
+
+  // LEGEND
+  .cartodb-legend.school-rank-legend{
+    b{
+      display:block;
+      margin-bottom:10px;
+    }
+    div{
+      p{
+        &:nth-child(1){ color: $top;}
+        &:nth-child(2){ color: $middle;}
+        &:nth-child(3){ color: $bottom;}
+      }
+    }
+  }
+
+
+  // Income colors
+  $color1: #beb4aa;
+  $color2: rgba($color1, 0.8);
+  $color3: rgba($color1, 0.6);
+  $color4: rgba($color1, 0.4);
+  $color5: rgba($color1, 0.2);
+
+  .colors{
+    $i:1;
+    @each $color in $color1, $color2, $color3, $color4, $color5 {
+      div:nth-child(#{$i}){
+        background-color: $color;
+      }
+      $i: $i + 1;
+    }
+  }
+
+  @include popup(397.5px,150px);
+
+  .school-ranking{
+    font-weight:bold;
+  }
+
+}
+#vulnerableInfra{
+  // LEGEND
+  div.cartodb-legend.custom{
+    width:145px;
+    li.graph{
+      height:145px;
+      border:none;
+    }
+    div.colors{
+      div.quartile{
+        display:block;
+        margin-bottom:1px;
+        &:after{
+          width: 150px;
+          float: left;
+          display: block;
+          margin: 5px 0 10px 0;
+          text-transform:lowercase;
+        }
+      }
+    }
+
+    $i:1;
+    $facility1: "Hospitals"; //rpa_nj_hsip_hospitals_compressed
+    $facility2: "Nursing homes"; //rpa_ct_nursinghomes_namesaddressesbeds
+    $facility3: "Rail lines and train stations"; //rpa_trainstations, rpa_raillines_flood
+    $facility4: "Subway stations"; //rpa_subwaystations
+    $facility5: "Power plants"; //rpa_powerplants_eia_latlong_2013
+    $facility6: "UNDETERMINED"; //???
+    $col_text: $facility1, $facility2, $facility3, $facility4, $facility5, $facility6;
+    @each $value in $col_text {
+      .col#{$i}{
+        &:after{
+          content:$value;
+        }
+      }
+      $i: $i + 1;
+    }
+
+  }
+
+}
+
+#discretionaryIncome{
+  // LEGEND
+  div.cartodb-legend.custom{
+    width:150px;
+    h5{
+      margin-top:0;
+      font-weight:bold;
+      font-size:1em;
+    }
+
+    li.graph{
+      height:120px;
+      border:none;
+    }
+    div.colors{
+      div.quartile{
+        display:block;
+        margin-bottom:1px;
+        height:20px;
+        width:20px;
+        &:after{
+          width: 150px;
+          float: left;
+          display: block;
+          margin: 5px 0 0 25px;
+          text-transform:lowercase;
+        }
+      }
+    }
+    $i:1;
+    $blue1: #52eaff "$16,000 and under";
+    $blue2: #4dcfe9 "$16,001 - $24,000";
+    $blue3: #47b3d2 "$24,001 - $32,000";
+    $blue4: #259abc "$32,001 - $40,000";
+    $blue5: #0280a5 "$40,000 and over";
+    $col_text: $blue1, $blue2, $blue3, $blue4, $blue5;
+    @each $value in $col_text {
+      .col#{$i}{
+        background-color:nth($value,1);
+        &:after{
+          content:nth($value,2);
+        }
+      }
+      $i: $i + 1;
+    }
+
+  }
+  @include popup;
 
 }
