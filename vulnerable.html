@@ -1,13 +1,23 @@
 ---
 layout: default
 title: RPA - vulnerable infrastructure
+map_name: Infrastructure Susceptibility
+class: vulnerable
 ---
 {% include navbar.html %}
 
-<div class="site container">
-    <div id="home">
-      <h1>Infrastructure Susceptibility</h1>
-      <div class="map" id="vulnerableInfra"></div>
+<div class="content">
+  <div class="map" id="vulnerableInfra"></div>
+  <div id="layer_selector" class="cartodb-infobox">
+    <ul>
+      <li data="all" class="selected">All</li>
+      <li data="power_plants">Power plants</li>
+      <li data="hospitals">Hospitals</li>
+      <li data="nursing_homes">Nursing homes</li>
+      <li data="public_housing">Public housing</li>
+      <li data="rail_lines_train_stations">Rail lines and train stations</li>
+      <li data="subway_routes_stations">Subway routes and stations</li>
+    </ul>
   </div>
 </div>
 

@@ -1,12 +1,67 @@
 ---
 layout: default
 title: RPA - discretionary income
+map_name: Discretionary Income
+class: discretionary
 ---
 {% include navbar.html %}
 
-<div class="site container">
-  <h1>Discretionary Income</h1>
-  <div class="map" id="discretionaryIncome"></div>
+<div class="content">
+  <div class="map">
+    <div id="discretionaryIncome" class="mapInner"></div>
+    <div class="please_zoom_in">Zoom in to the map to see neighborhood level data.</div>
+  </div>
+  <div class="container">
+
+    <div class="standalone">
+      <div class="cartodb-infowindow">
+
+          <div class="cartodb-popup">
+             <div class="cartodb-popup-content-wrapper">
+                <div class="cartodb-popup-content">
+                  <h2 class="title">RPA REGION</h2>
+                  <div class="leftColumn">
+
+                    <div class="discretionary">
+                      <div>Discretionary Income</div>
+                      <b>$29,817</b>
+                    </div>
+
+                    <div class="trans">
+                      <div>Transportation</div>
+                      <b>$10,344</b>
+                    </div>
+
+                    <div class="housing">
+                      <div>Housing</div>
+                      <b>$21,460</b>
+                    </div>
+
+                    <div class="taxes">
+                      <div>Taxes</div>
+                      <b>$10,519</b>
+                    </div>
+                  </div>
+                  <div class="rightColumn">
+
+                    <div class="mhi text-center">
+                      <div>Median <br/> Income</div>
+                      <b>$72,140</b>
+                    </div>
+
+                    <canvas id="standalone_donut" width="130" height="130"></canvas>
+
+                  </div>
+
+                </div>
+             </div>
+          </div>
+        </div>
+
+      </div>
+
+
+  </div>
 </div>
 
 {% include footer.html %}

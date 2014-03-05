@@ -42,61 +42,137 @@
         zoom: 9,
         searchControl: true,
         layer_selector: false,
-        legends: true
+        legends: false
       }).done(function(vis, layers) {
         var dbs, layer, map, red, tmpl;
         map = vis.getNativeMap();
         layer = layers[1];
         layer.setInteraction(true);
         tmpl = function() {
-          return _.template("<div class=\"cartodb-popup\">\n  <a href=\"#close\" class=\"cartodb-popup-close-button close\">x</a>\n   <div class=\"cartodb-popup-content-wrapper\">\n     <div class=\"cartodb-popup-content\">\n\n      <h2 class=\"title\"><%=content.data." + type_name + "%></h2>\n\n      <div class=\"leftColumn\">\n        <div class=\"discretionary\">\n          <div>Discretionary Income</div>\n          <b class=\"currency\"><%=content.data." + disp_inc + "%></b>\n        </div>\n\n        <div class=\"trans\">\n          <div>Transportation</div>\n          <b class=\"currency\"><%=content.data." + trans + "%></b>\n        </div>\n\n        <div class=\"housing\">\n          <div>Housing and other related costs</div>\n          <b class=\"currency\"><%=content.data." + housing + "%></b>\n        </div>\n\n        <div class=\"taxes\">\n          <div>State and local personal income tax</div>\n          <b class=\"currency\"><%=content.data." + taxes + "%></b>\n        </div>\n      </div>\n\n      <div class=\"rightColumn\">\n        <div class=\"mhi text-center\">\n          <div>Median <br/> Income</div>\n          <b class=\"median-income currency\"><%=Math.round(Number(content.data." + mhi + "))%></b>\n        </div>\n\n        <canvas id=\"donut\" width=\"130\" height=\"130\"></canvas>\n\n      </div>\n     </div>\n   </div>\n</div>");
+          return _.template("<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <h2 class=\"title\"><%=content.data." + type_name + "%></h2>\n      </div>\n   </div>\n</div>");
         };
         red = "#ba0000";
-        dbs = [
-          {
-            color: red,
-            tables: ["rpa_nj_hsip_hospitals_compressed"]
-          }, {
-            color: red,
-            tables: ["rpa_nj_hsip_nursinghomes_compressed", "ny_rpa_nursinghomesnamesbedsflood", "rpa_ct_nursinghomes_namesaddressesbeds"]
-          }, {
-            color: red,
-            tables: ["rpa_raillines_flood"]
-          }, {
-            color: red,
-            tables: ["rpa_subwaystations"]
-          }, {
-            color: red,
-            tables: ["rpa_trainstations"]
-          }, {
-            color: red,
+        dbs = {
+          power_plants: {
+            flood_column: "flood",
+            name_column: "plant_name",
+            loss_column: "total_cap",
+            affected_type: "plants",
             tables: ["rpa_powerplants_eia_latlong_2013"]
+          },
+          hospitals: {
+            flood_column: "flood",
+            name_column: "name",
+            loss_column: "total_beds",
+            affected_type: "beds",
+            tables: ["rpa_nj_hsip_hospitals_compressed", "ny_rpa_hospitalsnamesbeds_compressed", "rpa_ct_hospitals_names_beds"]
+          },
+          nursing_homes: {
+            flood_column: "flood",
+            name_column: "name",
+            loss_column: "beds",
+            affected_type: "beds",
+            tables: ["rpa_ct_nursinghomes_namesaddressesbeds", "rpa_nj_hsip_nursinghomes_compressed", "ny_rpa_nursinghomesnamesbedsflood"]
+          },
+          train_stations: {
+            flood_column: "flood",
+            name_column: "station_na",
+            affected_type: "stations",
+            loss_column: "cartodb_id",
+            tables: ["rpa_trainstations"]
+          },
+          rail_lines: {
+            flood_column: "flood",
+            name_column: "line_name",
+            affected_type: "units",
+            loss_column: "cartodb_id",
+            tables: ["rpa_raillines_flood"]
+          },
+          subway_stations: {
+            flood_column: "flood",
+            name_column: "station_na",
+            loss_column: "cartodb_id",
+            affected_type: "stations",
+            tables: ["rpa_subwaystations"]
           }
-        ];
-        return dbs.forEach(function(item) {
+        };
+        _.each(dbs, function(value, k) {
           var css, sql, sublayer;
-          sql = _.map(item["tables"], function(table) {
-            return "SELECT " + table + ".cartodb_id," + table + ".flood, " + table + ".the_geom, " + table + ".the_geom_webmercator FROM " + table;
+          sql = _.map(value["tables"], function(table) {
+            return "SELECT " + table + ".cartodb_id," + table + "." + value['flood_column'] + ", " + table + ".the_geom, " + table + ".the_geom_webmercator, " + table + "." + value['name_column'] + "  FROM " + table;
           });
           sql = sql.join(" UNION ALL ");
-          css = _.map(item["tables"], function(table) {
-            return "  #" + table + " {\n    marker-fill: " + item['color'] + ";\n    marker-line-width:0;\n\n    ::line {\n      line-width: 1;\n      line-color: " + item['color'] + ";\n    }\n\n    [flood < 1]{\n      marker-fill: #575757;\n    }\n\n    [zoom <= 13] {\n       marker-width: 5;\n    }\n    [zoom > 13] {\n       marker-width: 15;\n    }\n}";
+          css = _.map(value["tables"], function(table) {
+            return "#" + table + " {marker-fill: " + red + ";marker-line-width:0;::line {line-width: 1;line-color: " + red + ";}[" + value['flood_column'] + " < 1]{marker-fill: #575757;}[zoom <= 13] {marker-width: 5;}[zoom > 13] {marker-width: 15;}}";
           });
           css = css.join(" ");
           if (sql && css) {
-            return sublayer = layer.createSubLayer({
+            sublayer = layer.createSubLayer({
               sql: sql,
               cartocss: css,
-              interactivity: "cartodb_id"
+              interactivity: ["cartodb_id", value['name_column']]
             });
+            return value["layer"] = sublayer;
           }
+        });
+        return _.each(dbs, function(value, k) {
+          return vis.addOverlay({
+            layer: value["layer"],
+            type: 'tooltip',
+            template: "<div style=\"background:white;padding:5px 10px;\">\n  <h3 style=\"margin-top:0\">{{ " + value['name_column'] + " }}</h3>\n  <p>Affected " + value['affected_type'] + ": {{ " + value['loss_column'] + " }}</p>\n</div>"
+          });
         });
       });
     };
 
     Workspace.prototype.discretionary = function() {
-      var maps;
-      maps = {};
+      var data, makeChart;
+      makeChart = function(data, mhi, id) {
+        var blue, brown, chartData, ctx, dark_brown, donut_options, options, reddish;
+        if (id == null) {
+          id = "#donut";
+        }
+        blue = "#47b3d2";
+        reddish = "#f12b15";
+        brown = "#b92b15";
+        dark_brown = "#7c2b15";
+        chartData = [
+          {
+            value: data["disp_inc"],
+            color: blue
+          }, {
+            value: data["trans"],
+            color: reddish
+          }, {
+            value: data["housing"],
+            color: brown
+          }, {
+            value: data["taxes"],
+            color: dark_brown
+          }
+        ];
+        ctx = $(id).get(0).getContext("2d");
+        donut_options = {
+          percentageInnerCutout: 70,
+          animationEasing: "easeOutQuart",
+          animationSteps: 30
+        };
+        options = {
+          tooltips: {
+            background: "#000",
+            labelTemplate: "<%= (value / " + mhi + " * 100 ).toFixed(2) %>%"
+          }
+        };
+        console.log(id);
+        return new Chart(ctx, options).Doughnut(chartData, donut_options);
+      };
+      data = {
+        disp_inc: 29817,
+        trans: 10519,
+        housing: 21460,
+        taxes: 10344
+      };
+      makeChart(data, 72140, "#standalone_donut");
       return cartodb.createVis('discretionaryIncome', 'http://rpa.cartodb.com/api/v2/viz/62e94d78-9f1e-11e3-b420-0ed66c7bc7f3/viz.json', {
         legends: true,
         searchControl: true,
@@ -123,38 +199,19 @@
           }
         });
         tmpl = function(type, type_name, mhi, disp_inc, trans, housing, taxes) {
-          return _.template("<div class=\"cartodb-popup\">\n  <a href=\"#close\" class=\"cartodb-popup-close-button close\">x</a>\n   <div class=\"cartodb-popup-content-wrapper\">\n     <div class=\"cartodb-popup-content\" data-disp_inc=\"<%=content.data." + disp_inc + "%>\" data-trans=\"<%=content.data." + trans + "%>\" data-housing=\"<%=content.data." + housing + "%>\" data-taxes=\"<%=content.data." + taxes + "%>\">\n\n      <h2 class=\"title\"><%=content.data." + type_name + "%></h2>\n\n      <div class=\"leftColumn\">\n        <div class=\"discretionary\">\n          <div>Discretionary Income</div>\n          <b class=\"currency\"><%=content.data." + disp_inc + "%></b>\n        </div>\n\n        <div class=\"trans\">\n          <div>Transportation</div>\n          <b class=\"currency\"><%=content.data." + trans + "%></b>\n        </div>\n\n        <div class=\"housing\">\n          <div>Housing and other related costs</div>\n          <b class=\"currency\"><%=content.data." + housing + "%></b>\n        </div>\n\n        <div class=\"taxes\">\n          <div>State and local personal income tax</div>\n          <b class=\"currency\"><%=content.data." + taxes + "%></b>\n        </div>\n      </div>\n\n      <div class=\"rightColumn\">\n        <div class=\"mhi text-center\">\n          <div>Median <br/> Income</div>\n          <b class=\"median-income currency\"><%=Math.round(Number(content.data." + mhi + "))%></b>\n        </div>\n\n        <canvas id=\"donut\" width=\"130\" height=\"130\"></canvas>\n\n      </div>\n     </div>\n   </div>\n</div>");
+          return _.template("<div class=\"cartodb-popup\">\n  <a href=\"#close\" class=\"cartodb-popup-close-button close\">x</a>\n   <div class=\"cartodb-popup-content-wrapper\">\n     <div class=\"cartodb-popup-content\" data-disp_inc=\"<%=content.data." + disp_inc + "%>\" data-trans=\"<%=content.data." + trans + "%>\" data-housing=\"<%=content.data." + housing + "%>\" data-taxes=\"<%=content.data." + taxes + "%>\">\n\n      <h2 class=\"title\">\n        <%=content.data." + type_name + "%>\n      </h2>\n\n      <div class=\"leftColumn\">\n        <% if(\"" + type + "\"==\"Census Tract\"){ %>\n          <p><%=content.data.localname  %></p>\n        <% } %>\n        <div class=\"discretionary\">\n          <div>Discretionary Income</div>\n          <b class=\"currency\"><%=content.data." + disp_inc + "%></b>\n        </div>\n\n        <div class=\"trans\">\n          <div>Transportation</div>\n          <b class=\"currency\"><%=content.data." + trans + "%></b>\n        </div>\n\n        <div class=\"housing\">\n          <div>Housing and other related costs</div>\n          <b class=\"currency\"><%=content.data." + housing + "%></b>\n        </div>\n\n        <div class=\"taxes\">\n          <div>State and local personal income tax</div>\n          <b class=\"currency\"><%=content.data." + taxes + "%></b>\n        </div>\n      </div>\n\n      <div class=\"rightColumn\">\n        <div class=\"mhi text-center\">\n          <div>Median <br/> Income</div>\n          <b class=\"median-income currency\"><%=Math.round(Number(content.data." + mhi + "))%></b>\n        </div>\n\n        <canvas id=\"donut\" width=\"130\" height=\"130\"></canvas>\n\n      </div>\n     </div>\n   </div>\n</div>");
         };
         censusLayer.infowindow.set('template', tmpl("Census Tract", "namelsad10", "mhi", "disp_inc", "avg_transc", "housingcos", "avg_ttl"));
         countyLayer.infowindow.set('template', tmpl("County", "county", "avg_mhi", "disp_inc", "avg_trans", "avg_hous", "avg_ttl"));
         return vent.on("infowindow:rendered", function(obj) {
-          var chartData, ctx, data, options;
+          var mhi;
           if (obj["null"] === "Loading content...") {
             return;
           }
           data = $(".cartodb-popup-content").data();
-          chartData = [
-            {
-              value: data["taxes"],
-              color: "#47b3d2"
-            }, {
-              value: data["housing"],
-              color: "#f12b15"
-            }, {
-              value: data["trans"],
-              color: "#b92b15"
-            }, {
-              value: data["disp_inc"],
-              color: "#7c2b15"
-            }
-          ];
-          ctx = $("#donut").get(0).getContext("2d");
-          options = {
-            percentageInnerCutout: 70,
-            animationEasing: "easeOutQuart",
-            animationSteps: 30
-          };
-          new Chart(ctx).Doughnut(chartData, options);
+          mhi = $("#discretionaryIncome .median-income").text();
+          console.log(mhi);
+          makeChart(data, Number(mhi));
           return $(".currency").each(function() {
             var c;
             c = $(this).text();

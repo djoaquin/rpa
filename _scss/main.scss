@@ -2,6 +2,24 @@
 
 .map{
   width:100%;height:500px;
+  & > .mapInner{
+    width:inherit;
+    height:inherit;
+  };
+  position:relative;
+  // callout
+  .please_zoom_in{
+    background: white;
+    padding: 10px 20px;
+    color:black;
+    position:absolute;
+    bottom:10px;
+    left:10px;
+  }
+  .cartodb-logo{display:none !important;}
+}
+.content{
+  margin-top:-20px;
 }
 
 
@@ -12,10 +30,10 @@
   // $infowindow_width: 530px * 3/4;
   // $infowindow_height: $infowindow_width/2 + 10px;
 
-  $blue: #47b3d2;
-  $reddish: #f12b15;
-  $brown: #b92b15;
-  $dark_brown: #7c2b15;
+  $blue: #47b3d2;         // disp_income
+  $reddish: #f12b15;      // trans
+  $brown: #b92b15;        // housing
+  $dark_brown: #7c2b15;   // taxes
 
   div.cartodb-infowindow{
     width: $infowindow_width !important;
@@ -53,10 +71,13 @@
       float:left;
       position:relative;
       width:143px;
+      #donut{
+        cursor: crosshair;
+      }
     }
     .mhi{
       position: absolute;
-      left: 45px;
+      left: 43px;
       z-index: 99;
       top: 36px;
       font-size: 0.8em;
@@ -133,6 +154,22 @@
   }
 }
 
+
+// PAGES
+.page.discretionary{
+  min-height: 1000px;
+
+  .standalone{
+    margin-top:20px;
+    $infowindow_width: 397.5px;
+    @include popup($infowindow_width, $infowindow_width/2 + 20px);
+    div.cartodb-infowindow:after,div.cartodb-popup:after{ display:none;}
+  }
+}
+
+
+// MAPS
+
 #schoolPerf{
 
   // School rank colors
@@ -188,7 +225,7 @@
   div.cartodb-legend.custom{
     width:145px;
     li.graph{
-      height:145px;
+      height:125px;
       border:none;
     }
     div.colors{
@@ -205,22 +242,21 @@
       }
     }
 
-    $i:1;
-    $facility1: "Hospitals"; //rpa_nj_hsip_hospitals_compressed
-    $facility2: "Nursing homes"; //rpa_ct_nursinghomes_namesaddressesbeds
-    $facility3: "Rail lines and train stations"; //rpa_trainstations, rpa_raillines_flood
-    $facility4: "Subway stations"; //rpa_subwaystations
-    $facility5: "Power plants"; //rpa_powerplants_eia_latlong_2013
-    $facility6: "UNDETERMINED"; //???
-    $col_text: $facility1, $facility2, $facility3, $facility4, $facility5, $facility6;
-    @each $value in $col_text {
-      .col#{$i}{
-        &:after{
-          content:$value;
-        }
-      }
-      $i: $i + 1;
-    }
+    // $i:1;
+    // $facility1: "Hospitals"; //rpa_nj_hsip_hospitals_compressed
+    // $facility2: "Nursing homes"; //rpa_ct_nursinghomes_namesaddressesbeds
+    // $facility3: "Rail lines and train stations"; //rpa_trainstations, rpa_raillines_flood
+    // $facility4: "Subway routes and stations"; //rpa_subwaystations, rpa_subwayroutes_flood
+    // $facility5: "Power plants"; //rpa_powerplants_eia_latlong_2013
+    // $col_text: $facility1, $facility2, $facility3, $facility4, $facility5;
+    // @each $value in $col_text {
+    //   .col#{$i}{
+    //     &:after{
+    //       content:$value;
+    //     }
+    //   }
+    //   $i: $i + 1;
+    // }
 
   }
 
@@ -273,6 +309,7 @@
     }
 
   }
-  @include popup;
+  $infowindow_width: 397.5px;
+  @include popup($infowindow_width, $infowindow_width/2 + 20px);
 
 }

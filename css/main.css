@@ -5002,7 +5002,121 @@ button.close {
     display: none !important; } }
 .map {
   width: 100%;
-  height: 500px; }
+  height: 500px;
+  position: relative; }
+  .map > .mapInner {
+    width: inherit;
+    height: inherit; }
+  .map .please_zoom_in {
+    background: white;
+    padding: 10px 20px;
+    color: black;
+    position: absolute;
+    bottom: 10px;
+    left: 10px; }
+  .map .cartodb-logo {
+    display: none !important; }
+
+.content {
+  margin-top: -20px; }
+
+.page.discretionary {
+  min-height: 1000px; }
+  .page.discretionary .standalone {
+    margin-top: 20px; }
+    .page.discretionary .standalone div.cartodb-infowindow {
+      width: 397.5px !important;
+      height: 218.75px !important;
+      max-height: 218.75px !important; }
+      .page.discretionary .standalone div.cartodb-infowindow .leftColumn {
+        float: left;
+        width: 205px;
+        font-size: 0.7em; }
+        .page.discretionary .standalone div.cartodb-infowindow .leftColumn > div:before {
+          content: '\00B7';
+          padding-right: 5px;
+          font-size: 42px;
+          line-height: 10px;
+          float: left;
+          margin-top: 3px;
+          height: 24px; }
+        .page.discretionary .standalone div.cartodb-infowindow .leftColumn > .discretionary:before {
+          color: #47b3d2; }
+        .page.discretionary .standalone div.cartodb-infowindow .leftColumn > .trans:before {
+          color: #f12b15; }
+        .page.discretionary .standalone div.cartodb-infowindow .leftColumn > .housing:before {
+          color: #b92b15; }
+        .page.discretionary .standalone div.cartodb-infowindow .leftColumn > .taxes:before {
+          color: #7c2b15; }
+      .page.discretionary .standalone div.cartodb-infowindow .rightColumn {
+        float: left;
+        position: relative;
+        width: 143px; }
+        .page.discretionary .standalone div.cartodb-infowindow .rightColumn #donut {
+          cursor: crosshair; }
+      .page.discretionary .standalone div.cartodb-infowindow .mhi {
+        position: absolute;
+        left: 43px;
+        z-index: 99;
+        top: 36px;
+        font-size: 0.8em; }
+      .page.discretionary .standalone div.cartodb-infowindow a.cartodb-popup-close-button {
+        top: 18px;
+        right: 13px; }
+      .page.discretionary .standalone div.cartodb-infowindow:after {
+        content: ' ';
+        position: absolute;
+        width: 0;
+        height: 0;
+        left: 5%;
+        bottom: -15px;
+        border: 15px solid;
+        border-color: #fff transparent transparent #fff; }
+    .page.discretionary .standalone div.cartodb-popup {
+      width: 397.5px;
+      height: 218.75px !important;
+      max-height: 218.75px !important;
+      background: white;
+      max-width: 397.5px;
+      padding: 0; }
+      .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-tip-container {
+        display: none; }
+      .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper {
+        width: 397.5px;
+        height: 218.75px !important;
+        max-height: 218.75px !important;
+        background: white;
+        max-width: 397.5px;
+        overflow: hidden;
+        border-bottom-left-radius: 5px;
+        border-top-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        border-top-right-radius: 5px;
+        border-top-right-radius: 5px;
+        border-top-left-radius: 5px;
+        border-bottom-right-radius: 5px;
+        border-bottom-left-radius: 5px;
+        box-shadow: 1px 1px 6px black; }
+        .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper .cartodb-popup-content {
+          overflow: hidden; }
+        .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper .cartodb-popup-content, .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper .jspContainer, .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane {
+          width: 367.5px !important;
+          max-width: 397.5px;
+          height: 218.75px !important;
+          max-height: 218.75px !important; }
+        .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane {
+          font-size: 1.2em; }
+          .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane > div, .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane > h2 {
+            padding-left: 3px; }
+        .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper .jspVerticalBar {
+          display: none; }
+        .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper .title {
+          border-bottom: solid 1px #ccc;
+          line-height: 1.6em;
+          font-size: 1.6em;
+          margin-bottom: 10px; }
+    .page.discretionary .standalone div.cartodb-infowindow:after, .page.discretionary .standalone div.cartodb-popup:after {
+      display: none; }
 
 #schoolPerf .cartodb-legend b {
   display: block;
@@ -5051,9 +5165,11 @@ button.close {
     float: left;
     position: relative;
     width: 143px; }
+    #schoolPerf div.cartodb-infowindow .rightColumn #donut {
+      cursor: crosshair; }
   #schoolPerf div.cartodb-infowindow .mhi {
     position: absolute;
-    left: 45px;
+    left: 43px;
     z-index: 99;
     top: 36px;
     font-size: 0.8em; }
@@ -5118,7 +5234,7 @@ button.close {
 #vulnerableInfra div.cartodb-legend.custom {
   width: 145px; }
   #vulnerableInfra div.cartodb-legend.custom li.graph {
-    height: 145px;
+    height: 125px;
     border: none; }
   #vulnerableInfra div.cartodb-legend.custom div.colors div.quartile {
     display: block;
@@ -5129,18 +5245,6 @@ button.close {
       display: block;
       margin: 5px 0 10px 0;
       text-transform: lowercase; }
-  #vulnerableInfra div.cartodb-legend.custom .col1:after {
-    content: "Hospitals"; }
-  #vulnerableInfra div.cartodb-legend.custom .col2:after {
-    content: "Nursing homes"; }
-  #vulnerableInfra div.cartodb-legend.custom .col3:after {
-    content: "Rail lines and train stations"; }
-  #vulnerableInfra div.cartodb-legend.custom .col4:after {
-    content: "Subway stations"; }
-  #vulnerableInfra div.cartodb-legend.custom .col5:after {
-    content: "Power plants"; }
-  #vulnerableInfra div.cartodb-legend.custom .col6:after {
-    content: "UNDETERMINED"; }
 
 #discretionaryIncome div.cartodb-legend.custom {
   width: 150px; }
@@ -5184,8 +5288,8 @@ button.close {
       content: "$40,000 and over"; }
 #discretionaryIncome div.cartodb-infowindow {
   width: 397.5px !important;
-  height: 208.75px !important;
-  max-height: 208.75px !important; }
+  height: 218.75px !important;
+  max-height: 218.75px !important; }
   #discretionaryIncome div.cartodb-infowindow .leftColumn {
     float: left;
     width: 205px;
@@ -5210,9 +5314,11 @@ button.close {
     float: left;
     position: relative;
     width: 143px; }
+    #discretionaryIncome div.cartodb-infowindow .rightColumn #donut {
+      cursor: crosshair; }
   #discretionaryIncome div.cartodb-infowindow .mhi {
     position: absolute;
-    left: 45px;
+    left: 43px;
     z-index: 99;
     top: 36px;
     font-size: 0.8em; }
@@ -5230,8 +5336,8 @@ button.close {
     border-color: #fff transparent transparent #fff; }
 #discretionaryIncome div.cartodb-popup {
   width: 397.5px;
-  height: 208.75px !important;
-  max-height: 208.75px !important;
+  height: 218.75px !important;
+  max-height: 218.75px !important;
   background: white;
   max-width: 397.5px;
   padding: 0; }
@@ -5239,8 +5345,8 @@ button.close {
     display: none; }
   #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper {
     width: 397.5px;
-    height: 208.75px !important;
-    max-height: 208.75px !important;
+    height: 218.75px !important;
+    max-height: 218.75px !important;
     background: white;
     max-width: 397.5px;
     overflow: hidden;
@@ -5258,8 +5364,8 @@ button.close {
     #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .cartodb-popup-content, #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .jspContainer, #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane {
       width: 367.5px !important;
       max-width: 397.5px;
-      height: 208.75px !important;
-      max-height: 208.75px !important; }
+      height: 218.75px !important;
+      max-height: 218.75px !important; }
     #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane {
       font-size: 1.2em; }
       #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane > div, #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane > h2 {
