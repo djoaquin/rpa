@@ -161,7 +161,7 @@
 
   .standalone{
     margin-top:20px;
-    $infowindow_width: 397.5px;
+    $infowindow_width: 417.5px;
     @include popup($infowindow_width, $infowindow_width/2 + 20px);
     div.cartodb-infowindow:after,div.cartodb-popup:after{ display:none;}
   }
@@ -332,7 +332,7 @@
     }
 
   }
-  $infowindow_width: 397.5px;
+  $infowindow_width: 427.5px;
   @include popup($infowindow_width, $infowindow_width/2 + 20px);
 
 }

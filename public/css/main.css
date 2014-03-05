@@ -5025,9 +5025,9 @@ button.close {
   .page.discretionary .standalone {
     margin-top: 20px; }
     .page.discretionary .standalone div.cartodb-infowindow {
-      width: 397.5px !important;
-      height: 218.75px !important;
-      max-height: 218.75px !important; }
+      width: 417.5px !important;
+      height: 228.75px !important;
+      max-height: 228.75px !important; }
       .page.discretionary .standalone div.cartodb-infowindow .leftColumn {
         float: left;
         width: 205px;
@@ -5073,20 +5073,20 @@ button.close {
         border: 15px solid;
         border-color: #fff transparent transparent #fff; }
     .page.discretionary .standalone div.cartodb-popup {
-      width: 397.5px;
-      height: 218.75px !important;
-      max-height: 218.75px !important;
+      width: 417.5px;
+      height: 228.75px !important;
+      max-height: 228.75px !important;
       background: white;
-      max-width: 397.5px;
+      max-width: 417.5px;
       padding: 0; }
       .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-tip-container {
         display: none; }
       .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper {
-        width: 397.5px;
-        height: 218.75px !important;
-        max-height: 218.75px !important;
+        width: 417.5px;
+        height: 228.75px !important;
+        max-height: 228.75px !important;
         background: white;
-        max-width: 397.5px;
+        max-width: 417.5px;
         overflow: hidden;
         border-bottom-left-radius: 5px;
         border-top-left-radius: 5px;
@@ -5100,10 +5100,10 @@ button.close {
         .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper .cartodb-popup-content {
           overflow: hidden; }
         .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper .cartodb-popup-content, .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper .jspContainer, .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane {
-          width: 337.5px !important;
-          max-width: 397.5px;
-          height: 218.75px !important;
-          max-height: 218.75px !important; }
+          width: 357.5px !important;
+          max-width: 417.5px;
+          height: 228.75px !important;
+          max-height: 228.75px !important; }
         .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane {
           font-size: 1.2em; }
           .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane > div, .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane > h2 {
@@ -5312,9 +5312,9 @@ button.close {
     #discretionaryIncome div.cartodb-legend.custom .col5:after {
       content: "$40,000 and over"; }
 #discretionaryIncome div.cartodb-infowindow {
-  width: 397.5px !important;
-  height: 218.75px !important;
-  max-height: 218.75px !important; }
+  width: 427.5px !important;
+  height: 233.75px !important;
+  max-height: 233.75px !important; }
   #discretionaryIncome div.cartodb-infowindow .leftColumn {
     float: left;
     width: 205px;
@@ -5360,20 +5360,20 @@ button.close {
     border: 15px solid;
     border-color: #fff transparent transparent #fff; }
 #discretionaryIncome div.cartodb-popup {
-  width: 397.5px;
-  height: 218.75px !important;
-  max-height: 218.75px !important;
+  width: 427.5px;
+  height: 233.75px !important;
+  max-height: 233.75px !important;
   background: white;
-  max-width: 397.5px;
+  max-width: 427.5px;
   padding: 0; }
   #discretionaryIncome div.cartodb-popup div.cartodb-popup-tip-container {
     display: none; }
   #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper {
-    width: 397.5px;
-    height: 218.75px !important;
-    max-height: 218.75px !important;
+    width: 427.5px;
+    height: 233.75px !important;
+    max-height: 233.75px !important;
     background: white;
-    max-width: 397.5px;
+    max-width: 427.5px;
     overflow: hidden;
     border-bottom-left-radius: 5px;
     border-top-left-radius: 5px;
@@ -5387,10 +5387,10 @@ button.close {
     #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .cartodb-popup-content {
       overflow: hidden; }
     #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .cartodb-popup-content, #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .jspContainer, #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane {
-      width: 337.5px !important;
-      max-width: 397.5px;
-      height: 218.75px !important;
-      max-height: 218.75px !important; }
+      width: 367.5px !important;
+      max-width: 427.5px;
+      height: 233.75px !important;
+      max-height: 233.75px !important; }
     #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane {
       font-size: 1.2em; }
       #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane > div, #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane > h2 {

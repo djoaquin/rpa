@@ -25379,7 +25379,26 @@ cdb.geo.ui.Tooltip = cdb.geo.ui.InfoBox.extend({
   },
 
   render: function(data) {
+    function toTitleCase(str)
+    {
+        return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+    }
+    if(data){
+
+      if(data["name"]){
+        data["name"] = toTitleCase(data["name"])
+      }else if(data["line_name"]){
+        data["line_name"] = toTitleCase(data["line_name"])
+      }else if(data["station_na"]){
+        data["station_na"] = toTitleCase(data["station_na"])
+      }else if(data["plant_name"]){
+        data["plant_name"] = toTitleCase(data["plant_name"])
+      }else if(data["project_na"]){
+        data["project_na"] = toTitleCase(data["project_na"])
+      }
+    }
     this.$el.html( this.template(data) );
+    vent.trigger("tooltip:rendered", data);
     return this;
   }
 

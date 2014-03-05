@@ -124,7 +124,7 @@
           return vis.addOverlay({
             layer: value["layer"],
             type: 'tooltip',
-            template: "<div style=\"background:white;padding:5px 10px;\">\n  <h3 style=\"margin-top:0\">{{ " + value['name_column'] + " }}</h3>\n  <p>Affected " + value['affected_type'] + ": {{ " + value['loss_column'] + " }}</p>\n</div>"
+            template: "<div style=\"background:white;padding:5px 10px;\">\n  <h3 style=\"margin-top:0\" class=\"title-case\">{{ " + value['name_column'] + " }}</h3>\n  <p>Affected " + value['affected_type'] + ": {{ " + value['loss_column'] + " }}</p>\n</div>"
           });
         });
         return $("#layer_selector li").on("click", function(e) {
@@ -196,7 +196,6 @@
             labelTemplate: "<%= (value / " + mhi + " * 100 ).toFixed(2) %>%"
           }
         };
-        console.log(id);
         return new Chart(ctx, options).Doughnut(chartData, donut_options);
       };
       data = {
@@ -243,7 +242,6 @@
           }
           data = $(".cartodb-popup-content").data();
           mhi = $("#discretionaryIncome .median-income").text();
-          console.log(mhi);
           makeChart(data, Number(mhi));
           return $(".currency").each(function() {
             var c;

@@ -166,7 +166,7 @@ class Workspace extends Backbone.Router
             type: 'tooltip'
             template: """
               <div style="background:white;padding:5px 10px;">
-                <h3 style="margin-top:0">{{ #{value['name_column']} }}</h3>
+                <h3 style="margin-top:0" class="title-case">{{ #{value['name_column']} }}</h3>
                 <p>Affected #{value['affected_type']}: {{ #{value['loss_column']} }}</p>
               </div>
             """
@@ -227,7 +227,6 @@ class Workspace extends Backbone.Router
         tooltips:
           background: "#000"
           labelTemplate: "<%= (value / #{mhi} * 100 ).toFixed(2) %>%"
-      console.log id
       new Chart(ctx,options).Doughnut(chartData,donut_options)
 
     data =
@@ -334,14 +333,12 @@ class Workspace extends Backbone.Router
 
         # HACK: the code below requires a feature added to a customized version of the cartodb.js liburary
         vent.on "infowindow:rendered", (obj)->
-
           return if obj["null"] is "Loading content..."
 
           # Create a bar chart in the infowindow for the clicked feature
           data = $(".cartodb-popup-content").data()
 
           mhi = $("#discretionaryIncome .median-income").text()
-          console.log mhi
           makeChart(data, Number(mhi))
 
 
