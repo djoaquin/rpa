@@ -152,6 +152,7 @@
           return vis.addOverlay({
             layer: value["layer"],
             type: 'tooltip',
+            offset_top: -30,
             template: "<div style=\"background:white;padding:5px 10px;\">\n  <h3 style=\"margin-top:0\" class=\"title-case\">{{ " + value['name_column'] + " }}</h3>\n  <p>Affected " + value['affected_type'] + ": {{ " + value['loss_column'] + " }}</p>\n</div>"
           });
         });

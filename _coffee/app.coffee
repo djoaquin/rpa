@@ -193,6 +193,7 @@ class Workspace extends Backbone.Router
           vis.addOverlay(
             layer: value["layer"]
             type: 'tooltip'
+            offset_top: -30
             template: """
               <div style="background:white;padding:5px 10px;">
                 <h3 style="margin-top:0" class="title-case">{{ #{value['name_column']} }}</h3>

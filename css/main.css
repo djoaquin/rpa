@@ -5294,25 +5294,25 @@ button.close {
       margin: 5px 0 0 25px;
       text-transform: lowercase; }
   #discretionaryIncome div.cartodb-legend.custom .col1 {
-    background-color: #b7ebf2; }
+    background-color: #0b6087; }
     #discretionaryIncome div.cartodb-legend.custom .col1:after {
-      content: "$16,000 and under"; }
+      content: "$40,000 and over"; }
   #discretionaryIncome div.cartodb-legend.custom .col2 {
-    background-color: #82d5e7; }
+    background-color: #1689ae; }
     #discretionaryIncome div.cartodb-legend.custom .col2:after {
-      content: "$16,001 - $24,000"; }
+      content: "$32,001 - $40,000"; }
   #discretionaryIncome div.cartodb-legend.custom .col3 {
     background-color: #4cb3d1; }
     #discretionaryIncome div.cartodb-legend.custom .col3:after {
       content: "$24,001 - $32,000"; }
   #discretionaryIncome div.cartodb-legend.custom .col4 {
-    background-color: #1689ae; }
+    background-color: #82d5e7; }
     #discretionaryIncome div.cartodb-legend.custom .col4:after {
-      content: "$32,001 - $40,000"; }
+      content: "$16,001 - $24,000"; }
   #discretionaryIncome div.cartodb-legend.custom .col5 {
-    background-color: #0b6087; }
+    background-color: #b7ebf2; }
     #discretionaryIncome div.cartodb-legend.custom .col5:after {
-      content: "$40,000 and over"; }
+      content: "$16,000 and under"; }
 #discretionaryIncome div.cartodb-infowindow {
   width: 427.5px !important;
   height: 233.75px !important;

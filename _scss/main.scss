@@ -316,11 +316,11 @@
       }
     }
     $i:1;
-    $blue1: #b7ebf2 "$16,000 and under";
-    $blue2: #82d5e7 "$16,001 - $24,000";
+    $blue1: #0b6087 "$40,000 and over";
+    $blue2: #1689ae "$32,001 - $40,000";
     $blue3: #4cb3d1 "$24,001 - $32,000";
-    $blue4: #1689ae "$32,001 - $40,000";
-    $blue5: #0b6087 "$40,000 and over";
+    $blue4: #82d5e7 "$16,001 - $24,000";
+    $blue5: #b7ebf2 "$16,000 and under";
     $col_text: $blue1, $blue2, $blue3, $blue4, $blue5;
     @each $value in $col_text {
       .col#{$i}{
