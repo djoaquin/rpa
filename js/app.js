@@ -1,8 +1,19 @@
 (function() {
-  var Workspace,
+  var Workspace, formatMoney,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+
+  formatMoney = function() {
+    return $(".currency").each(function() {
+      var c;
+      c = $(this).text();
+      c = accounting.formatMoney(Number(c), {
+        precision: 0
+      });
+      return $(this).text(c);
+    });
+  };
 
   Workspace = (function(_super) {
     __extends(Workspace, _super);
@@ -21,17 +32,21 @@
       return cartodb.createVis('schoolPerf', 'http://rpa.cartodb.com/api/v2/viz/5bc0d9be-a264-11e3-bc17-0e10bcd91c2b/viz.json', {
         searchControl: true,
         layer_selector: false,
-        legends: true
+        legends: true,
+        zoom: 10
       }).done(function(vis, layers) {
-        var poverty_layer, tmpl;
+        var poverty_layer, tooltip;
         layers[1].setInteraction(true);
         poverty_layer = layers[1].getSubLayer(0);
         poverty_layer = poverty_layer.setInteractivity("cartodb_id, namelsad10, hh_median");
-        tmpl = function() {
-          return _.template("<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <h2 class=\"title\"><%= namelsad10 %></h2>\n      </div>\n   </div>\n</div>");
-        };
-        poverty_layer.on("featureOver", function(e, ll, pos, data) {
-          return console.log(tmpl(data));
+        tooltip = new cdb.geo.ui.Tooltip({
+          template: "<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <h2 class=\"title\">{{namelsad10}}</h2>\n        <p class=\"currency\">{{hh_median}}</p>\n      </div>\n   </div>\n</div>",
+          layer: poverty_layer,
+          offset_top: -50
+        });
+        vis.container.append(tooltip.render().el);
+        vent.on("tooltip:rendered", function() {
+          return formatMoney();
         });
         return vent.on("infowindow:rendered", function(obj) {
           var rank;
@@ -40,7 +55,12 @@
           }
           rank = $(".school-ranking").text();
           rank = (parseFloat(rank) * 100).toFixed(2);
-          return $(".school-ranking").text("" + rank + "%");
+          if (rank === 0) {
+            $(".school-ranking").text("No data available");
+            return $(".Bottom").remove();
+          } else {
+            return $(".school-ranking").text("" + rank + "%");
+          }
         });
       });
     };
@@ -52,14 +72,11 @@
         layer_selector: false,
         legends: false
       }).done(function(vis, layers) {
-        var dbs, floodZoneLayer, layer, map, red, tmpl;
+        var dbs, floodZoneLayer, layer, map, red;
         map = vis.getNativeMap();
         layer = layers[1];
         floodZoneLayer = layer.getSubLayer(0);
         layer.setInteraction(true);
-        tmpl = function() {
-          return _.template("<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <h2 class=\"title\"><%=content.data." + type_name + "%></h2>\n      </div>\n   </div>\n</div>");
-        };
         red = "#ba0000";
         dbs = {
           power_plants: {
@@ -103,6 +120,13 @@
             loss_column: "cartodb_id",
             affected_type: "stations",
             tables: ["rpa_subwaystations"]
+          },
+          subway_routes: {
+            flood_column: "am",
+            name_column: "route_name",
+            loss_column: "cartodb_id",
+            affected_type: "routes",
+            tables: ["rpa_subwayroutes_flood"]
           }
         };
         _.each(dbs, function(value, k) {
@@ -249,14 +273,7 @@
           data = $(".cartodb-popup-content").data();
           mhi = $("#discretionaryIncome .median-income").text();
           makeChart(data, Number(mhi));
-          return $(".currency").each(function() {
-            var c;
-            c = $(this).text();
-            c = accounting.formatMoney(Number(c), {
-              precision: 0
-            });
-            return $(this).text(c);
-          });
+          return formatMoney();
         });
       });
     };

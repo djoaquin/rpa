@@ -2,6 +2,11 @@
 // uncompressed version: cartodb.uncompressed.js
 // sha: b653c8a3576a3c7231db80894d57e7b8a185c60f
 (function() {
+  function toTitleCase(str)
+  {
+      return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+  }
+
   var root = this;
 
   if(!true) {
@@ -24381,6 +24386,11 @@ cdb.geo.ui.Infowindow = cdb.core.View.extend({
           }
         },values);
 
+      if(obj["schnam"]){
+        obj["schnam"] = toTitleCase(obj["schnam"])
+      }
+
+
       this.$el.html(this.template(obj));
       vent.trigger("infowindow:rendered", obj);
 
@@ -24971,10 +24981,10 @@ cdb.geo.ui.Search = cdb.core.View.extend({
               parseFloat(coords[0].boundingbox.east)
             ]
           ]);
-          self.model.setZoom(12);
+          self.model.setZoom(14);
         } else if (coords[0].lat && coords[0].lon) {
           self.model.setCenter([coords[0].lat, coords[0].lon]);
-          self.model.setZoom(12);
+          self.model.setZoom(14);
         }
       }
 
@@ -25359,6 +25369,7 @@ cdb.geo.ui.Tooltip = cdb.geo.ui.InfoBox.extend({
   },
 
   enable: function() {
+
     if(this.options.layer) {
       this.options.layer
         .on('featureOver', function(e, latlng, pos, data) {
@@ -25371,6 +25382,7 @@ cdb.geo.ui.Tooltip = cdb.geo.ui.InfoBox.extend({
   },
 
   show: function(pos, data) {
+
     this.render(data);
     this.elder('show');
     this.$el.css({
@@ -25380,10 +25392,6 @@ cdb.geo.ui.Tooltip = cdb.geo.ui.InfoBox.extend({
   },
 
   render: function(data) {
-    function toTitleCase(str)
-    {
-        return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
-    }
     if(data){
 
       if(data["name"]){

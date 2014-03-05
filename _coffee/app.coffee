@@ -1,3 +1,10 @@
+formatMoney = ->
+  $(".currency").each(()->
+      c = $(this).text()
+      c = accounting.formatMoney(Number(c), precision:0)
+      $(this).text(c)
+    )
+
 class Workspace extends Backbone.Router
   routes:
     "schools.html" : "schools"
@@ -5,7 +12,7 @@ class Workspace extends Backbone.Router
     "discretionary.html" : "discretionary"
   schools: ->
     cartodb
-      .createVis('schoolPerf', 'http://rpa.cartodb.com/api/v2/viz/5bc0d9be-a264-11e3-bc17-0e10bcd91c2b/viz.json', searchControl: true, layer_selector: false, legends: true)
+      .createVis('schoolPerf', 'http://rpa.cartodb.com/api/v2/viz/5bc0d9be-a264-11e3-bc17-0e10bcd91c2b/viz.json', searchControl: true, layer_selector: false, legends: true, zoom:10)
       .done (vis,layers)->
 
         # Create the sublayer for subway routes
@@ -15,19 +22,27 @@ class Workspace extends Backbone.Router
         poverty_layer = poverty_layer.setInteractivity("cartodb_id, namelsad10, hh_median")
 
 
+        tooltip = new cdb.geo.ui.Tooltip(
+            template: """
+              <div class="cartodb-popup">
+                 <div class="cartodb-popup-content-wrapper">
+                    <div class="cartodb-popup-content">
+                      <h2 class="title">{{namelsad10}}</h2>
+                      <p class="currency">{{hh_median}}</p>
+                    </div>
+                 </div>
+              </div>
+            """
+            layer: poverty_layer
+            offset_top: -50
+        )
+        vis.container.append(tooltip.render().el)
 
-        tmpl= -> _.template("""
-            <div class="cartodb-popup">
-               <div class="cartodb-popup-content-wrapper">
-                  <div class="cartodb-popup-content">
-                    <h2 class="title"><%= namelsad10 %></h2>
-                  </div>
-               </div>
-            </div>
-          """)
-        poverty_layer.on "featureOver", (e,ll,pos,data)->
-          console.log tmpl(data)
-          
+        vent.on("tooltip:rendered", ->
+            formatMoney()
+          )
+
+
 
         vent.on "infowindow:rendered", (obj)->
 
@@ -35,7 +50,11 @@ class Workspace extends Backbone.Router
 
           rank = $(".school-ranking").text()
           rank = (parseFloat(rank) * 100).toFixed(2)
-          $(".school-ranking").text("#{rank}%")
+          if rank is 0
+            $(".school-ranking").text("No data available")
+            $(".Bottom").remove()
+          else
+            $(".school-ranking").text("#{rank}%")
 
 
   vulnerable: ->
@@ -50,15 +69,28 @@ class Workspace extends Backbone.Router
         layer.setInteraction(true)
 
 
-        tmpl= -> _.template("""
-            <div class="cartodb-popup">
-               <div class="cartodb-popup-content-wrapper">
-                  <div class="cartodb-popup-content">
-                    <h2 class="title"><%=content.data.#{type_name}%></h2>
-                  </div>
-               </div>
-            </div>
-          """)
+        # TODO: what should be done here?
+
+        # tooltip = new cdb.geo.ui.Tooltip(
+        #     template: """
+        #       <div class="cartodb-popup">
+        #          <div class="cartodb-popup-content-wrapper">
+        #             <div class="cartodb-popup-content">
+        #               <h2 class="title">{{namelsad10}}</h2>
+        #               <p class="currency">{{hh_median}}</p>
+        #             </div>
+        #          </div>
+        #       </div>
+        #     """
+        #     layer: poverty_layer
+        #     width: 200
+        # )
+        # vis.container.append(tooltip.render().el)
+
+        # vent.on("tooltip:rendered", ->
+        #     formatMoney()
+        #   )
+
 
         # Declare the database tables backing the layers
         red = "#ba0000"
@@ -122,15 +154,15 @@ class Workspace extends Backbone.Router
               "rpa_subwaystations"
             ]
           }
-          # subway_routes: {
-          #   flood_column: "am"  #TODO: replace with the real column
-          #   name_column: "route_name"
-          #   loss_column: "cartodb_id"  #TODO: replace with the real column
-          #   affected_type: "routes"
-          #   tables: [
-          #     "rpa_subwayroutes_flood"
-          #   ]
-          # }
+          subway_routes: {
+            flood_column: "am"  #TODO: replace with the real column
+            name_column: "route_name"
+            loss_column: "cartodb_id"  #TODO: replace with the real column
+            affected_type: "routes"
+            tables: [
+              "rpa_subwayroutes_flood"
+            ]
+          }
         }
 
         # Describe and define the sublayers
@@ -341,15 +373,10 @@ class Workspace extends Backbone.Router
           mhi = $("#discretionaryIncome .median-income").text()
           makeChart(data, Number(mhi))
 
-
+          formatMoney()
           # TODO: make the tooltip show the percentage value of each slice
 
 
-          $(".currency").each(()->
-              c = $(this).text()
-              c = accounting.formatMoney(Number(c), precision:0)
-              $(this).text(c)
-            )
 
 
 
