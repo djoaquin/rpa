@@ -12,23 +12,25 @@ class Workspace extends Backbone.Router
         layer = layers[1]
         layer.setInteraction(true)
 
-        # FIXME: how can I access the sublayers correctly?
-        # poverty_layer = layer.getSubLayer(0)
-        # schools_layer = layer.getSubLayer(1)
+        poverty_layer = layer.getSubLayer(0)
+        poverty_layer.set("interactivity", "cartodb_id, namelsad10, hh_median")
 
         # • Create a tooltip on hover with these values:
         #   - county or census track name
         #   - disposable income
 
         # vis.addOverlay(
+        #   layer: poverty_layer
         #   type: 'tooltip'
         #   template: """
         #     <div style="background:white;padding:5px 10px;">
-        #       <h3 style="margin-top:0">{{ schname }}</h3>
-        #       <p>Affected #{value['affected_type']}: {{ #{value['loss_column']} }}</p>
+        #       <h3 style="margin-top:0">{{ content.data }}</h3>
+        #       <p>$ {{content.data }}</p>
         #     </div>
         #   """
         # )
+        poverty_layer.on "featureOver", (e,ll,pos,data)->
+          # console.log data
 
         vent.on "infowindow:rendered", (obj)->
 
@@ -47,6 +49,7 @@ class Workspace extends Backbone.Router
         map = vis.getNativeMap()
 
         layer = layers[1]
+        floodZoneLayer = layer.getSubLayer(0)
         layer.setInteraction(true)
 
 
@@ -170,10 +173,34 @@ class Workspace extends Backbone.Router
           )
         )
 
-
-
-
         # TODO: create a handler for the layer_selector. Toggle the visibility of the clicked layer.
+
+        $("#layer_selector li").on "click", (e)->
+          $li = $(e.target)
+          layerName = $li.data("sublayer")
+
+          # Toggle the active class
+          $li.toggleClass("active")
+
+          activeLi =  $li.parent().find(".active")
+          activeSublayers = activeLi.map((i,item)-> $(item).data("sublayer"))
+
+          # Show the last active layer
+          dbs_and_flood_zone = _.extend(dbs,{flood_zone: []})
+          _.each(dbs_and_flood_zone, (value,k)->
+            if k in activeSublayers
+              if k is "flood_zone"
+                floodZoneLayer.show()
+              else
+                value["layer"].show()
+            else
+              if k is "flood_zone"
+                floodZoneLayer.hide()
+              else
+                value["layer"].hide()
+
+          )
+
 
 
   discretionary: ->
@@ -214,7 +241,7 @@ class Workspace extends Backbone.Router
 
     # DISCRETIONARY INCOME
     cartodb
-      .createVis('discretionaryIncome', 'http://rpa.cartodb.com/api/v2/viz/62e94d78-9f1e-11e3-b420-0ed66c7bc7f3/viz.json', legends: true, searchControl: true, zoom: 8, infowindow: true, layer_selector: true)
+      .createVis('discretionaryIncome', 'http://rpa.cartodb.com/api/v2/viz/62e94d78-9f1e-11e3-b420-0ed66c7bc7f3/viz.json', legends: true, searchControl: true, zoom: 8, infowindow: true, layer_selector: false)
       .done (vis,layers)->
         map = vis.getNativeMap()
 

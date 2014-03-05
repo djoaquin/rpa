@@ -5100,7 +5100,7 @@ button.close {
         .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper .cartodb-popup-content {
           overflow: hidden; }
         .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper .cartodb-popup-content, .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper .jspContainer, .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane {
-          width: 367.5px !important;
+          width: 337.5px !important;
           max-width: 397.5px;
           height: 218.75px !important;
           max-height: 218.75px !important; }
@@ -5118,14 +5118,22 @@ button.close {
     .page.discretionary .standalone div.cartodb-infowindow:after, .page.discretionary .standalone div.cartodb-popup:after {
       display: none; }
 
+#schoolPerf .Bottom {
+  color: #ba0000; }
+#schoolPerf .Top {
+  color: #0082ac; }
+#schoolPerf .Middle {
+  color: #736960; }
+#schoolPerf .cartodb-legend-stack {
+  width: 240px; }
 #schoolPerf .cartodb-legend b {
   display: block;
   margin-bottom: 10px; }
-#schoolPerf .cartodb-legend.school-rank-legend div p:nth-child(1) {
+#schoolPerf .school-rank-legend div p:nth-child(1) {
   color: #0082ac; }
-#schoolPerf .cartodb-legend.school-rank-legend div p:nth-child(2) {
+#schoolPerf .school-rank-legend div p:nth-child(2) {
   color: #736960; }
-#schoolPerf .cartodb-legend.school-rank-legend div p:nth-child(3) {
+#schoolPerf .school-rank-legend div p:nth-child(3) {
   color: #ba0000; }
 #schoolPerf .colors div:nth-child(1) {
   background-color: #beb4aa; }
@@ -5213,7 +5221,7 @@ button.close {
     #schoolPerf div.cartodb-popup div.cartodb-popup-content-wrapper .cartodb-popup-content {
       overflow: hidden; }
     #schoolPerf div.cartodb-popup div.cartodb-popup-content-wrapper .cartodb-popup-content, #schoolPerf div.cartodb-popup div.cartodb-popup-content-wrapper .jspContainer, #schoolPerf div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane {
-      width: 367.5px !important;
+      width: 337.5px !important;
       max-width: 397.5px;
       height: 150px !important;
       max-height: 150px !important; }
@@ -5231,15 +5239,32 @@ button.close {
 #schoolPerf .school-ranking {
   font-weight: bold; }
 
-#vulnerableInfra div.cartodb-legend.custom {
+.page.vulnerable #layer_selector {
+  position: absolute;
+  bottom: 30px;
+  right: 10px;
+  padding: 0; }
+  .page.vulnerable #layer_selector ul {
+    list-style: none;
+    margin: 0;
+    padding: 0; }
+    .page.vulnerable #layer_selector ul li {
+      cursor: pointer;
+      padding: 5px 10px;
+      display: block;
+      width: 100%;
+      text-decoration: none; }
+      .page.vulnerable #layer_selector ul li.active {
+        background: rgba(0, 0, 0, 0.1); }
+.page.vulnerable #vulnerableInfra div.cartodb-legend.custom {
   width: 145px; }
-  #vulnerableInfra div.cartodb-legend.custom li.graph {
+  .page.vulnerable #vulnerableInfra div.cartodb-legend.custom li.graph {
     height: 125px;
     border: none; }
-  #vulnerableInfra div.cartodb-legend.custom div.colors div.quartile {
+  .page.vulnerable #vulnerableInfra div.cartodb-legend.custom div.colors div.quartile {
     display: block;
     margin-bottom: 1px; }
-    #vulnerableInfra div.cartodb-legend.custom div.colors div.quartile:after {
+    .page.vulnerable #vulnerableInfra div.cartodb-legend.custom div.colors div.quartile:after {
       width: 150px;
       float: left;
       display: block;
@@ -5267,11 +5292,11 @@ button.close {
       margin: 5px 0 0 25px;
       text-transform: lowercase; }
   #discretionaryIncome div.cartodb-legend.custom .col1 {
-    background-color: #0b6087; }
+    background-color: #b7ebf2; }
     #discretionaryIncome div.cartodb-legend.custom .col1:after {
       content: "$16,000 and under"; }
   #discretionaryIncome div.cartodb-legend.custom .col2 {
-    background-color: #1689ae; }
+    background-color: #82d5e7; }
     #discretionaryIncome div.cartodb-legend.custom .col2:after {
       content: "$16,001 - $24,000"; }
   #discretionaryIncome div.cartodb-legend.custom .col3 {
@@ -5279,11 +5304,11 @@ button.close {
     #discretionaryIncome div.cartodb-legend.custom .col3:after {
       content: "$24,001 - $32,000"; }
   #discretionaryIncome div.cartodb-legend.custom .col4 {
-    background-color: #82d5e7; }
+    background-color: #1689ae; }
     #discretionaryIncome div.cartodb-legend.custom .col4:after {
       content: "$32,001 - $40,000"; }
   #discretionaryIncome div.cartodb-legend.custom .col5 {
-    background-color: #b7ebf2; }
+    background-color: #0b6087; }
     #discretionaryIncome div.cartodb-legend.custom .col5:after {
       content: "$40,000 and over"; }
 #discretionaryIncome div.cartodb-infowindow {
@@ -5362,7 +5387,7 @@ button.close {
     #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .cartodb-popup-content {
       overflow: hidden; }
     #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .cartodb-popup-content, #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .jspContainer, #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .jspPane {
-      width: 367.5px !important;
+      width: 337.5px !important;
       max-width: 397.5px;
       height: 218.75px !important;
       max-height: 218.75px !important; }
