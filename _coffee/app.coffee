@@ -9,28 +9,25 @@ class Workspace extends Backbone.Router
       .done (vis,layers)->
 
         # Create the sublayer for subway routes
-        layer = layers[1]
-        layer.setInteraction(true)
+        layers[1].setInteraction(true)
+        poverty_layer = layers[1].getSubLayer(0)
 
-        poverty_layer = layer.getSubLayer(0)
-        poverty_layer.set("interactivity", "cartodb_id, namelsad10, hh_median")
+        poverty_layer = poverty_layer.setInteractivity("cartodb_id, namelsad10, hh_median")
 
-        # • Create a tooltip on hover with these values:
-        #   - county or census track name
-        #   - disposable income
 
-        # vis.addOverlay(
-        #   layer: poverty_layer
-        #   type: 'tooltip'
-        #   template: """
-        #     <div style="background:white;padding:5px 10px;">
-        #       <h3 style="margin-top:0">{{ content.data }}</h3>
-        #       <p>$ {{content.data }}</p>
-        #     </div>
-        #   """
-        # )
+
+        tmpl= -> _.template("""
+            <div class="cartodb-popup">
+               <div class="cartodb-popup-content-wrapper">
+                  <div class="cartodb-popup-content">
+                    <h2 class="title"><%= namelsad10 %></h2>
+                  </div>
+               </div>
+            </div>
+          """)
         poverty_layer.on "featureOver", (e,ll,pos,data)->
-          # console.log data
+          console.log tmpl(data)
+          
 
         vent.on "infowindow:rendered", (obj)->
 
@@ -258,9 +255,12 @@ class Workspace extends Backbone.Router
           if zoomLevel > 10
             censusLayer.show()
             countyLayer.hide()
+            # TODO: update the zoom legend
+            $(".please_zoom_in").text("Zoom out to see county level data.")
           else
             censusLayer.hide()
             countyLayer.show()
+            $(".please_zoom_in").text("Zoom in to the map to see neighborhood level data.")
         )
 
 

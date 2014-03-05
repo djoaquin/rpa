@@ -24971,9 +24971,10 @@ cdb.geo.ui.Search = cdb.core.View.extend({
               parseFloat(coords[0].boundingbox.east)
             ]
           ]);
+          self.model.setZoom(12);
         } else if (coords[0].lat && coords[0].lon) {
           self.model.setCenter([coords[0].lat, coords[0].lon]);
-          self.model.setZoom(10);
+          self.model.setZoom(12);
         }
       }
 

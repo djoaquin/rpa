@@ -23,12 +23,16 @@
         layer_selector: false,
         legends: true
       }).done(function(vis, layers) {
-        var layer, poverty_layer;
-        layer = layers[1];
-        layer.setInteraction(true);
-        poverty_layer = layer.getSubLayer(0);
-        poverty_layer.set("interactivity", "cartodb_id, namelsad10, hh_median");
-        poverty_layer.on("featureOver", function(e, ll, pos, data) {});
+        var poverty_layer, tmpl;
+        layers[1].setInteraction(true);
+        poverty_layer = layers[1].getSubLayer(0);
+        poverty_layer = poverty_layer.setInteractivity("cartodb_id, namelsad10, hh_median");
+        tmpl = function() {
+          return _.template("<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <h2 class=\"title\"><%= namelsad10 %></h2>\n      </div>\n   </div>\n</div>");
+        };
+        poverty_layer.on("featureOver", function(e, ll, pos, data) {
+          return console.log(tmpl(data));
+        });
         return vent.on("infowindow:rendered", function(obj) {
           var rank;
           if (obj["null"] === "Loading content...") {
@@ -224,10 +228,12 @@
           zoomLevel = map.getZoom();
           if (zoomLevel > 10) {
             censusLayer.show();
-            return countyLayer.hide();
+            countyLayer.hide();
+            return $(".please_zoom_in").text("Zoom out to see county level data.");
           } else {
             censusLayer.hide();
-            return countyLayer.show();
+            countyLayer.show();
+            return $(".please_zoom_in").text("Zoom in to the map to see neighborhood level data.");
           }
         });
         tmpl = function(type, type_name, mhi, disp_inc, trans, housing, taxes) {
