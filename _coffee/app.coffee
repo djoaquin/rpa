@@ -28,7 +28,7 @@ class Workspace extends Backbone.Router
               <div class="cartodb-popup">
                  <div class="cartodb-popup-content-wrapper">
                     <div class="cartodb-popup-content">
-                      <div class="title">
+                      <div class="title"  style="padding-bottom:10px">
                         <h3>{{schnam}}</h3>
                         <span>{{localname}}</span>
                       </div>
@@ -423,18 +423,11 @@ class Workspace extends Backbone.Router
         # HACK: the code below requires a feature added to a customized version of the cartodb.js liburary
         vent.on "infowindow:rendered", (obj)->
           return if obj["null"] is "Loading content..."
-
           # Create a bar chart in the infowindow for the clicked feature
           data = $(".cartodb-popup-content").data()
-
           mhi = $("#discretionaryIncome .median-income").text()
           makeChart(data, Number(mhi))
-
           formatMoney()
-
-
-
-
 
 
 
