@@ -1,6 +1,8 @@
 formatMoney = ->
   $(".currency").each(()->
       c = $(this).text()
+      # Do not proceed if it's already been formatted
+      return true if c[0] is "$"
       c = accounting.formatMoney(Number(c), precision:0)
       $(this).text(c)
     )
@@ -17,9 +19,9 @@ class Workspace extends Backbone.Router
 
         # Create the sublayer for subway routes
         layers[1].setInteraction(true)
-        poverty_layer = layers[1].getSubLayer(0)
+        schoolLayer = layers[1].getSubLayer(1)
 
-        poverty_layer = poverty_layer.setInteractivity("cartodb_id, namelsad10, hh_median")
+        schoolLayer = schoolLayer.setInteractivity("cartodb_id, schlrank, rank_perce, schnam")
 
 
         tooltip = new cdb.geo.ui.Tooltip(
@@ -27,34 +29,30 @@ class Workspace extends Backbone.Router
               <div class="cartodb-popup">
                  <div class="cartodb-popup-content-wrapper">
                     <div class="cartodb-popup-content">
-                      <h2 class="title">{{namelsad10}}</h2>
-                      <p class="currency">{{hh_median}}</p>
+                      <h2 class="title">{{schnam}}</h2>
+                      {{#rank_perce}}
+                        <p>School ranking</p>
+                        <p class="{{schlrank}}"><b class="school-ranking">{{rank_perce}}</b> <b> ({{schlrank}}) </b></p>
+                      {{/rank_perce}}
+                      {{^rank_perce}}
+                        <p class="{{schlrank}}">No data available</p>
+                      {{/rank_perce}}
                     </div>
                  </div>
               </div>
             """
-            layer: poverty_layer
+            layer: schoolLayer
             offset_top: -50
         )
         vis.container.append(tooltip.render().el)
 
-        vent.on("tooltip:rendered", ->
-            formatMoney()
+        vent.on("tooltip:rendered", (data)->
+            rank = data["rank_perce"]
+            return unless rank
+            rank = (parseFloat(rank) * 100).toFixed(2)
+            $(".school-ranking").text("#{rank}%")
           )
 
-
-
-        vent.on "infowindow:rendered", (obj)->
-
-          return if obj["null"] is "Loading content..."
-
-          rank = $(".school-ranking").text()
-          rank = (parseFloat(rank) * 100).toFixed(2)
-          if rank is 0
-            $(".school-ranking").text("No data available")
-            $(".Bottom").remove()
-          else
-            $(".school-ranking").text("#{rank}%")
 
 
   vulnerable: ->
@@ -69,27 +67,6 @@ class Workspace extends Backbone.Router
         layer.setInteraction(true)
 
 
-        # TODO: what should be done here?
-
-        # tooltip = new cdb.geo.ui.Tooltip(
-        #     template: """
-        #       <div class="cartodb-popup">
-        #          <div class="cartodb-popup-content-wrapper">
-        #             <div class="cartodb-popup-content">
-        #               <h2 class="title">{{namelsad10}}</h2>
-        #               <p class="currency">{{hh_median}}</p>
-        #             </div>
-        #          </div>
-        #       </div>
-        #     """
-        #     layer: poverty_layer
-        #     width: 200
-        # )
-        # vis.container.append(tooltip.render().el)
-
-        # vent.on("tooltip:rendered", ->
-        #     formatMoney()
-        #   )
 
 
         # Declare the database tables backing the layers
@@ -303,15 +280,17 @@ class Workspace extends Backbone.Router
               <a href="#close" class="cartodb-popup-close-button close">x</a>
                <div class="cartodb-popup-content-wrapper">
                  <div class="cartodb-popup-content" data-disp_inc="<%=content.data.#{disp_inc}%>" data-trans="<%=content.data.#{trans}%>" data-housing="<%=content.data.#{housing}%>" data-taxes="<%=content.data.#{taxes}%>">
-
-                  <h2 class="title">
-                    <%=content.data.#{type_name}%>
-                  </h2>
-
-                  <div class="leftColumn">
+                  <div class="title">
+                    <h2>
+                      <%=content.data.#{type_name}%>
+                    </h2>
                     <% if("#{type}"=="Census Tract"){ %>
                       <p><%=content.data.localname  %></p>
                     <% } %>
+                  </div>
+
+                  <div class="leftColumn">
+                    <b>Income Components</b>
                     <div class="discretionary">
                       <div>Discretionary Income</div>
                       <b class="currency"><%=content.data.#{disp_inc}%></b>
@@ -351,17 +330,43 @@ class Workspace extends Backbone.Router
         countyLayer.infowindow.set('template', tmpl("County", "county", "avg_mhi", "disp_inc", "avg_trans", "avg_hous", "avg_ttl"))
 
 
-        # TODO: the tooltip does not work when there is also an infowindow overlay. How do I make them work together?
+        countyLayer = countyLayer.setInteractivity("cartodb_id, county, disp_inc")
+        tooltip = new cdb.geo.ui.Tooltip(
+            template: """
+              <div class="cartodb-popup" style="height:100px !important;overflow:hidden">
+                 <div class="cartodb-popup-content-wrapper">
+                    <div class="cartodb-popup-content">
+                      <h2 class="title">{{county}}</h2>
+                      <p class="currency">{{disp_inc}}</p>
+                    </div>
+                 </div>
+              </div>
+            """
+            layer: countyLayer
+            offset_top: -30
+        )
+        vis.container.append(tooltip.render().el)
 
-        # countyLayer.set(interactivity: ["disp_inc"])
-        # countyTooltip = vis.addOverlay(
-        #   type: "tooltip"
-        #   template: """
-        #     <div id="tooltip">
-        #       {{county}} - {{disp_inc}}
-        #     </div>
-        #   """
-        # )
+        censusLayer = censusLayer.setInteractivity("cartodb_id, namelsad10, disp_inc")
+        tooltip = new cdb.geo.ui.Tooltip(
+            template: """
+              <div class="cartodb-popup" style="height:100px !important;overflow:hidden">
+                 <div class="cartodb-popup-content-wrapper">
+                    <div class="cartodb-popup-content">
+                      <h2 class="title">{{namelsad10}}</h2>
+                      <p class="currency">{{disp_inc}}</p>
+                    </div>
+                 </div>
+              </div>
+            """
+            layer: censusLayer
+            offset_top: -30
+        )
+        vis.container.append(tooltip.render().el)
+
+        vent.on("tooltip:rendered", ->
+            formatMoney()
+          )
 
 
         # HACK: the code below requires a feature added to a customized version of the cartodb.js liburary
@@ -375,7 +380,6 @@ class Workspace extends Backbone.Router
           makeChart(data, Number(mhi))
 
           formatMoney()
-          # TODO: make the tooltip show the percentage value of each slice
 
 
 

@@ -200,6 +200,9 @@
 
   }
   .school-rank-legend{
+    .note{
+      font-size: 10px;
+    }
     div{
       p{
         &:nth-child(1){ color: $top;}

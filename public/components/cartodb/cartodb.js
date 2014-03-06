@@ -24386,9 +24386,6 @@ cdb.geo.ui.Infowindow = cdb.core.View.extend({
           }
         },values);
 
-      if(obj["schnam"]){
-        obj["schnam"] = toTitleCase(obj["schnam"])
-      }
 
 
       this.$el.html(this.template(obj));
@@ -25404,6 +25401,8 @@ cdb.geo.ui.Tooltip = cdb.geo.ui.InfoBox.extend({
         data["plant_name"] = toTitleCase(data["plant_name"])
       }else if(data["project_na"]){
         data["project_na"] = toTitleCase(data["project_na"])
+      }else if(data["schnam"]){
+        data["schnam"] = toTitleCase(data["schnam"])
       }
     }
     this.$el.html( this.template(data) );

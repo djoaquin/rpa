@@ -5129,6 +5129,8 @@ button.close {
 #schoolPerf .cartodb-legend b {
   display: block;
   margin-bottom: 10px; }
+#schoolPerf .school-rank-legend .note {
+  font-size: 10px; }
 #schoolPerf .school-rank-legend div p:nth-child(1) {
   color: #0082ac; }
 #schoolPerf .school-rank-legend div p:nth-child(2) {

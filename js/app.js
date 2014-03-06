@@ -8,6 +8,9 @@
     return $(".currency").each(function() {
       var c;
       c = $(this).text();
+      if (c[0] === "$") {
+        return true;
+      }
       c = accounting.formatMoney(Number(c), {
         precision: 0
       });
@@ -35,32 +38,24 @@
         legends: true,
         zoom: 10
       }).done(function(vis, layers) {
-        var poverty_layer, tooltip;
+        var schoolLayer, tooltip;
         layers[1].setInteraction(true);
-        poverty_layer = layers[1].getSubLayer(0);
-        poverty_layer = poverty_layer.setInteractivity("cartodb_id, namelsad10, hh_median");
+        schoolLayer = layers[1].getSubLayer(1);
+        schoolLayer = schoolLayer.setInteractivity("cartodb_id, schlrank, rank_perce, schnam");
         tooltip = new cdb.geo.ui.Tooltip({
-          template: "<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <h2 class=\"title\">{{namelsad10}}</h2>\n        <p class=\"currency\">{{hh_median}}</p>\n      </div>\n   </div>\n</div>",
-          layer: poverty_layer,
+          template: "<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <h2 class=\"title\">{{schnam}}</h2>\n        {{#rank_perce}}\n          <p>School ranking</p>\n          <p class=\"{{schlrank}}\"><b class=\"school-ranking\">{{rank_perce}}</b> <b> ({{schlrank}}) </b></p>\n        {{/rank_perce}}\n        {{^rank_perce}}\n          <p class=\"{{schlrank}}\">No data available</p>\n        {{/rank_perce}}\n      </div>\n   </div>\n</div>",
+          layer: schoolLayer,
           offset_top: -50
         });
         vis.container.append(tooltip.render().el);
-        vent.on("tooltip:rendered", function() {
-          return formatMoney();
-        });
-        return vent.on("infowindow:rendered", function(obj) {
+        return vent.on("tooltip:rendered", function(data) {
           var rank;
-          if (obj["null"] === "Loading content...") {
+          rank = data["rank_perce"];
+          if (!rank) {
             return;
           }
-          rank = $(".school-ranking").text();
           rank = (parseFloat(rank) * 100).toFixed(2);
-          if (rank === 0) {
-            $(".school-ranking").text("No data available");
-            return $(".Bottom").remove();
-          } else {
-            return $(".school-ranking").text("" + rank + "%");
-          }
+          return $(".school-ranking").text("" + rank + "%");
         });
       });
     };
@@ -241,7 +236,7 @@
         infowindow: true,
         layer_selector: false
       }).done(function(vis, layers) {
-        var censusLayer, countyLayer, dataLayers, map, tmpl;
+        var censusLayer, countyLayer, dataLayers, map, tmpl, tooltip;
         map = vis.getNativeMap();
         dataLayers = layers[1];
         dataLayers.setInteraction(true);
@@ -262,10 +257,27 @@
           }
         });
         tmpl = function(type, type_name, mhi, disp_inc, trans, housing, taxes) {
-          return _.template("<div class=\"cartodb-popup\">\n  <a href=\"#close\" class=\"cartodb-popup-close-button close\">x</a>\n   <div class=\"cartodb-popup-content-wrapper\">\n     <div class=\"cartodb-popup-content\" data-disp_inc=\"<%=content.data." + disp_inc + "%>\" data-trans=\"<%=content.data." + trans + "%>\" data-housing=\"<%=content.data." + housing + "%>\" data-taxes=\"<%=content.data." + taxes + "%>\">\n\n      <h2 class=\"title\">\n        <%=content.data." + type_name + "%>\n      </h2>\n\n      <div class=\"leftColumn\">\n        <% if(\"" + type + "\"==\"Census Tract\"){ %>\n          <p><%=content.data.localname  %></p>\n        <% } %>\n        <div class=\"discretionary\">\n          <div>Discretionary Income</div>\n          <b class=\"currency\"><%=content.data." + disp_inc + "%></b>\n        </div>\n\n        <div class=\"trans\">\n          <div>Transportation</div>\n          <b class=\"currency\"><%=content.data." + trans + "%></b>\n        </div>\n\n        <div class=\"housing\">\n          <div>Housing and other related costs</div>\n          <b class=\"currency\"><%=content.data." + housing + "%></b>\n        </div>\n\n        <div class=\"taxes\">\n          <div>State and local personal income tax</div>\n          <b class=\"currency\"><%=content.data." + taxes + "%></b>\n        </div>\n      </div>\n\n      <div class=\"rightColumn\">\n        <div class=\"mhi text-center\">\n          <div>Median <br/> Income</div>\n          <b class=\"median-income currency\"><%=Math.round(Number(content.data." + mhi + "))%></b>\n        </div>\n\n        <canvas id=\"donut\" width=\"130\" height=\"130\"></canvas>\n\n      </div>\n     </div>\n   </div>\n</div>");
+          return _.template("<div class=\"cartodb-popup\">\n  <a href=\"#close\" class=\"cartodb-popup-close-button close\">x</a>\n   <div class=\"cartodb-popup-content-wrapper\">\n     <div class=\"cartodb-popup-content\" data-disp_inc=\"<%=content.data." + disp_inc + "%>\" data-trans=\"<%=content.data." + trans + "%>\" data-housing=\"<%=content.data." + housing + "%>\" data-taxes=\"<%=content.data." + taxes + "%>\">\n      <div class=\"title\">\n        <h2>\n          <%=content.data." + type_name + "%>\n        </h2>\n        <% if(\"" + type + "\"==\"Census Tract\"){ %>\n          <p><%=content.data.localname  %></p>\n        <% } %>\n      </div>\n\n      <div class=\"leftColumn\">\n        <b>Income Components</b>\n        <div class=\"discretionary\">\n          <div>Discretionary Income</div>\n          <b class=\"currency\"><%=content.data." + disp_inc + "%></b>\n        </div>\n\n        <div class=\"trans\">\n          <div>Transportation</div>\n          <b class=\"currency\"><%=content.data." + trans + "%></b>\n        </div>\n\n        <div class=\"housing\">\n          <div>Housing and other related costs</div>\n          <b class=\"currency\"><%=content.data." + housing + "%></b>\n        </div>\n\n        <div class=\"taxes\">\n          <div>State and local personal income tax</div>\n          <b class=\"currency\"><%=content.data." + taxes + "%></b>\n        </div>\n      </div>\n\n      <div class=\"rightColumn\">\n        <div class=\"mhi text-center\">\n          <div>Median <br/> Income</div>\n          <b class=\"median-income currency\"><%=Math.round(Number(content.data." + mhi + "))%></b>\n        </div>\n\n        <canvas id=\"donut\" width=\"130\" height=\"130\"></canvas>\n\n      </div>\n     </div>\n   </div>\n</div>");
         };
         censusLayer.infowindow.set('template', tmpl("Census Tract", "namelsad10", "mhi", "disp_inc", "avg_transc", "housingcos", "avg_ttl"));
         countyLayer.infowindow.set('template', tmpl("County", "county", "avg_mhi", "disp_inc", "avg_trans", "avg_hous", "avg_ttl"));
+        countyLayer = countyLayer.setInteractivity("cartodb_id, county, disp_inc");
+        tooltip = new cdb.geo.ui.Tooltip({
+          template: "<div class=\"cartodb-popup\" style=\"height:100px !important;overflow:hidden\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <h2 class=\"title\">{{county}}</h2>\n        <p class=\"currency\">{{disp_inc}}</p>\n      </div>\n   </div>\n</div>",
+          layer: countyLayer,
+          offset_top: -30
+        });
+        vis.container.append(tooltip.render().el);
+        censusLayer = censusLayer.setInteractivity("cartodb_id, namelsad10, disp_inc");
+        tooltip = new cdb.geo.ui.Tooltip({
+          template: "<div class=\"cartodb-popup\" style=\"height:100px !important;overflow:hidden\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <h2 class=\"title\">{{namelsad10}}</h2>\n        <p class=\"currency\">{{disp_inc}}</p>\n      </div>\n   </div>\n</div>",
+          layer: censusLayer,
+          offset_top: -30
+        });
+        vis.container.append(tooltip.render().el);
+        vent.on("tooltip:rendered", function() {
+          return formatMoney();
+        });
         return vent.on("infowindow:rendered", function(obj) {
           var mhi;
           if (obj["null"] === "Loading content...") {
