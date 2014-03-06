@@ -21,15 +21,18 @@ class Workspace extends Backbone.Router
         layers[1].setInteraction(true)
         schoolLayer = layers[1].getSubLayer(1)
 
-        schoolLayer = schoolLayer.setInteractivity("cartodb_id, schlrank, rank_perce, schnam")
-
+        schoolLayer = schoolLayer.setInteractivity("cartodb_id, schlrank, rank_perce, schnam, localname")
 
         tooltip = new cdb.geo.ui.Tooltip(
             template: """
               <div class="cartodb-popup">
                  <div class="cartodb-popup-content-wrapper">
                     <div class="cartodb-popup-content">
-                      <h2 class="title">{{schnam}}</h2>
+                      <div class="title">
+                        <h3>{{schnam}}</h3>
+                        <span>{{localname}}</span>
+                      </div>
+
                       {{#rank_perce}}
                         <div>School ranking:
                           <span class="{{schlrank}}"><b class="school-ranking">{{rank_perce}}</b> <b> ({{schlrank}}) </b></span>
@@ -75,68 +78,88 @@ class Workspace extends Backbone.Router
         dbs = {
           power_plants: {
             flood_column: "flood"
+            type: "Power plant"
             name_column: "plant_name"
             loss_column: "total_cap"
             affected_type: "plants"
-            tables: ["rpa_powerplants_eia_latlong_2013"]
+            localities: true
+            tables: ["rpa_powerplants_eia_latlong_withlocalities_201"]
           }
           hospitals: {
             flood_column: "flood"
+            type: "Hospital"
             name_column: "name"
             loss_column: "total_beds"
             affected_type: "beds"
+            localities: true
             tables: [
-              "rpa_nj_hsip_hospitals_compressed"
-              "ny_rpa_hospitalsnamesbeds_compressed"
-              "rpa_ct_hospitals_names_beds"
+              "rpa_nj_hsip_hospitals_compressed_withlocalitie"
+              "ny_rpa_hospitalsnamesbeds_withlocalities"
+              "rpa_ct_hospitals_names_beds_withlocalities"
             ]
           }
           nursing_homes:{
             flood_column: "flood"
+            type: "Nursing home"
             name_column: "name"
             loss_column: "beds"
             affected_type: "beds"
+            localities: true
             tables: [
-              "rpa_ct_nursinghomes_namesaddressesbeds"
-              "rpa_nj_hsip_nursinghomes_compressed"
-              "ny_rpa_nursinghomesnamesbedsflood"
+              "rpa_ct_nursinghomes_namesaddressesbeds_withloc"
+              "rpa_nj_hsip_nursinghomes_compressed_withlocali"
+              "ny_rpa_nursinghomesnamesbedsflood_withlocaliti"
             ]
           }
-          # public_housing: {
-          #   name_column: "project_na"
-          #   loss_column: "total_unit"
-          #   tables: [
-          #     "rpa_publichousing_hud2013_wgs1984"
-          #   ]
-          # }
+          public_housing: {
+            flood_column: "flood"
+            type: "Public housing"
+            name_column: "project_na"
+            loss_column: "total_unit"
+            affected_type: "units"
+            localities: true
+            tables: [
+              "rpa_publichousing_withlocalities_hud2013_short"
+            ]
+          }
           train_stations: {
             flood_column: "flood"
+            type: "Train station"
             name_column: "station_na"
             affected_type: "stations"
-            loss_column: "cartodb_id"  #TODO: replace with the real column
-            tables: ["rpa_trainstations"]
+            loss_column: false
+            localities: false
+            tables: [
+              "rpa_trainstations"
+            ]
           }
           rail_lines: {
             flood_column: "flood"
+            type: "Rail line"
             name_column: "line_name"
             affected_type: "units"
-            loss_column: "cartodb_id"  #TODO: replace with the real column
+            loss_column: false
+            localities: false
             tables: ["rpa_raillines_flood"]
           }
           subway_stations: {
             flood_column: "flood"
+            type: "Subway station"
             name_column: "station_na"
-            loss_column: "cartodb_id"  #TODO: replace with the real column
+            loss_column: false
             affected_type: "stations"
+            localities: false
             tables: [
               "rpa_subwaystations"
             ]
           }
           subway_routes: {
             flood_column: "am"  #TODO: replace with the real column
+            type: "Subway route"
             name_column: "route_name"
-            loss_column: "cartodb_id"  #TODO: replace with the real column
+            loss_column: false
             affected_type: "routes"
+            localities: false
             tables: [
               "rpa_subwayroutes_flood"
             ]
@@ -146,7 +169,12 @@ class Workspace extends Backbone.Router
         # Describe and define the sublayers
         _.each(dbs,(value,k)->
           # Take a union of all the tables
-          sql = _.map(value["tables"], (table)-> "SELECT #{table}.cartodb_id,#{table}.#{value['flood_column']}, #{table}.the_geom, #{table}.the_geom_webmercator, #{table}.#{value['name_column']}  FROM #{table}")
+          sql = _.map(value["tables"], (table)->
+              ret = "#{table}.cartodb_id,#{table}.#{value['flood_column']}, #{table}.the_geom, #{table}.the_geom_webmercator, #{table}.#{value['name_column']}"
+              ret = ret + ", #{table}.localname" if value["localities"]
+              ret = ret + ", #{table}.#{value["loss_column"]}" if value["loss_column"]
+              "SELECT #{ret} FROM #{table}"
+            )
           sql = sql.join(" UNION ALL ")
 
           # Create the CSS
@@ -158,10 +186,15 @@ class Workspace extends Backbone.Router
           css = css.join(" ")
 
           if sql and css
+            interactivity = ["cartodb_id", value['name_column']]
+            if value["loss_column"]
+              interactivity.push(value['loss_column'])
+            if value['localities']
+              interactivity.push("localname")
             sublayer = layer.createSubLayer(
               sql: sql,
               cartocss: css
-              interactivity: ["cartodb_id", value['name_column']]
+              interactivity: interactivity
             )
             value["layer"] = sublayer
         )
@@ -174,8 +207,18 @@ class Workspace extends Backbone.Router
             offset_top: -30
             template: """
               <div style="background:white;padding:5px 10px;">
-                <h3 style="margin-top:0" class="title-case">{{ #{value['name_column']} }}</h3>
-                <p>Affected #{value['affected_type']}: {{ #{value['loss_column']} }}</p>
+                <div style="margin-bottom:10px">
+                  <h3 class="title-case" style="margin:0">{{ #{value['name_column']} }}</h3>
+                  {{#localname}}
+                    <span>{{localname}}</span>
+                  {{/localname}}
+                </div>
+                <div>
+                  #{value['type']}
+                </div>
+                {{##{value['loss_column']} }}
+                  <p>Affected #{value['affected_type']}: {{ #{value['loss_column']} }}</p>
+                {{/#{value['loss_column']} }}
               </div>
             """
           )
