@@ -36,7 +36,7 @@
         searchControl: true,
         layer_selector: false,
         legends: true,
-        zoom: 10
+        zoom: 11
       }).done(function(vis, layers) {
         var schoolLayer, tooltip;
         layers[1].setInteraction(true);

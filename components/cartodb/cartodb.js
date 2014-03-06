@@ -25366,7 +25366,6 @@ cdb.geo.ui.Tooltip = cdb.geo.ui.InfoBox.extend({
   },
 
   enable: function() {
-
     if(this.options.layer) {
       this.options.layer
         .on('featureOver', function(e, latlng, pos, data) {

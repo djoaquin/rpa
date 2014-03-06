@@ -87,17 +87,7 @@
       right:13px;
 
     }
-    // Bubble triangle
-    &:after {
-      content: ' ';
-      position: absolute;
-      width: 0;
-      height: 0;
-      left: 5%;
-      bottom: -15px;
-      border: 15px solid;
-      border-color: #fff transparent transparent #fff;
-    }
+
 
   }
   div.cartodb-popup{
@@ -110,6 +100,18 @@
 
     div.cartodb-popup-tip-container{
       display:none;
+    }
+
+    // Bubble triangle
+    &:after {
+      content: ' ';
+      position: absolute;
+      width: 0;
+      height: 0;
+      left: 5%;
+      bottom: -15px;
+      border: 15px solid;
+      border-color: #fff transparent transparent #fff;
     }
 
     div.cartodb-popup-content-wrapper{

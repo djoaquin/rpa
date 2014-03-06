@@ -14,7 +14,7 @@ class Workspace extends Backbone.Router
     "discretionary.html" : "discretionary"
   schools: ->
     cartodb
-      .createVis('schoolPerf', 'http://rpa.cartodb.com/api/v2/viz/5bc0d9be-a264-11e3-bc17-0e10bcd91c2b/viz.json', searchControl: true, layer_selector: false, legends: true, zoom:10)
+      .createVis('schoolPerf', 'http://rpa.cartodb.com/api/v2/viz/5bc0d9be-a264-11e3-bc17-0e10bcd91c2b/viz.json', searchControl: true, layer_selector: false, legends: true, zoom:11)
       .done (vis,layers)->
 
         # Create the sublayer for subway routes
