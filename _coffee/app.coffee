@@ -31,11 +31,12 @@ class Workspace extends Backbone.Router
                     <div class="cartodb-popup-content">
                       <h2 class="title">{{schnam}}</h2>
                       {{#rank_perce}}
-                        <p>School ranking</p>
-                        <p class="{{schlrank}}"><b class="school-ranking">{{rank_perce}}</b> <b> ({{schlrank}}) </b></p>
+                        <div>School ranking:
+                          <span class="{{schlrank}}"><b class="school-ranking">{{rank_perce}}</b> <b> ({{schlrank}}) </b></span>
+                        </div>
                       {{/rank_perce}}
                       {{^rank_perce}}
-                        <p class="{{schlrank}}">No data available</p>
+                        <div class="{{schlrank}}">No data available</div>
                       {{/rank_perce}}
                     </div>
                  </div>

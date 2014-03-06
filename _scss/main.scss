@@ -89,6 +89,21 @@
     }
 
 
+
+    div.cartodb-popup{
+
+      // Bubble triangle
+      &:after {
+        content: ' ';
+        position: absolute;
+        width: 0;
+        height: 0;
+        left: 5%;
+        bottom: -15px;
+        border: 15px solid;
+        border-color: #fff transparent transparent #fff;
+      }
+    }
   }
   div.cartodb-popup{
     width:$infowindow_width;
@@ -102,17 +117,6 @@
       display:none;
     }
 
-    // Bubble triangle
-    &:after {
-      content: ' ';
-      position: absolute;
-      width: 0;
-      height: 0;
-      left: 5%;
-      bottom: -15px;
-      border: 15px solid;
-      border-color: #fff transparent transparent #fff;
-    }
 
     div.cartodb-popup-content-wrapper{
       width:$infowindow_width;
@@ -149,6 +153,7 @@
       .title{
         border-bottom: solid 1px #ccc;
         margin-bottom:10px;
+        line-height:0.9em;
       }
     }
   }
@@ -223,12 +228,12 @@
   $color5: rgba($color1, 0.2);
 
   .colors{
-    $i:1;
+    $i:5;
     @each $color in $color1, $color2, $color3, $color4, $color5 {
       div:nth-child(#{$i}){
         background-color: $color;
       }
-      $i: $i + 1;
+      $i: $i - 1;
     }
   }
 

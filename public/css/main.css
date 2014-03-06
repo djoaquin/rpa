@@ -5063,6 +5063,15 @@ button.close {
       .page.discretionary .standalone div.cartodb-infowindow a.cartodb-popup-close-button {
         top: 18px;
         right: 13px; }
+      .page.discretionary .standalone div.cartodb-infowindow div.cartodb-popup:after {
+        content: ' ';
+        position: absolute;
+        width: 0;
+        height: 0;
+        left: 5%;
+        bottom: -15px;
+        border: 15px solid;
+        border-color: #fff transparent transparent #fff; }
     .page.discretionary .standalone div.cartodb-popup {
       width: 417.5px;
       height: 228.75px !important;
@@ -5072,15 +5081,6 @@ button.close {
       padding: 0; }
       .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-tip-container {
         display: none; }
-      .page.discretionary .standalone div.cartodb-popup:after {
-        content: ' ';
-        position: absolute;
-        width: 0;
-        height: 0;
-        left: 5%;
-        bottom: -15px;
-        border: 15px solid;
-        border-color: #fff transparent transparent #fff; }
       .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper {
         width: 417.5px;
         height: 228.75px !important;
@@ -5112,7 +5112,8 @@ button.close {
           display: none; }
         .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper .title {
           border-bottom: solid 1px #ccc;
-          margin-bottom: 10px; }
+          margin-bottom: 10px;
+          line-height: 0.9em; }
     .page.discretionary .standalone div.cartodb-infowindow:after, .page.discretionary .standalone div.cartodb-popup:after {
       display: none; }
 
@@ -5137,15 +5138,15 @@ button.close {
   color: #ba0000; }
 #schoolPerf .school-rank-legend div p:nth-child(4) {
   color: #a7907b; }
-#schoolPerf .colors div:nth-child(1) {
+#schoolPerf .colors div:nth-child(5) {
   background-color: #beb4aa; }
-#schoolPerf .colors div:nth-child(2) {
+#schoolPerf .colors div:nth-child(4) {
   background-color: rgba(190, 180, 170, 0.8); }
 #schoolPerf .colors div:nth-child(3) {
   background-color: rgba(190, 180, 170, 0.6); }
-#schoolPerf .colors div:nth-child(4) {
+#schoolPerf .colors div:nth-child(2) {
   background-color: rgba(190, 180, 170, 0.4); }
-#schoolPerf .colors div:nth-child(5) {
+#schoolPerf .colors div:nth-child(1) {
   background-color: rgba(190, 180, 170, 0.2); }
 #schoolPerf div.cartodb-infowindow {
   width: 397.5px !important;
@@ -5186,6 +5187,15 @@ button.close {
   #schoolPerf div.cartodb-infowindow a.cartodb-popup-close-button {
     top: 18px;
     right: 13px; }
+  #schoolPerf div.cartodb-infowindow div.cartodb-popup:after {
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: 5%;
+    bottom: -15px;
+    border: 15px solid;
+    border-color: #fff transparent transparent #fff; }
 #schoolPerf div.cartodb-popup {
   width: 397.5px;
   height: 150px !important;
@@ -5195,15 +5205,6 @@ button.close {
   padding: 0; }
   #schoolPerf div.cartodb-popup div.cartodb-popup-tip-container {
     display: none; }
-  #schoolPerf div.cartodb-popup:after {
-    content: ' ';
-    position: absolute;
-    width: 0;
-    height: 0;
-    left: 5%;
-    bottom: -15px;
-    border: 15px solid;
-    border-color: #fff transparent transparent #fff; }
   #schoolPerf div.cartodb-popup div.cartodb-popup-content-wrapper {
     width: 397.5px;
     height: 150px !important;
@@ -5235,7 +5236,8 @@ button.close {
       display: none; }
     #schoolPerf div.cartodb-popup div.cartodb-popup-content-wrapper .title {
       border-bottom: solid 1px #ccc;
-      margin-bottom: 10px; }
+      margin-bottom: 10px;
+      line-height: 0.9em; }
 #schoolPerf .school-ranking {
   font-weight: bold; }
 
@@ -5350,6 +5352,15 @@ button.close {
   #discretionaryIncome div.cartodb-infowindow a.cartodb-popup-close-button {
     top: 18px;
     right: 13px; }
+  #discretionaryIncome div.cartodb-infowindow div.cartodb-popup:after {
+    content: ' ';
+    position: absolute;
+    width: 0;
+    height: 0;
+    left: 5%;
+    bottom: -15px;
+    border: 15px solid;
+    border-color: #fff transparent transparent #fff; }
 #discretionaryIncome div.cartodb-popup {
   width: 427.5px;
   height: 233.75px !important;
@@ -5359,15 +5370,6 @@ button.close {
   padding: 0; }
   #discretionaryIncome div.cartodb-popup div.cartodb-popup-tip-container {
     display: none; }
-  #discretionaryIncome div.cartodb-popup:after {
-    content: ' ';
-    position: absolute;
-    width: 0;
-    height: 0;
-    left: 5%;
-    bottom: -15px;
-    border: 15px solid;
-    border-color: #fff transparent transparent #fff; }
   #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper {
     width: 427.5px;
     height: 233.75px !important;
@@ -5399,4 +5401,5 @@ button.close {
       display: none; }
     #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .title {
       border-bottom: solid 1px #ccc;
-      margin-bottom: 10px; }
+      margin-bottom: 10px;
+      line-height: 0.9em; }
