@@ -5112,8 +5112,6 @@ button.close {
           display: none; }
         .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper .title {
           border-bottom: solid 1px #ccc;
-          line-height: 1.6em;
-          font-size: 1.6em;
           margin-bottom: 10px; }
     .page.discretionary .standalone div.cartodb-infowindow:after, .page.discretionary .standalone div.cartodb-popup:after {
       display: none; }
@@ -5123,7 +5121,7 @@ button.close {
 #schoolPerf .Top {
   color: #0082ac; }
 #schoolPerf .Middle {
-  color: #736960; }
+  color: #515151; }
 #schoolPerf .cartodb-legend-stack {
   width: 240px; }
 #schoolPerf .cartodb-legend b {
@@ -5134,11 +5132,11 @@ button.close {
 #schoolPerf .school-rank-legend div p:nth-child(1) {
   color: #0082ac; }
 #schoolPerf .school-rank-legend div p:nth-child(2) {
-  color: #736960; }
+  color: #515151; }
 #schoolPerf .school-rank-legend div p:nth-child(3) {
   color: #ba0000; }
 #schoolPerf .school-rank-legend div p:nth-child(4) {
-  color: #ba0000; }
+  color: #a7907b; }
 #schoolPerf .colors div:nth-child(1) {
   background-color: #beb4aa; }
 #schoolPerf .colors div:nth-child(2) {
@@ -5237,8 +5235,6 @@ button.close {
       display: none; }
     #schoolPerf div.cartodb-popup div.cartodb-popup-content-wrapper .title {
       border-bottom: solid 1px #ccc;
-      line-height: 1.6em;
-      font-size: 1.6em;
       margin-bottom: 10px; }
 #schoolPerf .school-ranking {
   font-weight: bold; }
@@ -5403,6 +5399,4 @@ button.close {
       display: none; }
     #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .title {
       border-bottom: solid 1px #ccc;
-      line-height: 1.6em;
-      font-size: 1.6em;
       margin-bottom: 10px; }

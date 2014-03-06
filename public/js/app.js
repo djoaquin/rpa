@@ -263,14 +263,14 @@
         countyLayer.infowindow.set('template', tmpl("County", "county", "avg_mhi", "disp_inc", "avg_trans", "avg_hous", "avg_ttl"));
         countyLayer = countyLayer.setInteractivity("cartodb_id, county, disp_inc");
         tooltip = new cdb.geo.ui.Tooltip({
-          template: "<div class=\"cartodb-popup\" style=\"height:100px !important;overflow:hidden\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <h2 class=\"title\">{{county}}</h2>\n        <p class=\"currency\">{{disp_inc}}</p>\n      </div>\n   </div>\n</div>",
+          template: "<div class=\"cartodb-popup\" style=\"height:100px !important;overflow:hidden\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <h3 class=\"title\">{{county}}</h3>\n        <div>\n          Discretionary Income: <b class=\"currency\">{{disp_inc}}</b>\n        </div>\n      </div>\n   </div>\n</div>",
           layer: countyLayer,
           offset_top: -30
         });
         vis.container.append(tooltip.render().el);
-        censusLayer = censusLayer.setInteractivity("cartodb_id, namelsad10, disp_inc");
+        censusLayer = censusLayer.setInteractivity("cartodb_id, namelsad10, disp_inc, localname");
         tooltip = new cdb.geo.ui.Tooltip({
-          template: "<div class=\"cartodb-popup\" style=\"height:100px !important;overflow:hidden\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <h2 class=\"title\">{{namelsad10}}</h2>\n        <p class=\"currency\">{{disp_inc}}</p>\n      </div>\n   </div>\n</div>",
+          template: "<div class=\"cartodb-popup\" style=\"height:100px !important;overflow:hidden\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <div class=\"title\">\n          <h3>{{namelsad10}}</h3>\n          <small>{{localname}}</small>\n        </div>\n        <div>\n          Discretionary Income: <b class=\"currency\">{{disp_inc}}</b>\n        </div>\n      </div>\n   </div>\n</div>",
           layer: censusLayer,
           offset_top: -30
         });

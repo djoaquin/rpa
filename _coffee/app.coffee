@@ -336,8 +336,10 @@ class Workspace extends Backbone.Router
               <div class="cartodb-popup" style="height:100px !important;overflow:hidden">
                  <div class="cartodb-popup-content-wrapper">
                     <div class="cartodb-popup-content">
-                      <h2 class="title">{{county}}</h2>
-                      <p class="currency">{{disp_inc}}</p>
+                      <h3 class="title">{{county}}</h3>
+                      <div>
+                        Discretionary Income: <b class="currency">{{disp_inc}}</b>
+                      </div>
                     </div>
                  </div>
               </div>
@@ -347,14 +349,19 @@ class Workspace extends Backbone.Router
         )
         vis.container.append(tooltip.render().el)
 
-        censusLayer = censusLayer.setInteractivity("cartodb_id, namelsad10, disp_inc")
+        censusLayer = censusLayer.setInteractivity("cartodb_id, namelsad10, disp_inc, localname")
         tooltip = new cdb.geo.ui.Tooltip(
             template: """
               <div class="cartodb-popup" style="height:100px !important;overflow:hidden">
                  <div class="cartodb-popup-content-wrapper">
                     <div class="cartodb-popup-content">
-                      <h2 class="title">{{namelsad10}}</h2>
-                      <p class="currency">{{disp_inc}}</p>
+                      <div class="title">
+                        <h3>{{namelsad10}}</h3>
+                        <small>{{localname}}</small>
+                      </div>
+                      <div>
+                        Discretionary Income: <b class="currency">{{disp_inc}}</b>
+                      </div>
                     </div>
                  </div>
               </div>

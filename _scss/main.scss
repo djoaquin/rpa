@@ -146,8 +146,6 @@
 
       .title{
         border-bottom: solid 1px #ccc;
-        line-height: 1.6em;
-        font-size: 1.6em;
         margin-bottom:10px;
       }
     }
@@ -174,8 +172,9 @@
 
   // School rank colors
   $bottom: #ba0000;
-  $middle: #736960;
+  $middle: #515151;
   $top: #0082ac;
+  $nodata: #a7907b;
 
   // INFOWINDOW
   .Bottom{
@@ -208,7 +207,7 @@
         &:nth-child(1){ color: $top;}
         &:nth-child(2){ color: $middle;}
         &:nth-child(3){ color: $bottom;}
-        &:nth-child(4){ color: $bottom;}
+        &:nth-child(4){ color: $nodata;}
       }
     }
   }
