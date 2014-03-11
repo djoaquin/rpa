@@ -5114,6 +5114,8 @@ button.close {
           border-bottom: solid 1px #ccc;
           margin-bottom: 10px;
           line-height: 0.9em; }
+          .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper .title h2, .page.discretionary .standalone div.cartodb-popup div.cartodb-popup-content-wrapper .title h3 {
+            margin: 0; }
     .page.discretionary .standalone div.cartodb-infowindow:after, .page.discretionary .standalone div.cartodb-popup:after {
       display: none; }
 
@@ -5238,6 +5240,8 @@ button.close {
       border-bottom: solid 1px #ccc;
       margin-bottom: 10px;
       line-height: 0.9em; }
+      #schoolPerf div.cartodb-popup div.cartodb-popup-content-wrapper .title h2, #schoolPerf div.cartodb-popup div.cartodb-popup-content-wrapper .title h3 {
+        margin: 0; }
 #schoolPerf .school-ranking {
   font-weight: bold; }
 
@@ -5403,3 +5407,5 @@ button.close {
       border-bottom: solid 1px #ccc;
       margin-bottom: 10px;
       line-height: 0.9em; }
+      #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .title h2, #discretionaryIncome div.cartodb-popup div.cartodb-popup-content-wrapper .title h3 {
+        margin: 0; }

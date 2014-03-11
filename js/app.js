@@ -301,7 +301,7 @@
         countyLayer.infowindow.set('template', tmpl("County", "county", "avg_mhi", "disp_inc", "avg_trans", "avg_hous", "avg_ttl"));
         countyLayer = countyLayer.setInteractivity("cartodb_id, county, disp_inc");
         tooltip = new cdb.geo.ui.Tooltip({
-          template: "<div class=\"cartodb-popup\" style=\"height:100px !important;overflow:hidden\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <h3 class=\"title\">{{county}}</h3>\n        <div>\n          Discretionary Income: <b class=\"currency\">{{disp_inc}}</b>\n        </div>\n      </div>\n   </div>\n</div>",
+          template: "<div class=\"cartodb-popup\" style=\"height:100px !important;overflow:hidden\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <div class=\"title\">\n          <h3 >{{county}}</h3>\n        </div>\n        <div>\n          Discretionary Income: <b class=\"currency\">{{disp_inc}}</b>\n        </div>\n      </div>\n   </div>\n</div>",
           layer: countyLayer,
           offset_top: -30
         });

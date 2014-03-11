@@ -380,7 +380,9 @@ class Workspace extends Backbone.Router
               <div class="cartodb-popup" style="height:100px !important;overflow:hidden">
                  <div class="cartodb-popup-content-wrapper">
                     <div class="cartodb-popup-content">
-                      <h3 class="title">{{county}}</h3>
+                      <div class="title">
+                        <h3 >{{county}}</h3>
+                      </div>
                       <div>
                         Discretionary Income: <b class="currency">{{disp_inc}}</b>
                       </div>
