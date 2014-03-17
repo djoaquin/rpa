@@ -25835,6 +25835,7 @@ Map.prototype = {
     if(layer < this.getLayerCount() && layer >= 0) {
       this.layers[layer] = _.clone(def);
     }
+
     this.invalidate();
     return this;
   },
@@ -26410,6 +26411,7 @@ SubLayer.prototype = {
     for(var i in new_attrs) {
       attrs[i] = new_attrs[i];
     }
+
     this._parent.setLayer(this._position, def);
     return this;
   },

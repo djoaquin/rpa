@@ -28,7 +28,39 @@
     Workspace.prototype.routes = {
       "schools.html": "schools",
       "vulnerable.html": "vulnerable",
-      "discretionary.html": "discretionary"
+      "discretionary.html": "discretionary",
+      "walkability.html": "walkability"
+    };
+
+    Workspace.prototype.walkability = function() {
+      var id, url;
+      id = "walkability";
+      url = "http://rpa.cartodb.com/api/v2/viz/e2c8a5ba-ae10-11e3-87a1-0e230854a1cb/viz.json";
+      return cartodb.createVis(id, url, {
+        searchControl: false,
+        layer_selector: false,
+        legends: true,
+        zoom: 9
+      }).done(function(vis, layers) {
+        var color1, color2, color3, color4, color5, tooltip, walkabilityLayer;
+        color1 = "#ffefc9";
+        color2 = "#fdde9c";
+        color3 = "#80c5d8";
+        color4 = "#7791bf";
+        color5 = "#743682";
+        layers[1].setInteraction(true);
+        walkabilityLayer = layers[1].getSubLayer(0);
+        walkabilityLayer = walkabilityLayer.setInteractivity("cartodb_id, namelsad10, localities, walk_sco_1, walk_sco_2, rail_stops, bank_score, books_scor, coffee_sco, entertainm, grocery_sc, park_score, restaurant, school_sco, shopping_s");
+        tooltip = new cdb.geo.ui.Tooltip({
+          template: "<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <p>{{namelsad10}}</p>\n        <p>{{localities}}</p>\n        <p>{{walk_sco_1}}</p>\n        <p>{{walk_sco_2}}</p>\n        <p>{{rail_stops}}</p>\n        <p>{{bank_score}}</p>\n        <p>{{books_scor}}</p>\n        <p>{{coffee_sco}}</p>\n        <p>{{enternatinm}}</p>\n        <p>{{grocery_sc}}</p>\n        <p>{{park_score}}</p>\n        <p>{{restaurant}}</p>\n        <p>{{school sco}}</p>\n        <p>{{shopping_s}}</p>\n      </div>\n   </div>\n</div>",
+          layer: walkabilityLayer,
+          offset_top: -50
+        });
+        vis.container.append(tooltip.render().el);
+        return vent.on("tooltip:rendered", function(data) {
+          return console.log("Do stuff", data);
+        });
+      });
     };
 
     Workspace.prototype.schools = function() {
@@ -41,6 +73,7 @@
         var schoolLayer, tooltip;
         layers[1].setInteraction(true);
         schoolLayer = layers[1].getSubLayer(1);
+        console.log(schoolLayer);
         schoolLayer = schoolLayer.setInteractivity("cartodb_id, schlrank, rank_perce, schnam, localname");
         tooltip = new cdb.geo.ui.Tooltip({
           template: "<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <div class=\"title\"  style=\"padding-bottom:10px\">\n          <h3>{{schnam}}</h3>\n          <span>{{localname}}</span>\n        </div>\n\n        {{#rank_perce}}\n          <div>School ranking:\n            <span class=\"{{schlrank}}\"><b class=\"school-ranking\">{{rank_perce}}</b> <b> ({{schlrank}}) </b></span>\n          </div>\n        {{/rank_perce}}\n        {{^rank_perce}}\n          <div class=\"{{schlrank}}\">No data available</div>\n        {{/rank_perce}}\n      </div>\n   </div>\n</div>",
@@ -334,7 +367,13 @@
   })(Backbone.Router);
 
   $(function() {
-    new Workspace();
+    var router;
+    router = new Workspace();
+    router.on("all", function(page, label) {
+      if (label) {
+        return $("#mss").load("" + root + "mss/" + label + ".mss.css");
+      }
+    });
     return Backbone.history.start({
       pushState: true,
       root: root

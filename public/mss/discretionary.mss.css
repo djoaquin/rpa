@@ -1,0 +1,109 @@
+/** choropleth visualization */
+
+#dispinc_rpacounty_2010{
+  polygon-opacity: 0.8;
+  line-color: #FFF;
+  line-width: 0;
+  line-opacity: 1;
+}
+
+#dispinc_rpacounty_2010::labels {
+  text-name: [county];
+    text-face-name: 'DejaVu Sans Book';
+    text-size: 12;
+    text-label-position-tolerance: 10;
+    text-fill: #fff;
+    text-halo-fill: #0280a5;
+    text-halo-radius: 1;
+    text-dy: -10;
+    text-allow-overlap: false;
+    text-placement: point;
+    text-placement-type: simple;
+
+
+}
+
+#dispinc_rpacounty_2010 {
+  [ disp_inc <= 16000] {
+     polygon-fill: #b7ebf2;
+  }
+  [ disp_inc > 16000][disp_inc <= 24000] {
+     polygon-fill: #82d5e7;
+  }
+  [  disp_inc > 24000][disp_inc <= 32000] {
+     polygon-fill: #4cb3d1;
+  }
+  [  disp_inc > 32000][disp_inc <= 40000 ] {
+     polygon-fill: #1689ae;
+  }
+  [  disp_inc > 40000 ] {
+     polygon-fill: #0b6087;
+  }
+
+  [zoom > 10]{
+    polygon-opacity:0;
+  }
+
+  [zoom <= 10]{
+    polygon-opacity:1;
+  }
+}
+
+/** choropleth visualization */
+
+#dispinc_rpatract_withlocalities_2010  {
+  //Income
+  [ disp_inc <= 16000] {
+     polygon-fill: #b7ebf2;
+  }
+  [ disp_inc > 16000][disp_inc <= 24000] {
+     polygon-fill: #82d5e7;
+  }
+  [  disp_inc > 24000][disp_inc <= 32000] {
+     polygon-fill: #4cb3d1;
+  }
+  [  disp_inc > 32000][disp_inc <= 40000 ] {
+     polygon-fill: #1689ae;
+  }
+  [  disp_inc > 40000 ] {
+     polygon-fill: #0b6087;
+  }
+  [zoom > 10]{
+    polygon-opacity:1;
+  }
+
+  [zoom <= 10]{
+    polygon-opacity:0;
+  }
+}
+
+/** simple visualization */
+
+#citiesx020{
+  marker-opacity: 0;
+
+  ::labels {
+    text-name: [name];
+    text-face-name: 'DejaVu Sans Book';
+    text-size: 12;
+    text-label-position-tolerance: 10;
+    text-fill: #fff;
+    text-halo-fill: #0280a5;
+    text-halo-radius: 1;
+    text-dy: -10;
+    text-allow-overlap: false;
+    text-placement: point;
+    text-placement-type: simple;
+
+  [zoom > 10]{
+
+  }
+
+  [zoom <= 10]{
+      text-fill:transparent;
+          text-halo-fill: transparent;
+  }
+  }
+
+
+}

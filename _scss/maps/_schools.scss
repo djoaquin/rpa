@@ -1,0 +1,69 @@
+#schoolPerf{
+
+  // School rank colors
+  $bottom: #ba0000;
+  $middle: #515151;
+  $top: #0082ac;
+  $nodata: #a7907b;
+
+  // INFOWINDOW
+  .Bottom{
+    color: $bottom;
+  }
+  .Top{
+    color: $top;
+  }
+  .Middle{
+    color: $middle;
+  }
+
+  // LEGEND
+  .cartodb-legend-stack{
+    width:240px;
+  }
+  .cartodb-legend{
+    b{
+      display:block;
+      margin-bottom:10px;
+    }
+
+  }
+  .school-rank-legend{
+    .note{
+      font-size: 10px;
+    }
+    div{
+      p{
+        &:nth-child(1){ color: $top;}
+        &:nth-child(2){ color: $middle;}
+        &:nth-child(3){ color: $bottom;}
+        &:nth-child(4){ color: $nodata;}
+      }
+    }
+  }
+
+
+  // Income colors
+  $color1: #beb4aa;
+  $color2: rgba($color1, 0.8);
+  $color3: rgba($color1, 0.6);
+  $color4: rgba($color1, 0.4);
+  $color5: rgba($color1, 0.2);
+
+  .colors{
+    $i:5;
+    @each $color in $color1, $color2, $color3, $color4, $color5 {
+      div:nth-child(#{$i}){
+        background-color: $color;
+      }
+      $i: $i - 1;
+    }
+  }
+
+  @include popup(397.5px,150px);
+
+  .school-ranking{
+    font-weight:bold;
+  }
+
+}

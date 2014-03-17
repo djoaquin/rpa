@@ -12,6 +12,60 @@ class Workspace extends Backbone.Router
     "schools.html" : "schools"
     "vulnerable.html" : "vulnerable"
     "discretionary.html" : "discretionary"
+    "walkability.html" : "walkability"
+
+  walkability: ->
+    id = "walkability"
+    url = "http://rpa.cartodb.com/api/v2/viz/e2c8a5ba-ae10-11e3-87a1-0e230854a1cb/viz.json"
+    cartodb
+      .createVis(id, url, searchControl: false, layer_selector: false, legends: true, zoom:9)
+      .done (vis,layers)->
+        color1 = "#ffefc9"
+        color2 = "#fdde9c"
+        color3 = "#80c5d8"
+        color4 = "#7791bf"
+        color5 = "#743682"
+
+        # TODO: how can we interpret the walkability score? (Walk_Sco_1)
+
+        # Create the sublayer for subway routes
+        layers[1].setInteraction(true)
+        walkabilityLayer = layers[1].getSubLayer(0)
+        
+        walkabilityLayer = walkabilityLayer.setInteractivity("cartodb_id, namelsad10, localities, walk_sco_1, walk_sco_2, rail_stops, bank_score, books_scor, coffee_sco, entertainm, grocery_sc, park_score, restaurant, school_sco, shopping_s")
+
+
+        tooltip = new cdb.geo.ui.Tooltip(
+            template: """
+              <div class="cartodb-popup">
+                 <div class="cartodb-popup-content-wrapper">
+                    <div class="cartodb-popup-content">
+                      <p>{{namelsad10}}</p>
+                      <p>{{localities}}</p>
+                      <p>{{walk_sco_1}}</p>
+                      <p>{{walk_sco_2}}</p>
+                      <p>{{rail_stops}}</p>
+                      <p>{{bank_score}}</p>
+                      <p>{{books_scor}}</p>
+                      <p>{{coffee_sco}}</p>
+                      <p>{{enternatinm}}</p>
+                      <p>{{grocery_sc}}</p>
+                      <p>{{park_score}}</p>
+                      <p>{{restaurant}}</p>
+                      <p>{{school sco}}</p>
+                      <p>{{shopping_s}}</p>
+                    </div>
+                 </div>
+              </div>
+            """
+            layer: walkabilityLayer
+            offset_top: -50
+        )
+        vis.container.append(tooltip.render().el)
+
+        vent.on("tooltip:rendered", (data)->
+            console.log "Do stuff", data
+          )
   schools: ->
     cartodb
       .createVis('schoolPerf', 'http://rpa.cartodb.com/api/v2/viz/5bc0d9be-a264-11e3-bc17-0e10bcd91c2b/viz.json', searchControl: true, layer_selector: false, legends: true, zoom:11)
@@ -20,7 +74,7 @@ class Workspace extends Backbone.Router
         # Create the sublayer for subway routes
         layers[1].setInteraction(true)
         schoolLayer = layers[1].getSubLayer(1)
-
+        console.log schoolLayer
         schoolLayer = schoolLayer.setInteractivity("cartodb_id, schlrank, rank_perce, schnam, localname")
 
         tooltip = new cdb.geo.ui.Tooltip(
@@ -435,6 +489,12 @@ class Workspace extends Backbone.Router
 
 $ ->
 
-  new Workspace()
-  Backbone.history.start(pushState: true, root: root)
+  router = new Workspace()
 
+  # TODO: load the relevant mss file for the page
+  router.on "all", (page,label)->
+    if label
+      $("#mss").load("#{root}mss/#{label}.mss.css")
+
+
+  Backbone.history.start(pushState: true, root: root)

@@ -1,0 +1,23 @@
+#vulnerableInfra{
+  // LEGEND
+  div.cartodb-legend.custom{
+    width:145px;
+    li.graph{
+      height:125px;
+      border:none;
+    }
+    div.colors{
+      div.quartile{
+        display:block;
+        margin-bottom:1px;
+        &:after{
+          width: 150px;
+          float: left;
+          display: block;
+          margin: 5px 0 10px 0;
+          text-transform:lowercase;
+        }
+      }
+    }
+  }
+}
