@@ -29,7 +29,56 @@
       "schools.html": "schools",
       "vulnerable.html": "vulnerable",
       "discretionary.html": "discretionary",
-      "walkability.html": "walkability"
+      "walkability.html": "walkability",
+      "property.html": "property"
+    };
+
+    Workspace.prototype.property = function() {
+      var id, url;
+      id = "property";
+      url = "http://rpa.cartodb.com/api/v2/viz/f368bbb4-aebd-11e3-a057-0e10bcd91c2b/viz.json";
+      return cartodb.createVis(id, url, {
+        searchControl: false,
+        layer_selector: false,
+        legends: true,
+        zoom: 9
+      }).done(function(vis, layers) {
+        var color1, color2, color3, map, propertyLayerNYC, propertyLayerNoNYC, tooltip, tooltip2;
+        color1 = "#ffefc9";
+        color2 = "#fdde9c";
+        color3 = "#80c5d8";
+        layers[1].setInteraction(true);
+        propertyLayerNoNYC = layers[1].getSubLayer(0);
+        propertyLayerNYC = layers[1].getSubLayer(1);
+        propertyLayerNoNYC = propertyLayerNoNYC.setInteractivity("namelsad10, localname, retaxrate, retax_acs, med_val");
+        propertyLayerNYC = propertyLayerNYC.setInteractivity("namelsad10, localname, retaxrate, retax_acs, med_val");
+        propertyLayerNYC.hide();
+        tooltip = new cdb.geo.ui.Tooltip({
+          template: "<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <p>{{namelsad10}}</p>\n        <p>{{localname}}</p>\n        <p>{{retaxrate}}</p>\n        <p>{{retax_acs}}</p>\n        <p>{{med_val}}</p>\n      </div>\n   </div>\n</div>",
+          layer: propertyLayerNoNYC,
+          offset_top: -50
+        });
+        vis.container.append(tooltip.render().el);
+        tooltip2 = new cdb.geo.ui.Tooltip({
+          template: "<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <p>{{namelsad10}}</p>\n        <p>{{localname}}</p>\n        <p>{{retaxrate}}</p>\n        <p>{{retax_acs}}</p>\n        <p>{{med_val}}</p>\n      </div>\n   </div>\n</div>",
+          layer: propertyLayerNYC,
+          offset_top: -50
+        });
+        vis.container.append(tooltip2.render().el);
+        map = vis.getNativeMap();
+        map.on('zoomend', function(a, b, c) {
+          var zoomLevel;
+          zoomLevel = map.getZoom();
+          if (zoomLevel > 9) {
+            propertyLayerNoNYC.hide();
+            return propertyLayerNYC.show();
+          } else {
+            propertyLayerNoNYC.show();
+            return propertyLayerNYC.hide();
+          }
+        });
+        return vent.on("tooltip:rendered", function(data) {});
+      });
     };
 
     Workspace.prototype.walkability = function() {
@@ -57,9 +106,7 @@
           offset_top: -50
         });
         vis.container.append(tooltip.render().el);
-        return vent.on("tooltip:rendered", function(data) {
-          return console.log("Do stuff", data);
-        });
+        return vent.on("tooltip:rendered", function(data) {});
       });
     };
 
@@ -369,11 +416,6 @@
   $(function() {
     var router;
     router = new Workspace();
-    router.on("all", function(page, label) {
-      if (label) {
-        return $("#mss").load("" + root + "mss/" + label + ".mss.css");
-      }
-    });
     return Backbone.history.start({
       pushState: true,
       root: root

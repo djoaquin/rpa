@@ -13,6 +13,81 @@ class Workspace extends Backbone.Router
     "vulnerable.html" : "vulnerable"
     "discretionary.html" : "discretionary"
     "walkability.html" : "walkability"
+    "property.html" : "property"
+
+  property: ->
+    id = "property"
+    url = "http://rpa.cartodb.com/api/v2/viz/f368bbb4-aebd-11e3-a057-0e10bcd91c2b/viz.json"
+    cartodb
+      .createVis(id, url, searchControl: false, layer_selector: false, legends: true, zoom:9)
+      .done (vis,layers)->
+        color1 = "#ffefc9"
+        color2 = "#fdde9c"
+        color3 = "#80c5d8"
+        # Create the sublayer for subway routes
+        layers[1].setInteraction(true)
+        propertyLayerNoNYC = layers[1].getSubLayer(0)
+        propertyLayerNYC = layers[1].getSubLayer(1)
+
+        propertyLayerNoNYC = propertyLayerNoNYC.setInteractivity("namelsad10, localname, retaxrate, retax_acs, med_val")
+        propertyLayerNYC = propertyLayerNYC.setInteractivity("namelsad10, localname, retaxrate, retax_acs, med_val")
+
+        # Start with NYC layer well hidden
+        propertyLayerNYC.hide()
+
+        tooltip = new cdb.geo.ui.Tooltip(
+            template: """
+              <div class="cartodb-popup">
+                 <div class="cartodb-popup-content-wrapper">
+                    <div class="cartodb-popup-content">
+                      <p>{{namelsad10}}</p>
+                      <p>{{localname}}</p>
+                      <p>{{retaxrate}}</p>
+                      <p>{{retax_acs}}</p>
+                      <p>{{med_val}}</p>
+                    </div>
+                 </div>
+              </div>
+            """
+            layer: propertyLayerNoNYC
+            offset_top: -50
+        )
+        vis.container.append(tooltip.render().el)
+
+        tooltip2 = new cdb.geo.ui.Tooltip(
+            template: """
+              <div class="cartodb-popup">
+                 <div class="cartodb-popup-content-wrapper">
+                    <div class="cartodb-popup-content">
+                      <p>{{namelsad10}}</p>
+                      <p>{{localname}}</p>
+                      <p>{{retaxrate}}</p>
+                      <p>{{retax_acs}}</p>
+                      <p>{{med_val}}</p>
+                    </div>
+                 </div>
+              </div>
+            """
+            layer: propertyLayerNYC
+            offset_top: -50
+        )
+        vis.container.append(tooltip2.render().el)
+
+
+        map = vis.getNativeMap()
+        map.on 'zoomend', (a,b,c)->
+          zoomLevel = map.getZoom()
+          if zoomLevel > 9
+            propertyLayerNoNYC.hide()
+            propertyLayerNYC.show()
+          else
+            propertyLayerNoNYC.show()
+            propertyLayerNYC.hide()
+
+
+        vent.on("tooltip:rendered", (data)->
+            # console.log "Do stuff", data
+          )
 
   walkability: ->
     id = "walkability"
@@ -31,7 +106,7 @@ class Workspace extends Backbone.Router
         # Create the sublayer for subway routes
         layers[1].setInteraction(true)
         walkabilityLayer = layers[1].getSubLayer(0)
-        
+
         walkabilityLayer = walkabilityLayer.setInteractivity("cartodb_id, namelsad10, localities, walk_sco_1, walk_sco_2, rail_stops, bank_score, books_scor, coffee_sco, entertainm, grocery_sc, park_score, restaurant, school_sco, shopping_s")
 
 
@@ -64,7 +139,7 @@ class Workspace extends Backbone.Router
         vis.container.append(tooltip.render().el)
 
         vent.on("tooltip:rendered", (data)->
-            console.log "Do stuff", data
+            # console.log "Do stuff", data
           )
   schools: ->
     cartodb
@@ -490,11 +565,4 @@ class Workspace extends Backbone.Router
 $ ->
 
   router = new Workspace()
-
-  # TODO: load the relevant mss file for the page
-  router.on "all", (page,label)->
-    if label
-      $("#mss").load("#{root}mss/#{label}.mss.css")
-
-
   Backbone.history.start(pushState: true, root: root)

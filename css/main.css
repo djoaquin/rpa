@@ -6684,6 +6684,31 @@ button.close {
   float: left;
   margin: -2px 4px 0 0; }
 
+#property .property-legend .items p:nth-child(1):before {
+  content: "";
+  height: 20px;
+  width: 20px;
+  background-color: #2c7fb8;
+  display: block;
+  float: left;
+  margin: -2px 4px 0 0; }
+#property .property-legend .items p:nth-child(2):before {
+  content: "";
+  height: 20px;
+  width: 20px;
+  background-color: #7fcdbb;
+  display: block;
+  float: left;
+  margin: -2px 4px 0 0; }
+#property .property-legend .items p:nth-child(3):before {
+  content: "";
+  height: 20px;
+  width: 20px;
+  background-color: #edf8b1;
+  display: block;
+  float: left;
+  margin: -2px 4px 0 0; }
+
 .page.discretionary {
   min-height: 1000px; }
   .page.discretionary .standalone {

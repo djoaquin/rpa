@@ -1,0 +1,26 @@
+#property{
+  .property-legend{
+    // Income colors
+    $color1: #2C7FB8;
+    $color2: #7FCDBB;
+    $color3: #EDF8B1;
+
+    $i:1;
+    .items{
+      @each $color in $color1, $color2, $color3 {
+        p:nth-child(#{$i}):before{
+          content:"";
+          height:20px;
+          width:20px;
+          background-color: $color;
+
+          display: block;
+          float: left;
+          margin: -2px 4px 0 0;
+        }
+        $i: $i + 1;
+      }
+    }
+  }
+
+}
