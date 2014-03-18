@@ -14,6 +14,78 @@ class Workspace extends Backbone.Router
     "discretionary.html" : "discretionary"
     "walkability.html" : "walkability"
     "property.html" : "property"
+    "carbon.html" : "carbon"
+
+  carbon: ->
+    id = "carbon"
+    url = "http://rpa.cartodb.com/api/v2/viz/7d0015c0-aed2-11e3-a656-0e73339ffa50/viz.json"
+    cartodb
+      .createVis(id, url, searchControl: false, layer_selector: false, legends: true, zoom:9)
+      .done (vis,layers)->
+        layers[1].setInteraction(true)
+        carbonCountyLayer = layers[1].getSubLayer(0)
+        carbonZipLayer = layers[1].getSubLayer(1)
+
+        carbonCountyLayer = carbonCountyLayer.setInteractivity("food, goods, services, total, transport")
+        carbonZipLayer = carbonZipLayer.setInteractivity("zip, total, transport, housing, food, goods, services, po_name")
+
+        carbonZipLayer.hide()
+
+        tooltip = new cdb.geo.ui.Tooltip(
+            template: """
+              <div class="cartodb-popup">
+                 <div class="cartodb-popup-content-wrapper">
+                    <div class="cartodb-popup-content">
+                      <p>{{food}}</p>
+                      <p>{{goods}}</p>
+                      <p>{{services}}</p>
+                      <p>{{total}}</p>
+                      <p>{{transport}}</p>
+                    </div>
+                 </div>
+              </div>
+            """
+            layer: carbonCountyLayer
+            offset_top: -50
+        )
+        vis.container.append(tooltip.render().el)
+
+        tooltip = new cdb.geo.ui.Tooltip(
+            template: """
+              <div class="cartodb-popup">
+                 <div class="cartodb-popup-content-wrapper">
+                    <div class="cartodb-popup-content">
+                      <p>{{zip}}</p>
+                      <p>{{total}}</p>
+                      <p>{{transport}}</p>
+                      <p>{{housing}}</p>
+                      <p>{{food}}</p>
+                      <p>{{goods}}</p>
+                      <p>{{services}}</p>
+                      <p>{{po_name}}</p>
+                    </div>
+                 </div>
+              </div>
+            """
+            layer: carbonZipLayer
+            offset_top: -50
+        )
+        vis.container.append(tooltip.render().el)
+
+        map = vis.getNativeMap()
+        map.on 'zoomend', (a,b,c)->
+          zoomLevel = map.getZoom()
+          if zoomLevel < 9
+            carbonZipLayer.hide()
+            carbonCountyLayer.show()
+          else
+            carbonZipLayer.show()
+            carbonCountyLayer.hide()
+
+
+        vent.on("tooltip:rendered", (data)->
+            # console.log "Do stuff", data
+          )
 
   property: ->
     id = "property"

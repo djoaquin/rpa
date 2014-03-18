@@ -1,0 +1,28 @@
+#carbon{
+  .carbon-legend{
+    // Income colors
+    $color1: #ffefc9;
+    $color2: #fdde9c;
+    $color3: #80c5d8;
+    $color4: #7791bf;
+    $color5: #743682;
+
+    $i:1;
+    .items{
+      @each $color in $color1, $color2, $color3, $color4, $color5 {
+        p:nth-child(#{$i}):before{
+          content:"";
+          height:20px;
+          width:20px;
+          background-color: $color;
+
+          display: block;
+          float: left;
+          margin: -2px 4px 0 0;
+        }
+        $i: $i + 1;
+      }
+    }
+  }
+
+}

@@ -30,7 +30,53 @@
       "vulnerable.html": "vulnerable",
       "discretionary.html": "discretionary",
       "walkability.html": "walkability",
-      "property.html": "property"
+      "property.html": "property",
+      "carbon.html": "carbon"
+    };
+
+    Workspace.prototype.carbon = function() {
+      var id, url;
+      id = "carbon";
+      url = "http://rpa.cartodb.com/api/v2/viz/7d0015c0-aed2-11e3-a656-0e73339ffa50/viz.json";
+      return cartodb.createVis(id, url, {
+        searchControl: false,
+        layer_selector: false,
+        legends: true,
+        zoom: 9
+      }).done(function(vis, layers) {
+        var carbonCountyLayer, carbonZipLayer, map, tooltip;
+        layers[1].setInteraction(true);
+        carbonCountyLayer = layers[1].getSubLayer(0);
+        carbonZipLayer = layers[1].getSubLayer(1);
+        carbonCountyLayer = carbonCountyLayer.setInteractivity("food, goods, services, total, transport");
+        carbonZipLayer = carbonZipLayer.setInteractivity("zip, total, transport, housing, food, goods, services, po_name");
+        carbonZipLayer.hide();
+        tooltip = new cdb.geo.ui.Tooltip({
+          template: "<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <p>{{food}}</p>\n        <p>{{goods}}</p>\n        <p>{{services}}</p>\n        <p>{{total}}</p>\n        <p>{{transport}}</p>\n      </div>\n   </div>\n</div>",
+          layer: carbonCountyLayer,
+          offset_top: -50
+        });
+        vis.container.append(tooltip.render().el);
+        tooltip = new cdb.geo.ui.Tooltip({
+          template: "<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <p>{{zip}}</p>\n        <p>{{total}}</p>\n        <p>{{transport}}</p>\n        <p>{{housing}}</p>\n        <p>{{food}}</p>\n        <p>{{goods}}</p>\n        <p>{{services}}</p>\n        <p>{{po_name}}</p>\n      </div>\n   </div>\n</div>",
+          layer: carbonZipLayer,
+          offset_top: -50
+        });
+        vis.container.append(tooltip.render().el);
+        map = vis.getNativeMap();
+        map.on('zoomend', function(a, b, c) {
+          var zoomLevel;
+          zoomLevel = map.getZoom();
+          if (zoomLevel < 9) {
+            carbonZipLayer.hide();
+            return carbonCountyLayer.show();
+          } else {
+            carbonZipLayer.show();
+            return carbonCountyLayer.hide();
+          }
+        });
+        return vent.on("tooltip:rendered", function(data) {});
+      });
     };
 
     Workspace.prototype.property = function() {

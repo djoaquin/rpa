@@ -6709,6 +6709,47 @@ button.close {
   float: left;
   margin: -2px 4px 0 0; }
 
+#carbon .carbon-legend .items p:nth-child(1):before {
+  content: "";
+  height: 20px;
+  width: 20px;
+  background-color: #ffefc9;
+  display: block;
+  float: left;
+  margin: -2px 4px 0 0; }
+#carbon .carbon-legend .items p:nth-child(2):before {
+  content: "";
+  height: 20px;
+  width: 20px;
+  background-color: #fdde9c;
+  display: block;
+  float: left;
+  margin: -2px 4px 0 0; }
+#carbon .carbon-legend .items p:nth-child(3):before {
+  content: "";
+  height: 20px;
+  width: 20px;
+  background-color: #80c5d8;
+  display: block;
+  float: left;
+  margin: -2px 4px 0 0; }
+#carbon .carbon-legend .items p:nth-child(4):before {
+  content: "";
+  height: 20px;
+  width: 20px;
+  background-color: #7791bf;
+  display: block;
+  float: left;
+  margin: -2px 4px 0 0; }
+#carbon .carbon-legend .items p:nth-child(5):before {
+  content: "";
+  height: 20px;
+  width: 20px;
+  background-color: #743682;
+  display: block;
+  float: left;
+  margin: -2px 4px 0 0; }
+
 .page.discretionary {
   min-height: 1000px; }
   .page.discretionary .standalone {
