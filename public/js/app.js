@@ -1,5 +1,5 @@
 (function() {
-  var Workspace, formatMoney,
+  var Workspace, formatMoney, shade,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
     __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
@@ -16,6 +16,17 @@
       });
       return $(this).text(c);
     });
+  };
+
+  shade = function(color, percent) {
+    var B, G, R, f, p, t;
+    f = parseInt(color.slice(1), 16);
+    t = (percent < 0 ? 0 : 255);
+    p = (percent < 0 ? percent * -1 : percent);
+    R = f >> 16;
+    G = f >> 8 & 0x00FF;
+    B = f & 0x0000FF;
+    return "#" + (0x1000000 + (Math.round((t - R) * p) + R) * 0x10000 + (Math.round((t - G) * p) + G) * 0x100 + (Math.round((t - B) * p) + B)).toString(16).slice(1);
   };
 
   Workspace = (function(_super) {
@@ -44,38 +55,101 @@
         legends: true,
         zoom: 9
       }).done(function(vis, layers) {
-        var carbonCountyLayer, carbonZipLayer, map, tooltip;
-        layers[1].setInteraction(true);
-        carbonCountyLayer = layers[1].getSubLayer(0);
-        carbonZipLayer = layers[1].getSubLayer(1);
-        carbonCountyLayer = carbonCountyLayer.setInteractivity("food, goods, services, total, transport");
-        carbonZipLayer = carbonZipLayer.setInteractivity("zip, total, transport, housing, food, goods, services, po_name");
-        carbonZipLayer.hide();
-        tooltip = new cdb.geo.ui.Tooltip({
-          template: "<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <p>{{food}}</p>\n        <p>{{goods}}</p>\n        <p>{{services}}</p>\n        <p>{{total}}</p>\n        <p>{{transport}}</p>\n      </div>\n   </div>\n</div>",
-          layer: carbonCountyLayer,
-          offset_top: -50
+        var adjust_vis, colors, columns, county_cols, layer, map, sublayers, tables, zip_cols;
+        layer = layers[1];
+        layer.setInteraction(true);
+        colors = {
+          food: "#2fb0c4",
+          goods: "#3f4040",
+          services: "#695b94",
+          transport: "#f9b314",
+          housing: "#eb0000",
+          total: "#008000"
+        };
+        county_cols = "food,goods,services,total,transport,housing";
+        zip_cols = "" + county_cols + ",po_name,zip";
+        columns = function(table) {
+          if (table === "rpa_carbonfootprint") {
+            return zip_cols;
+          } else {
+            return county_cols;
+          }
+        };
+        tables = ["rpa_carbonfootprint", "rpa_carbonfootprint_county"];
+        sublayers = {};
+        _.each(tables, function(table, k) {
+          var others, sql;
+          others = ", " + columns(table);
+          sql = "SELECT " + table + ".cartodb_id, " + table + ".the_geom, " + table + ".the_geom_webmercator " + others + " FROM " + table;
+          return _.each(colors, function(hex, column) {
+            var css, interactivity, sublayer, t, tlayers;
+            css = "#" + table + " [" + column + " > 60] {\n  //Darkest\n  polygon-fill: " + hex + ";\n}\n#" + table + " [" + column + " > 40][" + column + " < 60] {\n  //Lighter\n  polygon-fill: " + (shade(hex, -0.1)) + ";\n}\n#" + table + " [" + column + " < 40] {\n  //Lightest\n  polygon-fill: " + (shade(hex, -0.2)) + ";\n}";
+            interactivity = ["cartodb_id"];
+            interactivity = interactivity.concat(columns(table).split(","));
+            sublayer = layer.createSubLayer({
+              sql: sql,
+              cartocss: css,
+              interactivity: interactivity
+            });
+            tlayers = sublayers[column];
+            t = {};
+            t[table] = sublayer;
+            if (tlayers) {
+              return sublayers[column] = _.extend(tlayers, t);
+            } else {
+              return sublayers[column] = t;
+            }
+          });
         });
-        vis.container.append(tooltip.render().el);
-        tooltip = new cdb.geo.ui.Tooltip({
-          template: "<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <p>{{zip}}</p>\n        <p>{{total}}</p>\n        <p>{{transport}}</p>\n        <p>{{housing}}</p>\n        <p>{{food}}</p>\n        <p>{{goods}}</p>\n        <p>{{services}}</p>\n        <p>{{po_name}}</p>\n      </div>\n   </div>\n</div>",
-          layer: carbonZipLayer,
-          offset_top: -50
+        _.each(sublayers, function(value, layer_name) {
+          return _.each(tables, function(table) {
+            return vis.addOverlay({
+              layer: value[table],
+              type: 'tooltip',
+              offset_top: -30,
+              template: "<h3 class=\"title-case\">\n  Avg. Household Carbon Emissions (MTCO2E)\n</h3>\n{{#county_n}}\n  <b>County: <span>{{county_n}}</span></b>\n{{/county_n}}\n{{#zip}}\n  <b>Zip Code: <span>{{zip}}</span></b>\n{{/zip}}\n<div class=\"progress\">\n  <div class=\"progress-bar transport\" style=\"width:5%\"> 5 </div>\n  <div class=\"progress-bar housing\" style=\"width:5%\"> 5 </div>\n  <div class=\"progress-bar food\" style=\"width:5%\"> 5 </div>\n  <div class=\"progress-bar goods\" style=\"width:5%\"> 5 </div>\n  <div class=\"progress-bar services\" style=\"width:5%\"> 5 </div>\n</div>\n<div class=\"tooltip-scale clearfix\">\n  <div>0</div>\n  <div>10</div>\n  <div>20</div>\n  <div>30</div>\n  <div>40</div>\n  <div>50</div>\n  <div>60</div>\n</div>\n<div class=\"tooltip-legend clearfix\">\n  <div class=\"food\">Food</div>\n  <div class=\"goods\">Goods</div>\n  <div class=\"services\">Services</div>\n  <div class=\"total\">Total</div>\n  <div class=\"transport\">Transport</div>\n  <div class=\"housing\">Housing</div>\n</div>"
+            });
+          });
         });
-        vis.container.append(tooltip.render().el);
+        adjust_vis = function(show_table, hide_table) {
+          return _.each(sublayers, function(value, layer_name) {
+            value[show_table].show();
+            return value[hide_table].hide();
+          });
+        };
+        adjust_vis(tables[1], tables[0]);
         map = vis.getNativeMap();
         map.on('zoomend', function(a, b, c) {
-          var zoomLevel;
+          var hide_table, show_table, zoomLevel;
           zoomLevel = map.getZoom();
-          if (zoomLevel < 9) {
-            carbonZipLayer.hide();
-            return carbonCountyLayer.show();
+          console.log(zoomLevel);
+          if (zoomLevel > 9) {
+            hide_table = tables[1];
+            show_table = tables[0];
           } else {
-            carbonZipLayer.show();
-            return carbonCountyLayer.hide();
+            hide_table = tables[0];
+            show_table = tables[1];
           }
+          return adjust_vis(show_table, hide_table);
         });
-        return vent.on("tooltip:rendered", function(data) {});
+        vent.on("tooltip:rendered", function(data) {
+          console.log("Do stuff", data);
+          return _.each(data, function(value, k) {
+            var val;
+            val = ((value / 60) * 100).toFixed(2);
+            return $(".cartodb-tooltip .progress-bar." + k).attr("style", "width:" + val + "%").text(val);
+          });
+        });
+        return vent.on("infowindow:rendered", function(data) {
+          if (data["null"] === "Loading content...") {
+            return;
+          }
+          return _.each(data, function(value, k) {
+            var val;
+            val = ((value / 60) * 100).toFixed(2);
+            return $(".cartodb-infowindow .progress-bar." + k).attr("style", "width:" + val + "%").text(val);
+          });
+        });
       });
     };
 

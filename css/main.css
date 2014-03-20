@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /*! normalize.css v3.0.0 | MIT License | git.io/normalize */
 html {
   font-family: sans-serif;
@@ -6866,3 +6867,185 @@ button.close {
       text-decoration: none; }
       .page.vulnerable #layer_selector ul li.active {
         background: rgba(0, 0, 0, 0.1); }
+
+.page.carbon .cartodb-infowindow {
+  width: 560px !important;
+  max-width: 560px !important; }
+  .page.carbon .cartodb-infowindow .title-case {
+    border-bottom: solid 1px #555555;
+    padding-bottom: 5px;
+    margin-top: 0; }
+  .page.carbon .cartodb-infowindow .progress-bar.food {
+    background-color: #2fb0c4; }
+  .page.carbon .cartodb-infowindow .progress-bar.goods {
+    background-color: #3f4040; }
+  .page.carbon .cartodb-infowindow .progress-bar.services {
+    background-color: #695b94; }
+  .page.carbon .cartodb-infowindow .progress-bar.transport {
+    background-color: #f9b314; }
+  .page.carbon .cartodb-infowindow .progress-bar.housing {
+    background-color: #eb0000; }
+  .page.carbon .cartodb-infowindow .progress-bar.total {
+    background-color: green; }
+  .page.carbon .cartodb-infowindow .tooltip-scale {
+    position: relative;
+    height: 20px;
+    margin-bottom: 10px;
+    width: 100%;
+    border-bottom: solid 1px #999999; }
+    .page.carbon .cartodb-infowindow .tooltip-scale div {
+      position: absolute;
+      font-size: 10px;
+      color: #999999; }
+      .page.carbon .cartodb-infowindow .tooltip-scale div:nth-child(1) {
+        left: 0; }
+      .page.carbon .cartodb-infowindow .tooltip-scale div:nth-child(2) {
+        left: 15%; }
+      .page.carbon .cartodb-infowindow .tooltip-scale div:nth-child(3) {
+        left: 30%; }
+      .page.carbon .cartodb-infowindow .tooltip-scale div:nth-child(4) {
+        left: 45%; }
+      .page.carbon .cartodb-infowindow .tooltip-scale div:nth-child(5) {
+        left: 60%; }
+      .page.carbon .cartodb-infowindow .tooltip-scale div:nth-child(6) {
+        left: 75%; }
+      .page.carbon .cartodb-infowindow .tooltip-scale div:nth-child(7) {
+        left: 97%; }
+  .page.carbon .cartodb-infowindow .tooltip-legend > div {
+    float: left;
+    margin-right: 29px; }
+    .page.carbon .cartodb-infowindow .tooltip-legend > div:before {
+      content: "•";
+      font-size: 1.8em;
+      line-height: 1em;
+      position: relative;
+      top: 5px;
+      left: -4px; }
+    .page.carbon .cartodb-infowindow .tooltip-legend > div.food:before {
+      color: #2fb0c4; }
+    .page.carbon .cartodb-infowindow .tooltip-legend > div.goods:before {
+      color: #3f4040; }
+    .page.carbon .cartodb-infowindow .tooltip-legend > div.services:before {
+      color: #695b94; }
+    .page.carbon .cartodb-infowindow .tooltip-legend > div.transport:before {
+      color: #f9b314; }
+    .page.carbon .cartodb-infowindow .tooltip-legend > div.housing:before {
+      color: #eb0000; }
+    .page.carbon .cartodb-infowindow .tooltip-legend > div.total:before {
+      color: green; }
+  .page.carbon .cartodb-infowindow .cartodb-popup-tip-container {
+    position: absolute;
+    left: -4px;
+    bottom: -17px; }
+  .page.carbon .cartodb-infowindow .cartodb-popup {
+    width: 545px !important;
+    max-width: 545px !important;
+    background: white;
+    overflow: visible;
+    border: solid 1px rgba(0, 0, 0, 0.1);
+    border-bottom-left-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-top-right-radius: 5px;
+    border-top-right-radius: 5px;
+    border-top-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    border-bottom-left-radius: 5px;
+    box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.1); }
+    .page.carbon .cartodb-infowindow .cartodb-popup .cartodb-popup-content-wrapper {
+      width: 510px !important;
+      max-width: 510px !important;
+      background: white;
+      overflow: visible;
+      overflow-y: hidden; }
+      .page.carbon .cartodb-infowindow .cartodb-popup .cartodb-popup-content-wrapper .cartodb-popup-content {
+        width: 510px !important;
+        max-width: 510px !important;
+        background: white;
+        overflow: visible; }
+        .page.carbon .cartodb-infowindow .cartodb-popup .cartodb-popup-content-wrapper .cartodb-popup-content .jspContainer {
+          width: 510px !important;
+          max-width: 510px !important;
+          background: white;
+          overflow: visible; }
+          .page.carbon .cartodb-infowindow .cartodb-popup .cartodb-popup-content-wrapper .cartodb-popup-content .jspContainer .jspPane {
+            width: 510px !important;
+            max-width: 510px !important;
+            background: white;
+            overflow: visible; }
+.page.carbon .cartodb-tooltip {
+  background-color: white;
+  border: solid 1px rgba(0, 0, 0, 0.1);
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.1);
+  padding: 20px 20px;
+  width: 545px; }
+  .page.carbon .cartodb-tooltip .title-case {
+    border-bottom: solid 1px #555555;
+    padding-bottom: 5px;
+    margin-top: 0; }
+  .page.carbon .cartodb-tooltip .progress-bar.food {
+    background-color: #2fb0c4; }
+  .page.carbon .cartodb-tooltip .progress-bar.goods {
+    background-color: #3f4040; }
+  .page.carbon .cartodb-tooltip .progress-bar.services {
+    background-color: #695b94; }
+  .page.carbon .cartodb-tooltip .progress-bar.transport {
+    background-color: #f9b314; }
+  .page.carbon .cartodb-tooltip .progress-bar.housing {
+    background-color: #eb0000; }
+  .page.carbon .cartodb-tooltip .progress-bar.total {
+    background-color: green; }
+  .page.carbon .cartodb-tooltip .tooltip-scale {
+    position: relative;
+    height: 20px;
+    margin-bottom: 10px;
+    width: 100%;
+    border-bottom: solid 1px #999999; }
+    .page.carbon .cartodb-tooltip .tooltip-scale div {
+      position: absolute;
+      font-size: 10px;
+      color: #999999; }
+      .page.carbon .cartodb-tooltip .tooltip-scale div:nth-child(1) {
+        left: 0; }
+      .page.carbon .cartodb-tooltip .tooltip-scale div:nth-child(2) {
+        left: 15%; }
+      .page.carbon .cartodb-tooltip .tooltip-scale div:nth-child(3) {
+        left: 30%; }
+      .page.carbon .cartodb-tooltip .tooltip-scale div:nth-child(4) {
+        left: 45%; }
+      .page.carbon .cartodb-tooltip .tooltip-scale div:nth-child(5) {
+        left: 60%; }
+      .page.carbon .cartodb-tooltip .tooltip-scale div:nth-child(6) {
+        left: 75%; }
+      .page.carbon .cartodb-tooltip .tooltip-scale div:nth-child(7) {
+        left: 97%; }
+  .page.carbon .cartodb-tooltip .tooltip-legend > div {
+    float: left;
+    margin-right: 29px; }
+    .page.carbon .cartodb-tooltip .tooltip-legend > div:before {
+      content: "•";
+      font-size: 1.8em;
+      line-height: 1em;
+      position: relative;
+      top: 5px;
+      left: -4px; }
+    .page.carbon .cartodb-tooltip .tooltip-legend > div.food:before {
+      color: #2fb0c4; }
+    .page.carbon .cartodb-tooltip .tooltip-legend > div.goods:before {
+      color: #3f4040; }
+    .page.carbon .cartodb-tooltip .tooltip-legend > div.services:before {
+      color: #695b94; }
+    .page.carbon .cartodb-tooltip .tooltip-legend > div.transport:before {
+      color: #f9b314; }
+    .page.carbon .cartodb-tooltip .tooltip-legend > div.housing:before {
+      color: #eb0000; }
+    .page.carbon .cartodb-tooltip .tooltip-legend > div.total:before {
+      color: green; }

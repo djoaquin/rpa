@@ -6,6 +6,14 @@ formatMoney = ->
       c = accounting.formatMoney(Number(c), precision:0)
       $(this).text(c)
     )
+shade = (color, percent) ->
+  f = parseInt(color.slice(1), 16)
+  t = (if percent < 0 then 0 else 255)
+  p = (if percent < 0 then percent * -1 else percent)
+  R = f >> 16
+  G = f >> 8 & 0x00FF
+  B = f & 0x0000FF
+  "#" + (0x1000000 + (Math.round((t - R) * p) + R) * 0x10000 + (Math.round((t - G) * p) + G) * 0x100 + (Math.round((t - B) * p) + B)).toString(16).slice(1)
 
 class Workspace extends Backbone.Router
   routes:
@@ -22,70 +30,147 @@ class Workspace extends Backbone.Router
     cartodb
       .createVis(id, url, searchControl: false, layer_selector: false, legends: true, zoom:9)
       .done (vis,layers)->
-        layers[1].setInteraction(true)
-        carbonCountyLayer = layers[1].getSubLayer(0)
-        carbonZipLayer = layers[1].getSubLayer(1)
+        layer = layers[1]
+        layer.setInteraction(true)
 
-        carbonCountyLayer = carbonCountyLayer.setInteractivity("food, goods, services, total, transport")
-        carbonZipLayer = carbonZipLayer.setInteractivity("zip, total, transport, housing, food, goods, services, po_name")
+        colors =
+          food: "#2fb0c4"
+          goods: "#3f4040"
+          services: "#695b94"
+          transport: "#f9b314"
+          housing: "#eb0000"
+          total: "#008000" #TEMPORARY
 
-        carbonZipLayer.hide()
 
-        tooltip = new cdb.geo.ui.Tooltip(
-            template: """
-              <div class="cartodb-popup">
-                 <div class="cartodb-popup-content-wrapper">
-                    <div class="cartodb-popup-content">
-                      <p>{{food}}</p>
-                      <p>{{goods}}</p>
-                      <p>{{services}}</p>
-                      <p>{{total}}</p>
-                      <p>{{transport}}</p>
-                    </div>
-                 </div>
-              </div>
-            """
-            layer: carbonCountyLayer
-            offset_top: -50
+        county_cols = "food,goods,services,total,transport,housing"
+        zip_cols = "#{county_cols},po_name,zip"
+        columns = (table)-> if table is "rpa_carbonfootprint" then zip_cols else county_cols
+
+        # Describe and define the sublayers
+        tables = ["rpa_carbonfootprint","rpa_carbonfootprint_county"]
+        sublayers = {}
+
+        _.each(tables,(table,k)->
+          others = ", " + columns(table)
+          sql = "SELECT #{table}.cartodb_id, #{table}.the_geom, #{table}.the_geom_webmercator #{others} FROM #{table}"
+
+          # Create the CSS
+          _.each(colors, (hex, column)->
+              css = """
+                      ##{table} [#{column} > 60] {
+                        //Darkest
+                        polygon-fill: #{hex};
+                      }
+                      ##{table} [#{column} > 40][#{column} < 60] {
+                        //Lighter
+                        polygon-fill: #{shade(hex,-0.1)};
+                      }
+                      ##{table} [#{column} < 40] {
+                        //Lightest
+                        polygon-fill: #{shade(hex,-0.2)};
+                      }
+                    """
+              interactivity = ["cartodb_id"]
+              interactivity = interactivity.concat(columns(table).split(","))
+              sublayer = layer.createSubLayer(
+                sql: sql,
+                cartocss: css
+                interactivity: interactivity
+              )
+              tlayers = sublayers[column]
+              t = {}
+              t[table] = sublayer
+              if tlayers
+                sublayers[column] = _.extend(tlayers, t)
+              else
+                sublayers[column] = t
+            )
         )
-        vis.container.append(tooltip.render().el)
 
-        tooltip = new cdb.geo.ui.Tooltip(
-            template: """
-              <div class="cartodb-popup">
-                 <div class="cartodb-popup-content-wrapper">
-                    <div class="cartodb-popup-content">
-                      <p>{{zip}}</p>
-                      <p>{{total}}</p>
-                      <p>{{transport}}</p>
-                      <p>{{housing}}</p>
-                      <p>{{food}}</p>
-                      <p>{{goods}}</p>
-                      <p>{{services}}</p>
-                      <p>{{po_name}}</p>
-                    </div>
-                 </div>
-              </div>
-            """
-            layer: carbonZipLayer
-            offset_top: -50
+        # Create a tooltip for every single sublayer
+        _.each(sublayers,(value,layer_name)->
+          _.each(tables, (table)->
+            vis.addOverlay(
+              layer: value[table]
+              type: 'tooltip'
+              offset_top: -30
+              template: """
+                <h3 class="title-case">
+                  Avg. Household Carbon Emissions (MTCO2E)
+                </h3>
+                {{#county_n}}
+                  <b>County: <span>{{county_n}}</span></b>
+                {{/county_n}}
+                {{#zip}}
+                  <b>Zip Code: <span>{{zip}}</span></b>
+                {{/zip}}
+                <div class="progress">
+                  <div class="progress-bar transport" style="width:5%"> 5 </div>
+                  <div class="progress-bar housing" style="width:5%"> 5 </div>
+                  <div class="progress-bar food" style="width:5%"> 5 </div>
+                  <div class="progress-bar goods" style="width:5%"> 5 </div>
+                  <div class="progress-bar services" style="width:5%"> 5 </div>
+                </div>
+                <div class="tooltip-scale clearfix">
+                  <div>0</div>
+                  <div>10</div>
+                  <div>20</div>
+                  <div>30</div>
+                  <div>40</div>
+                  <div>50</div>
+                  <div>60</div>
+                </div>
+                <div class="tooltip-legend clearfix">
+                  <div class="food">Food</div>
+                  <div class="goods">Goods</div>
+                  <div class="services">Services</div>
+                  <div class="total">Total</div>
+                  <div class="transport">Transport</div>
+                  <div class="housing">Housing</div>
+                </div>
+              """
+            )
+          )
         )
-        vis.container.append(tooltip.render().el)
+        adjust_vis = (show_table, hide_table)->
+          # loop through sublayer and show/hide layers
+          _.each(sublayers, (value, layer_name)->
+              value[show_table].show()
+              value[hide_table].hide()
+            )
+        # By default, hide the zip layer, and show the county layer
+        adjust_vis(tables[1], tables[0])
 
         map = vis.getNativeMap()
         map.on 'zoomend', (a,b,c)->
           zoomLevel = map.getZoom()
-          if zoomLevel < 9
-            carbonZipLayer.hide()
-            carbonCountyLayer.show()
+          # TODO: check to ensure that this conditional is only executed during a state transition
+          console.log zoomLevel
+          if zoomLevel > 9
+            # hide the county layer
+            # show the zip layer
+            hide_table = tables[1]
+            show_table = tables[0]
           else
-            carbonZipLayer.show()
-            carbonCountyLayer.hide()
-
+            # show the county layer
+            # hide the zip layer
+            hide_table = tables[0]
+            show_table = tables[1]
+          adjust_vis(show_table, hide_table)
 
         vent.on("tooltip:rendered", (data)->
-            # console.log "Do stuff", data
+            console.log "Do stuff", data
+            _.each(data, (value,k)->
+                val = ((value/60)*100).toFixed(2)
+                $(".cartodb-tooltip .progress-bar.#{k}").attr("style","width:#{val}%").text(val)
+              )
           )
+        vent.on "infowindow:rendered", (data)->
+          return if data["null"] is "Loading content..."
+          _.each(data, (value,k)->
+              val = ((value/60)*100).toFixed(2)
+              $(".cartodb-infowindow .progress-bar.#{k}").attr("style","width:#{val}%").text(val)
+            )
 
   property: ->
     id = "property"
@@ -631,7 +716,6 @@ class Workspace extends Backbone.Router
           mhi = $("#discretionaryIncome .median-income").text()
           makeChart(data, Number(mhi))
           formatMoney()
-
 
 
 $ ->

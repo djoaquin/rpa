@@ -1,0 +1,132 @@
+@mixin shared-borders {
+  border:solid 1px rgba(0, 0, 0,0.1);
+  @include border-left-radius(5px);
+  @include border-right-radius(5px);
+  @include border-top-radius(5px);
+  @include border-bottom-radius(5px);
+  box-shadow: 1px 1px 6px rgba(0, 0, 0,0.1);
+}
+@mixin shared {
+  .title-case{
+    border-bottom: solid 1px $gray;
+    padding-bottom:5px;
+    margin-top:0;
+  }
+  $food: #2fb0c4;
+  $goods: #3f4040;
+  $services: #695b94;
+  $transport: #f9b314;
+  $housing: #eb0000;
+  $total: #008000;
+  .progress-bar{
+    &.food{ background-color:$food;}
+    &.goods{ background-color:$goods;}
+    &.services{ background-color:$services;}
+    &.transport{ background-color:$transport;}
+    &.housing{ background-color:$housing;}
+    &.total{ background-color:$total;}
+  }
+  .tooltip-scale{
+    position:relative;
+    height:20px;
+    margin-bottom:10px;
+    width:100%;
+    border-bottom:solid 1px $gray-light;
+    div{
+      position:absolute;
+      font-size: 10px;
+      color:$gray-light;
+      &:nth-child(1){
+        left:0;
+      }
+      &:nth-child(2){
+        left:15%;
+      }
+      &:nth-child(3){
+        left:30%;
+      }
+      &:nth-child(4){
+        left:45%;
+      }
+      &:nth-child(5){
+        left:60%;
+      }
+      &:nth-child(6){
+        left:75%;
+      }
+      &:nth-child(7){
+        left:97%;
+      }
+    }
+  }
+  .tooltip-legend{
+    & > div{
+      float:left;
+      margin-right:29px;
+      &:before{
+        content:"•";
+        font-size:1.8em;
+        line-height: 1em;
+        position: relative;
+        top: 5px;
+        left: -4px;
+      }
+      &.food:before{color:$food;}
+      &.goods:before{color:$goods;}
+      &.services:before{color:$services;}
+      &.transport:before{color:$transport;}
+      &.housing:before{color:$housing;}
+      &.total:before{color:$total;}
+    }
+  }
+}
+@mixin windowfix($width:545px) {
+  width:$width !important;
+  max-width:$width !important;
+  background:white;
+  overflow:visible;
+}
+
+.page.carbon{
+  .cartodb-infowindow{
+    width:560px !important;
+    max-width:560px !important;
+    @include shared();
+
+    .cartodb-popup-tip-container{
+      position:absolute;
+      left: -4px;
+      bottom: -17px;
+    }
+    .cartodb-popup{
+      @include windowfix();
+      @include shared-borders();
+      .cartodb-popup-content-wrapper{
+        @include windowfix(510px);
+        overflow-y:hidden;
+        .cartodb-popup-content{
+          @include windowfix(510px);
+          .jspContainer{
+            @include windowfix(510px);
+            .jspPane{
+              @include windowfix(510px);
+            }
+          }
+        }
+      }
+    }
+  }
+  .cartodb-tooltip{
+    background-color:white;
+    @include shared-borders();
+
+
+
+    padding:20px 20px;
+    width:545px;
+
+    @include shared();
+
+  }
+
+}
