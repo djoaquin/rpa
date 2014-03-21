@@ -55,9 +55,12 @@
         legends: true,
         zoom: 9
       }).done(function(vis, layers) {
-        var adjust_vis, colors, columns, county_cols, layer, map, sublayers, tables, zip_cols;
+        var adjust_vis, colors, columns, county_cols, layer, layer_county, layer_zip, map, sublayers, tables, zip_cols;
         layer = layers[1];
+        layer_county = layers[1].getSubLayer(0);
+        layer_zip = layers[1].getSubLayer(1);
         layer.setInteraction(true);
+        layer_zip.hide();
         colors = {
           food: "#2fb0c4",
           goods: "#3f4040",
@@ -126,9 +129,13 @@
           if (zoomLevel > 9) {
             hide_table = tables[1];
             show_table = tables[0];
+            layer_county.hide();
+            layer_zip.show();
           } else {
             hide_table = tables[0];
             show_table = tables[1];
+            layer_county.show();
+            layer_zip.hide();
           }
           return adjust_vis(show_table, hide_table);
         });
@@ -147,7 +154,7 @@
           return _.each(data, function(value, k) {
             var val;
             val = ((value / 60) * 100).toFixed(2);
-            return $(".cartodb-infowindow .progress-bar." + k).attr("style", "width:" + val + "%").text(val);
+            return $(".cartodb-infowindow .progress:first .progress-bar." + k).attr("style", "width:" + val + "%").text(val);
           });
         });
       });

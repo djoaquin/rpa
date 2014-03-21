@@ -6919,8 +6919,8 @@ button.close {
       font-size: 1.8em;
       line-height: 1em;
       position: relative;
-      top: 5px;
-      left: -4px; }
+      top: 4px;
+      left: -1px; }
     .page.carbon .cartodb-infowindow .tooltip-legend > div.food:before {
       color: #2fb0c4; }
     .page.carbon .cartodb-infowindow .tooltip-legend > div.goods:before {
@@ -6940,6 +6940,7 @@ button.close {
   .page.carbon .cartodb-infowindow .cartodb-popup {
     width: 545px !important;
     max-width: 545px !important;
+    max-height: 600px;
     background: white;
     overflow: visible;
     border: solid 1px rgba(0, 0, 0, 0.1);
@@ -6953,24 +6954,31 @@ button.close {
     border-bottom-left-radius: 5px;
     box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.1); }
     .page.carbon .cartodb-infowindow .cartodb-popup .cartodb-popup-content-wrapper {
-      width: 510px !important;
-      max-width: 510px !important;
+      width: 530px !important;
+      max-width: 530px !important;
+      max-height: 600px;
       background: white;
       overflow: visible;
-      overflow-y: hidden; }
+      overflow: hidden; }
       .page.carbon .cartodb-infowindow .cartodb-popup .cartodb-popup-content-wrapper .cartodb-popup-content {
         width: 510px !important;
         max-width: 510px !important;
+        max-height: 600px;
         background: white;
         overflow: visible; }
         .page.carbon .cartodb-infowindow .cartodb-popup .cartodb-popup-content-wrapper .cartodb-popup-content .jspContainer {
           width: 510px !important;
           max-width: 510px !important;
+          max-height: 600px;
           background: white;
-          overflow: visible; }
+          overflow: visible;
+          height: 200px !important; }
+          .page.carbon .cartodb-infowindow .cartodb-popup .cartodb-popup-content-wrapper .cartodb-popup-content .jspContainer .jspVerticalBar {
+            display: none !important; }
           .page.carbon .cartodb-infowindow .cartodb-popup .cartodb-popup-content-wrapper .cartodb-popup-content .jspContainer .jspPane {
             width: 510px !important;
             max-width: 510px !important;
+            max-height: 600px;
             background: white;
             overflow: visible; }
 .page.carbon .cartodb-tooltip {
@@ -7035,8 +7043,8 @@ button.close {
       font-size: 1.8em;
       line-height: 1em;
       position: relative;
-      top: 5px;
-      left: -4px; }
+      top: 4px;
+      left: -1px; }
     .page.carbon .cartodb-tooltip .tooltip-legend > div.food:before {
       color: #2fb0c4; }
     .page.carbon .cartodb-tooltip .tooltip-legend > div.goods:before {

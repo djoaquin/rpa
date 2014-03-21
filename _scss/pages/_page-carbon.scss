@@ -68,8 +68,8 @@
         font-size:1.8em;
         line-height: 1em;
         position: relative;
-        top: 5px;
-        left: -4px;
+        top: 4px;
+        left: -1px;
       }
       &.food:before{color:$food;}
       &.goods:before{color:$goods;}
@@ -83,6 +83,7 @@
 @mixin windowfix($width:545px) {
   width:$width !important;
   max-width:$width !important;
+  max-height:600px;
   background:white;
   overflow:visible;
 }
@@ -99,15 +100,17 @@
       bottom: -17px;
     }
     .cartodb-popup{
-      @include windowfix();
+      @include windowfix(545px);
       @include shared-borders();
       .cartodb-popup-content-wrapper{
-        @include windowfix(510px);
-        overflow-y:hidden;
+        @include windowfix(530px);
+        overflow:hidden;
         .cartodb-popup-content{
           @include windowfix(510px);
           .jspContainer{
             @include windowfix(510px);
+            height:200px !important;
+            .jspVerticalBar{display:none !important;}
             .jspPane{
               @include windowfix(510px);
             }

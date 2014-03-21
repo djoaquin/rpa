@@ -31,7 +31,10 @@ class Workspace extends Backbone.Router
       .createVis(id, url, searchControl: false, layer_selector: false, legends: true, zoom:9)
       .done (vis,layers)->
         layer = layers[1]
+        layer_county = layers[1].getSubLayer(0)
+        layer_zip = layers[1].getSubLayer(1)
         layer.setInteraction(true)
+        layer_zip.hide()
 
         colors =
           food: "#2fb0c4"
@@ -151,11 +154,16 @@ class Workspace extends Backbone.Router
             # show the zip layer
             hide_table = tables[1]
             show_table = tables[0]
+            layer_county.hide()
+            layer_zip.show()
           else
             # show the county layer
             # hide the zip layer
             hide_table = tables[0]
             show_table = tables[1]
+            layer_county.show()
+            layer_zip.hide()
+
           adjust_vis(show_table, hide_table)
 
         vent.on("tooltip:rendered", (data)->
@@ -169,7 +177,7 @@ class Workspace extends Backbone.Router
           return if data["null"] is "Loading content..."
           _.each(data, (value,k)->
               val = ((value/60)*100).toFixed(2)
-              $(".cartodb-infowindow .progress-bar.#{k}").attr("style","width:#{val}%").text(val)
+              $(".cartodb-infowindow .progress:first .progress-bar.#{k}").attr("style","width:#{val}%").text(val)
             )
 
   property: ->
