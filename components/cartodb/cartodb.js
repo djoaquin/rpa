@@ -25378,7 +25378,6 @@ cdb.geo.ui.Tooltip = cdb.geo.ui.InfoBox.extend({
   },
 
   show: function(pos, data) {
-
     this.render(data);
     this.elder('show');
     this.$el.css({
@@ -25405,7 +25404,7 @@ cdb.geo.ui.Tooltip = cdb.geo.ui.InfoBox.extend({
       }
     }
     this.$el.html( this.template(data) );
-    vent.trigger("tooltip:rendered", data);
+    vent.trigger("tooltip:rendered", data, this.$el);
     return this;
   }
 

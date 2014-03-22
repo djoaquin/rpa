@@ -25,6 +25,82 @@ class Workspace extends Backbone.Router
     "carbon.html" : "carbon"
 
   carbon: ->
+    makeStackedChart = (data,target)->
+      n = data.length
+      m = 1
+      stack = d3.layout.stack()
+      # Transorm data, an object literal, into an array that can be fed into the function below
+      i = 0
+      # console.log data
+      d = _.map(data, (value,k)->
+          a = [{x: i, y: parseFloat(value.toFixed(2))}]; i = i + 1; a
+        )
+      layers = stack(d)
+
+      #the largest single layer
+      yGroupMax = d3.max(layers, (layer)-> d3.max(layer, (d)-> d.y ) )
+      #the largest stack
+      yStackMax = d3.max(layers, (layer)-> d3.max(layer, (d)-> d.y0 + d.y ) )
+
+      margin  = {top: 5, right: 5, bottom: 40, left: 5}
+      width   = 505 - margin.left - margin.right
+      height  = 80 - margin.top - margin.bottom
+
+      x = d3.scale.linear()
+          .domain([0, yStackMax])
+          .range([0, width])
+      y = d3.scale.ordinal()
+          .domain(d3.range(m))
+          .rangeRoundBands([2, height], .08)
+      color = (i)->
+        [
+          "#f9b314"
+          "#eb0000"
+          "#2fb0c4"
+          "#3f4040"
+          "#695b94"][i]
+      svg = d3.select(target).append("svg")
+              .attr("width", width + margin.left + margin.right)
+              .attr("height", height + margin.top + margin.bottom)
+            .append("g")
+              .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
+      layer = svg.selectAll(".layer")
+          .data(layers)
+          .enter()
+            .append("g")
+            .attr("class", "layer")
+            .style("fill", (d, i)-> color(i) )
+      layer.selectAll("rect")
+          .data((d)-> d)
+          .enter().append("rect")
+          .attr("y", (d)-> y(d.x))
+        .attr("x", (d)-> x(d.y0))
+          .attr("height", y.rangeBand())
+          .attr("width", (d)-> x(d.y))
+      layer.selectAll("text")
+        .data((d)-> d)
+        .enter()
+        .append("text")
+        .text((d)-> d.y )
+        .attr("font-family", "sans-serif")
+        .attr("font-size", "11px")
+        .attr("fill", "white")
+        .attr("y", (d, i)-> (height/2) + 5)
+        .attr("x", (d)-> ((d.y0 + (d.y/2))/yStackMax * width) - parseInt(String(d.y).split("").length * 3))
+      xAxis = d3.svg.axis()
+          .scale(x)
+          .tickSize(0.8)
+          .tickPadding(6)
+          .orient("bottom")
+      svg.append("g")
+          .attr("class", "x axis")
+          .attr("transform", "translate(0," + height + ")")
+          .call(xAxis)
+
+
+    # makeStackedChart({a: 5, b: 55, c: 65}, ".content")
+
+
     id = "carbon"
     url = "http://rpa.cartodb.com/api/v2/viz/7d0015c0-aed2-11e3-a656-0e73339ffa50/viz.json"
     cartodb
@@ -37,11 +113,11 @@ class Workspace extends Backbone.Router
         layer_zip.hide()
 
         colors =
+          transport: "#f9b314"
+          housing: "#eb0000"
           food: "#2fb0c4"
           goods: "#3f4040"
           services: "#695b94"
-          transport: "#f9b314"
-          housing: "#eb0000"
           total: "#008000" #TEMPORARY
 
 
@@ -73,7 +149,7 @@ class Workspace extends Backbone.Router
                         polygon-fill: #{shade(hex,-0.2)};
                       }
                     """
-              interactivity = ["cartodb_id"]
+              interactivity = []
               interactivity = interactivity.concat(columns(table).split(","))
               sublayer = layer.createSubLayer(
                 sql: sql,
@@ -107,27 +183,13 @@ class Workspace extends Backbone.Router
                 {{#zip}}
                   <b>Zip Code: <span>{{zip}}</span></b>
                 {{/zip}}
-                <div class="progress">
-                  <div class="progress-bar transport" style="width:5%"> 5 </div>
-                  <div class="progress-bar housing" style="width:5%"> 5 </div>
-                  <div class="progress-bar food" style="width:5%"> 5 </div>
-                  <div class="progress-bar goods" style="width:5%"> 5 </div>
-                  <div class="progress-bar services" style="width:5%"> 5 </div>
-                </div>
-                <div class="tooltip-scale clearfix">
-                  <div>0</div>
-                  <div>10</div>
-                  <div>20</div>
-                  <div>30</div>
-                  <div>40</div>
-                  <div>50</div>
-                  <div>60</div>
+                <div class="progressive">
+
                 </div>
                 <div class="tooltip-legend clearfix">
                   <div class="food">Food</div>
                   <div class="goods">Goods</div>
                   <div class="services">Services</div>
-                  <div class="total">Total</div>
                   <div class="transport">Transport</div>
                   <div class="housing">Housing</div>
                 </div>
@@ -146,9 +208,9 @@ class Workspace extends Backbone.Router
 
         map = vis.getNativeMap()
         map.on 'zoomend', (a,b,c)->
+          $(".cartodb-tooltip").hide()
           zoomLevel = map.getZoom()
           # TODO: check to ensure that this conditional is only executed during a state transition
-          console.log zoomLevel
           if zoomLevel > 9
             # hide the county layer
             # show the zip layer
@@ -166,17 +228,15 @@ class Workspace extends Backbone.Router
 
           adjust_vis(show_table, hide_table)
 
-        vent.on("tooltip:rendered", (data)->
-            console.log "Do stuff", data
-            _.each(data, (value,k)->
-                val = ((value/60)*100).toFixed(2)
-                $(".cartodb-tooltip .progress-bar.#{k}").attr("style","width:#{val}%").text(val)
-              )
+        vent.on("tooltip:rendered", (data,$el)->
+            data = _.filter(data,(v,k)-> _.isNumber(v))
+            makeStackedChart(data, $el.find(".progressive").get(0))
           )
         vent.on "infowindow:rendered", (data)->
           return if data["null"] is "Loading content..."
           _.each(data, (value,k)->
-              val = ((value/60)*100).toFixed(2)
+              # Always leave a gap as much as 25% the width of the bar
+              val = ((value)*75).toFixed(2)
               $(".cartodb-infowindow .progress:first .progress-bar.#{k}").attr("style","width:#{val}%").text(val)
             )
 

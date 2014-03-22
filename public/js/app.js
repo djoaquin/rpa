@@ -46,7 +46,73 @@
     };
 
     Workspace.prototype.carbon = function() {
-      var id, url;
+      var id, makeStackedChart, url;
+      makeStackedChart = function(data, target) {
+        var color, d, height, i, layer, layers, m, margin, n, stack, svg, width, x, xAxis, y, yGroupMax, yStackMax;
+        n = data.length;
+        m = 1;
+        stack = d3.layout.stack();
+        i = 0;
+        d = _.map(data, function(value, k) {
+          var a;
+          a = [
+            {
+              x: i,
+              y: parseFloat(value.toFixed(2))
+            }
+          ];
+          i = i + 1;
+          return a;
+        });
+        layers = stack(d);
+        yGroupMax = d3.max(layers, function(layer) {
+          return d3.max(layer, function(d) {
+            return d.y;
+          });
+        });
+        yStackMax = d3.max(layers, function(layer) {
+          return d3.max(layer, function(d) {
+            return d.y0 + d.y;
+          });
+        });
+        margin = {
+          top: 5,
+          right: 5,
+          bottom: 40,
+          left: 5
+        };
+        width = 505 - margin.left - margin.right;
+        height = 80 - margin.top - margin.bottom;
+        x = d3.scale.linear().domain([0, yStackMax]).range([0, width]);
+        y = d3.scale.ordinal().domain(d3.range(m)).rangeRoundBands([2, height], .08);
+        color = function(i) {
+          return ["#f9b314", "#eb0000", "#2fb0c4", "#3f4040", "#695b94"][i];
+        };
+        svg = d3.select(target).append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+        layer = svg.selectAll(".layer").data(layers).enter().append("g").attr("class", "layer").style("fill", function(d, i) {
+          return color(i);
+        });
+        layer.selectAll("rect").data(function(d) {
+          return d;
+        }).enter().append("rect").attr("y", function(d) {
+          return y(d.x);
+        }).attr("x", function(d) {
+          return x(d.y0);
+        }).attr("height", y.rangeBand()).attr("width", function(d) {
+          return x(d.y);
+        });
+        layer.selectAll("text").data(function(d) {
+          return d;
+        }).enter().append("text").text(function(d) {
+          return d.y;
+        }).attr("font-family", "sans-serif").attr("font-size", "11px").attr("fill", "white").attr("y", function(d, i) {
+          return (height / 2) + 5;
+        }).attr("x", function(d) {
+          return ((d.y0 + (d.y / 2)) / yStackMax * width) - parseInt(String(d.y).split("").length * 3);
+        });
+        xAxis = d3.svg.axis().scale(x).tickSize(0.8).tickPadding(6).orient("bottom");
+        return svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis);
+      };
       id = "carbon";
       url = "http://rpa.cartodb.com/api/v2/viz/7d0015c0-aed2-11e3-a656-0e73339ffa50/viz.json";
       return cartodb.createVis(id, url, {
@@ -62,11 +128,11 @@
         layer.setInteraction(true);
         layer_zip.hide();
         colors = {
+          transport: "#f9b314",
+          housing: "#eb0000",
           food: "#2fb0c4",
           goods: "#3f4040",
           services: "#695b94",
-          transport: "#f9b314",
-          housing: "#eb0000",
           total: "#008000"
         };
         county_cols = "food,goods,services,total,transport,housing";
@@ -87,7 +153,7 @@
           return _.each(colors, function(hex, column) {
             var css, interactivity, sublayer, t, tlayers;
             css = "#" + table + " [" + column + " > 60] {\n  //Darkest\n  polygon-fill: " + hex + ";\n}\n#" + table + " [" + column + " > 40][" + column + " < 60] {\n  //Lighter\n  polygon-fill: " + (shade(hex, -0.1)) + ";\n}\n#" + table + " [" + column + " < 40] {\n  //Lightest\n  polygon-fill: " + (shade(hex, -0.2)) + ";\n}";
-            interactivity = ["cartodb_id"];
+            interactivity = [];
             interactivity = interactivity.concat(columns(table).split(","));
             sublayer = layer.createSubLayer({
               sql: sql,
@@ -110,7 +176,7 @@
               layer: value[table],
               type: 'tooltip',
               offset_top: -30,
-              template: "<h3 class=\"title-case\">\n  Avg. Household Carbon Emissions (MTCO2E)\n</h3>\n{{#county_n}}\n  <b>County: <span>{{county_n}}</span></b>\n{{/county_n}}\n{{#zip}}\n  <b>Zip Code: <span>{{zip}}</span></b>\n{{/zip}}\n<div class=\"progress\">\n  <div class=\"progress-bar transport\" style=\"width:5%\"> 5 </div>\n  <div class=\"progress-bar housing\" style=\"width:5%\"> 5 </div>\n  <div class=\"progress-bar food\" style=\"width:5%\"> 5 </div>\n  <div class=\"progress-bar goods\" style=\"width:5%\"> 5 </div>\n  <div class=\"progress-bar services\" style=\"width:5%\"> 5 </div>\n</div>\n<div class=\"tooltip-scale clearfix\">\n  <div>0</div>\n  <div>10</div>\n  <div>20</div>\n  <div>30</div>\n  <div>40</div>\n  <div>50</div>\n  <div>60</div>\n</div>\n<div class=\"tooltip-legend clearfix\">\n  <div class=\"food\">Food</div>\n  <div class=\"goods\">Goods</div>\n  <div class=\"services\">Services</div>\n  <div class=\"total\">Total</div>\n  <div class=\"transport\">Transport</div>\n  <div class=\"housing\">Housing</div>\n</div>"
+              template: "<h3 class=\"title-case\">\n  Avg. Household Carbon Emissions (MTCO2E)\n</h3>\n{{#county_n}}\n  <b>County: <span>{{county_n}}</span></b>\n{{/county_n}}\n{{#zip}}\n  <b>Zip Code: <span>{{zip}}</span></b>\n{{/zip}}\n<div class=\"progressive\">\n\n</div>\n<div class=\"tooltip-legend clearfix\">\n  <div class=\"food\">Food</div>\n  <div class=\"goods\">Goods</div>\n  <div class=\"services\">Services</div>\n  <div class=\"transport\">Transport</div>\n  <div class=\"housing\">Housing</div>\n</div>"
             });
           });
         });
@@ -124,8 +190,8 @@
         map = vis.getNativeMap();
         map.on('zoomend', function(a, b, c) {
           var hide_table, show_table, zoomLevel;
+          $(".cartodb-tooltip").hide();
           zoomLevel = map.getZoom();
-          console.log(zoomLevel);
           if (zoomLevel > 9) {
             hide_table = tables[1];
             show_table = tables[0];
@@ -139,13 +205,11 @@
           }
           return adjust_vis(show_table, hide_table);
         });
-        vent.on("tooltip:rendered", function(data) {
-          console.log("Do stuff", data);
-          return _.each(data, function(value, k) {
-            var val;
-            val = ((value / 60) * 100).toFixed(2);
-            return $(".cartodb-tooltip .progress-bar." + k).attr("style", "width:" + val + "%").text(val);
+        vent.on("tooltip:rendered", function(data, $el) {
+          data = _.filter(data, function(v, k) {
+            return _.isNumber(v);
           });
+          return makeStackedChart(data, $el.find(".progressive").get(0));
         });
         return vent.on("infowindow:rendered", function(data) {
           if (data["null"] === "Loading content...") {
@@ -153,7 +217,7 @@
           }
           return _.each(data, function(value, k) {
             var val;
-            val = ((value / 60) * 100).toFixed(2);
+            val = (value * 75).toFixed(2);
             return $(".cartodb-infowindow .progress:first .progress-bar." + k).attr("style", "width:" + val + "%").text(val);
           });
         });

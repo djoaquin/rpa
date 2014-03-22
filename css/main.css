@@ -6868,6 +6868,8 @@ button.close {
       .page.vulnerable #layer_selector ul li.active {
         background: rgba(0, 0, 0, 0.1); }
 
+.page.carbon .x.axis .tick {
+  font-size: 10px; }
 .page.carbon .cartodb-infowindow {
   width: 560px !important;
   max-width: 560px !important; }
@@ -6875,42 +6877,6 @@ button.close {
     border-bottom: solid 1px #555555;
     padding-bottom: 5px;
     margin-top: 0; }
-  .page.carbon .cartodb-infowindow .progress-bar.food {
-    background-color: #2fb0c4; }
-  .page.carbon .cartodb-infowindow .progress-bar.goods {
-    background-color: #3f4040; }
-  .page.carbon .cartodb-infowindow .progress-bar.services {
-    background-color: #695b94; }
-  .page.carbon .cartodb-infowindow .progress-bar.transport {
-    background-color: #f9b314; }
-  .page.carbon .cartodb-infowindow .progress-bar.housing {
-    background-color: #eb0000; }
-  .page.carbon .cartodb-infowindow .progress-bar.total {
-    background-color: green; }
-  .page.carbon .cartodb-infowindow .tooltip-scale {
-    position: relative;
-    height: 20px;
-    margin-bottom: 10px;
-    width: 100%;
-    border-bottom: solid 1px #999999; }
-    .page.carbon .cartodb-infowindow .tooltip-scale div {
-      position: absolute;
-      font-size: 10px;
-      color: #999999; }
-      .page.carbon .cartodb-infowindow .tooltip-scale div:nth-child(1) {
-        left: 0; }
-      .page.carbon .cartodb-infowindow .tooltip-scale div:nth-child(2) {
-        left: 15%; }
-      .page.carbon .cartodb-infowindow .tooltip-scale div:nth-child(3) {
-        left: 30%; }
-      .page.carbon .cartodb-infowindow .tooltip-scale div:nth-child(4) {
-        left: 45%; }
-      .page.carbon .cartodb-infowindow .tooltip-scale div:nth-child(5) {
-        left: 60%; }
-      .page.carbon .cartodb-infowindow .tooltip-scale div:nth-child(6) {
-        left: 75%; }
-      .page.carbon .cartodb-infowindow .tooltip-scale div:nth-child(7) {
-        left: 97%; }
   .page.carbon .cartodb-infowindow .tooltip-legend > div {
     float: left;
     margin-right: 29px; }
@@ -6999,42 +6965,6 @@ button.close {
     border-bottom: solid 1px #555555;
     padding-bottom: 5px;
     margin-top: 0; }
-  .page.carbon .cartodb-tooltip .progress-bar.food {
-    background-color: #2fb0c4; }
-  .page.carbon .cartodb-tooltip .progress-bar.goods {
-    background-color: #3f4040; }
-  .page.carbon .cartodb-tooltip .progress-bar.services {
-    background-color: #695b94; }
-  .page.carbon .cartodb-tooltip .progress-bar.transport {
-    background-color: #f9b314; }
-  .page.carbon .cartodb-tooltip .progress-bar.housing {
-    background-color: #eb0000; }
-  .page.carbon .cartodb-tooltip .progress-bar.total {
-    background-color: green; }
-  .page.carbon .cartodb-tooltip .tooltip-scale {
-    position: relative;
-    height: 20px;
-    margin-bottom: 10px;
-    width: 100%;
-    border-bottom: solid 1px #999999; }
-    .page.carbon .cartodb-tooltip .tooltip-scale div {
-      position: absolute;
-      font-size: 10px;
-      color: #999999; }
-      .page.carbon .cartodb-tooltip .tooltip-scale div:nth-child(1) {
-        left: 0; }
-      .page.carbon .cartodb-tooltip .tooltip-scale div:nth-child(2) {
-        left: 15%; }
-      .page.carbon .cartodb-tooltip .tooltip-scale div:nth-child(3) {
-        left: 30%; }
-      .page.carbon .cartodb-tooltip .tooltip-scale div:nth-child(4) {
-        left: 45%; }
-      .page.carbon .cartodb-tooltip .tooltip-scale div:nth-child(5) {
-        left: 60%; }
-      .page.carbon .cartodb-tooltip .tooltip-scale div:nth-child(6) {
-        left: 75%; }
-      .page.carbon .cartodb-tooltip .tooltip-scale div:nth-child(7) {
-        left: 97%; }
   .page.carbon .cartodb-tooltip .tooltip-legend > div {
     float: left;
     margin-right: 29px; }
