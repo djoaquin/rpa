@@ -24300,7 +24300,7 @@ cdb.geo.ui.Infowindow = cdb.core.View.extend({
 
   initialize: function(){
     var self = this;
-
+    
     _.bindAll(this, "render", "setLatLng", "_setTemplate", "_updatePosition",
       "_update", "toggle", "show", "hide");
 
@@ -24348,7 +24348,6 @@ cdb.geo.ui.Infowindow = cdb.core.View.extend({
    *  Render infowindow content
    */
   render: function() {
-
     if(this.template) {
 
       // If there is content, destroy the jscrollpane first, then remove the content.
@@ -24389,7 +24388,7 @@ cdb.geo.ui.Infowindow = cdb.core.View.extend({
 
 
       this.$el.html(this.template(obj));
-      vent.trigger("infowindow:rendered", obj);
+      vent.trigger("infowindow:rendered", obj, this.$el);
 
       // Hello jscrollpane hacks!
       // It needs some time to initialize, if not it doesn't render properly the fields

@@ -47,22 +47,31 @@
 
     Workspace.prototype.carbon = function() {
       var id, makeStackedChart, url;
-      makeStackedChart = function(data, target) {
-        var color, d, height, i, layer, layers, m, margin, n, stack, svg, width, x, xAxis, y, yGroupMax, yStackMax;
+      makeStackedChart = function(data, target, showXAxis) {
+        var bottomMargin, color, d, height, itemHeight, layer, layers, m, margin, n, stack, svg, width, x, xAxis, y, yGroupMax, yStackMax, _i, _ref, _results;
+        if (showXAxis == null) {
+          showXAxis = true;
+        }
         n = data.length;
         m = 1;
         stack = d3.layout.stack();
-        i = 0;
-        d = _.map(data, function(value, k) {
-          var a;
-          a = [
-            {
-              x: i,
-              y: parseFloat(value.toFixed(2))
-            }
-          ];
-          i = i + 1;
-          return a;
+        d = (function() {
+          _results = [];
+          for (var _i = 0, _ref = n - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; 0 <= _ref ? _i++ : _i--){ _results.push(_i); }
+          return _results;
+        }).apply(this);
+        d = d.map(function(i) {
+          var _j, _ref1, _results1;
+          return (function() {
+            _results1 = [];
+            for (var _j = 0, _ref1 = m - 1; 0 <= _ref1 ? _j <= _ref1 : _j >= _ref1; 0 <= _ref1 ? _j++ : _j--){ _results1.push(_j); }
+            return _results1;
+          }).apply(this).map(function(j) {
+            return {
+              x: j,
+              y: parseFloat(data[i].toFixed(2))
+            };
+          });
         });
         layers = stack(d);
         yGroupMax = d3.max(layers, function(layer) {
@@ -75,14 +84,16 @@
             return d.y0 + d.y;
           });
         });
+        bottomMargin = showXAxis ? 40 : 0;
         margin = {
           top: 5,
           right: 5,
-          bottom: 40,
+          bottom: bottomMargin,
           left: 5
         };
         width = 505 - margin.left - margin.right;
-        height = 80 - margin.top - margin.bottom;
+        itemHeight = showXAxis ? 80 : 40;
+        height = itemHeight - margin.top - margin.bottom;
         x = d3.scale.linear().domain([0, yStackMax]).range([0, width]);
         y = d3.scale.ordinal().domain(d3.range(m)).rangeRoundBands([2, height], .08);
         color = function(i) {
@@ -111,7 +122,9 @@
           return ((d.y0 + (d.y / 2)) / yStackMax * width) - parseInt(String(d.y).split("").length * 3);
         });
         xAxis = d3.svg.axis().scale(x).tickSize(0.8).tickPadding(6).orient("bottom");
-        return svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis);
+        if (showXAxis) {
+          return svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis);
+        }
       };
       id = "carbon";
       url = "http://rpa.cartodb.com/api/v2/viz/7d0015c0-aed2-11e3-a656-0e73339ffa50/viz.json";
@@ -121,7 +134,7 @@
         legends: true,
         zoom: 9
       }).done(function(vis, layers) {
-        var adjust_vis, colors, columns, county_cols, layer, layer_county, layer_zip, map, sublayers, tables, zip_cols;
+        var adjust_vis, colors, columns, county_cols, layer, layer_county, layer_zip, map, shared_cols, sublayers, tables, zip_cols;
         layer = layers[1];
         layer_county = layers[1].getSubLayer(0);
         layer_zip = layers[1].getSubLayer(1);
@@ -135,8 +148,9 @@
           services: "#695b94",
           total: "#008000"
         };
-        county_cols = "food,goods,services,total,transport,housing";
-        zip_cols = "" + county_cols + ",po_name,zip";
+        shared_cols = "food,goods,services,total,transport,housing";
+        county_cols = "county_n," + shared_cols;
+        zip_cols = "" + shared_cols + ",po_name,zip";
         columns = function(table) {
           if (table === "rpa_carbonfootprint") {
             return zip_cols;
@@ -153,7 +167,7 @@
           return _.each(colors, function(hex, column) {
             var css, interactivity, sublayer, t, tlayers;
             css = "#" + table + " [" + column + " > 60] {\n  //Darkest\n  polygon-fill: " + hex + ";\n}\n#" + table + " [" + column + " > 40][" + column + " < 60] {\n  //Lighter\n  polygon-fill: " + (shade(hex, -0.1)) + ";\n}\n#" + table + " [" + column + " < 40] {\n  //Lightest\n  polygon-fill: " + (shade(hex, -0.2)) + ";\n}";
-            interactivity = [];
+            interactivity = ["cartodb_id"];
             interactivity = interactivity.concat(columns(table).split(","));
             sublayer = layer.createSubLayer({
               sql: sql,
@@ -205,21 +219,20 @@
           }
           return adjust_vis(show_table, hide_table);
         });
-        vent.on("tooltip:rendered", function(data, $el) {
-          data = _.filter(data, function(v, k) {
-            return _.isNumber(v);
-          });
+        vent.on("tooltip:rendered", function(d, $el) {
+          var data;
+          data = [d["transport"], d["housing"], d["food"], d["goods"], d["services"]];
           return makeStackedChart(data, $el.find(".progressive").get(0));
         });
-        return vent.on("infowindow:rendered", function(data) {
-          if (data["null"] === "Loading content...") {
+        return vent.on("infowindow:rendered", function(d, $el) {
+          var data, region;
+          if (d["null"] === "Loading content...") {
             return;
           }
-          return _.each(data, function(value, k) {
-            var val;
-            val = (value * 75).toFixed(2);
-            return $(".cartodb-infowindow .progress:first .progress-bar." + k).attr("style", "width:" + val + "%").text(val);
-          });
+          data = [d["transport"], d["housing"], d["food"], d["goods"], d["services"]];
+          region = [12.7, 11.7, 8.0, 6.0, 6.8];
+          makeStackedChart(data, $el.find(".progressive").get(0), false);
+          return makeStackedChart(region, $el.find(".progressive-region").get(0), true);
         });
       });
     };

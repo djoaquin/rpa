@@ -6870,6 +6870,9 @@ button.close {
 
 .page.carbon .x.axis .tick {
   font-size: 10px; }
+.page.carbon .progressive, .page.carbon .progressive-region {
+  position: relative;
+  left: -5px; }
 .page.carbon .cartodb-infowindow {
   width: 560px !important;
   max-width: 560px !important; }
@@ -6906,7 +6909,8 @@ button.close {
   .page.carbon .cartodb-infowindow .cartodb-popup {
     width: 545px !important;
     max-width: 545px !important;
-    max-height: 600px;
+    height: 275px !important;
+    max-height: 275px !important;
     background: white;
     overflow: visible;
     border: solid 1px rgba(0, 0, 0, 0.1);
@@ -6922,29 +6926,33 @@ button.close {
     .page.carbon .cartodb-infowindow .cartodb-popup .cartodb-popup-content-wrapper {
       width: 530px !important;
       max-width: 530px !important;
-      max-height: 600px;
+      height: 260px !important;
+      max-height: 260px !important;
       background: white;
       overflow: visible;
       overflow: hidden; }
       .page.carbon .cartodb-infowindow .cartodb-popup .cartodb-popup-content-wrapper .cartodb-popup-content {
         width: 510px !important;
         max-width: 510px !important;
-        max-height: 600px;
+        height: 260px !important;
+        max-height: 260px !important;
         background: white;
-        overflow: visible; }
+        overflow: visible;
+        overflow: visible !important; }
         .page.carbon .cartodb-infowindow .cartodb-popup .cartodb-popup-content-wrapper .cartodb-popup-content .jspContainer {
           width: 510px !important;
           max-width: 510px !important;
-          max-height: 600px;
+          height: 260px !important;
+          max-height: 260px !important;
           background: white;
-          overflow: visible;
-          height: 200px !important; }
+          overflow: visible; }
           .page.carbon .cartodb-infowindow .cartodb-popup .cartodb-popup-content-wrapper .cartodb-popup-content .jspContainer .jspVerticalBar {
             display: none !important; }
           .page.carbon .cartodb-infowindow .cartodb-popup .cartodb-popup-content-wrapper .cartodb-popup-content .jspContainer .jspPane {
             width: 510px !important;
             max-width: 510px !important;
-            max-height: 600px;
+            height: 260px !important;
+            max-height: 260px !important;
             background: white;
             overflow: visible; }
 .page.carbon .cartodb-tooltip {

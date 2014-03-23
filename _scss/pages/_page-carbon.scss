@@ -18,7 +18,7 @@
   $transport: #f9b314;
   $housing: #eb0000;
   $total: #008000;
-  
+
   .tooltip-legend{
     & > div{
       float:left;
@@ -40,10 +40,11 @@
     }
   }
 }
-@mixin windowfix($width:545px) {
+@mixin windowfix($width:545px, $height: 600px) {
   width:$width !important;
   max-width:$width !important;
-  max-height:600px;
+  height:$height !important;
+  max-height:$height !important;
   background:white;
   overflow:visible;
 }
@@ -52,6 +53,7 @@
   .x.axis{
     .tick{font-size:10px;}
   }
+  .progressive, .progressive-region{position:relative;left:-5px;}
   .cartodb-infowindow{
     width:560px !important;
     max-width:560px !important;
@@ -63,19 +65,19 @@
       bottom: -17px;
     }
     .cartodb-popup{
-      @include windowfix(545px);
+      @include windowfix(545px, 275px);
       @include shared-borders();
       .cartodb-popup-content-wrapper{
-        @include windowfix(530px);
+        @include windowfix(530px, 260px);
         overflow:hidden;
         .cartodb-popup-content{
-          @include windowfix(510px);
+          @include windowfix(510px, 260px);
+          overflow:visible !important;
           .jspContainer{
-            @include windowfix(510px);
-            height:200px !important;
+            @include windowfix(510px, 260px);
             .jspVerticalBar{display:none !important;}
             .jspPane{
-              @include windowfix(510px);
+              @include windowfix(510px, 260px);
             }
           }
         }
