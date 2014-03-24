@@ -88,6 +88,7 @@
             return d.y0 + d.y;
           });
         });
+        yStackMax = yStackMax < 60 ? 60 : yStackMax;
         bottomMargin = showXAxis ? 40 : 0;
         margin = {
           top: 5,

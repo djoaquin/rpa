@@ -48,6 +48,7 @@ class Workspace extends Backbone.Router
       yGroupMax = d3.max(layers, (layer)-> d3.max(layer, (d)-> d.y ) )
       #the largest stack
       yStackMax = d3.max(layers, (layer)-> d3.max(layer, (d)-> d.y0 + d.y ) )
+      yStackMax = if yStackMax < 60 then 60 else yStackMax
 
       bottomMargin = if showXAxis then 40 else 0
       margin  = {top: 5, right: 5, bottom: bottomMargin, left: 5}
@@ -130,7 +131,7 @@ class Workspace extends Backbone.Router
             .attr("class", "x axis")
             .attr("transform", "translate(0," + axisPos + ")")
             .call(xAxis)
-            
+
     id = "carbon"
     url = "http://rpa.cartodb.com/api/v2/viz/7d0015c0-aed2-11e3-a656-0e73339ffa50/viz.json"
     cartodb

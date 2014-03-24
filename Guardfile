@@ -10,7 +10,7 @@ opts = {
   "sass"=> {
     input:  '_scss',
     output: 'css'}}
-    
+
 guard 'coffeescript', opts["coffeescript"]
 guard 'sass', opts["sass"]
 
