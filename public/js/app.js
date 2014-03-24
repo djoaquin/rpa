@@ -48,30 +48,34 @@
     Workspace.prototype.carbon = function() {
       var id, makeStackedChart, url;
       makeStackedChart = function(data, target, showXAxis) {
-        var bottomMargin, color, d, height, itemHeight, layer, layers, m, margin, n, stack, svg, width, x, xAxis, y, yGroupMax, yStackMax, _i, _ref, _results;
+        var axisPos, bottomMargin, color, d, has2Samples, height, itemHeight, layer, layers, m, margin, n, stack, svg, width, x, xAxis, y, yGroupMax, yStackMax, _i, _ref, _results;
         if (showXAxis == null) {
           showXAxis = true;
         }
-        n = data.length;
-        m = 1;
+        n = 5;
+        has2Samples = _.isArray(data[0]);
+        m = has2Samples ? 2 : 1;
         stack = d3.layout.stack();
         d = (function() {
           _results = [];
           for (var _i = 0, _ref = n - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; 0 <= _ref ? _i++ : _i--){ _results.push(_i); }
           return _results;
-        }).apply(this);
-        d = d.map(function(i) {
-          var _j, _ref1, _results1;
-          return (function() {
-            _results1 = [];
-            for (var _j = 0, _ref1 = m - 1; 0 <= _ref1 ? _j <= _ref1 : _j >= _ref1; 0 <= _ref1 ? _j++ : _j--){ _results1.push(_j); }
-            return _results1;
-          }).apply(this).map(function(j) {
-            return {
-              x: j,
-              y: parseFloat(data[i].toFixed(2))
-            };
-          });
+        }).apply(this).map(function(i) {
+          if (has2Samples) {
+            return [0, 1].map(function(j) {
+              return {
+                x: j,
+                y: parseFloat(data[j][i].toFixed(2))
+              };
+            });
+          } else {
+            return [
+              {
+                x: 0,
+                y: parseFloat(data[i].toFixed(2))
+              }
+            ];
+          }
         });
         layers = stack(d);
         yGroupMax = d3.max(layers, function(layer) {
@@ -92,8 +96,8 @@
           left: 5
         };
         width = 505 - margin.left - margin.right;
-        itemHeight = showXAxis ? 80 : 40;
-        height = itemHeight - margin.top - margin.bottom;
+        itemHeight = has2Samples ? 60 : 80;
+        height = (itemHeight * m) - margin.top - margin.bottom;
         x = d3.scale.linear().domain([0, yStackMax]).range([0, width]);
         y = d3.scale.ordinal().domain(d3.range(m)).rangeRoundBands([2, height], .08);
         color = function(i) {
@@ -106,7 +110,17 @@
         layer.selectAll("rect").data(function(d) {
           return d;
         }).enter().append("rect").attr("y", function(d) {
-          return y(d.x);
+          var base;
+          base = y(d.x);
+          if (has2Samples) {
+            if (d.x === 1) {
+              return base + 20;
+            } else {
+              return base;
+            }
+          } else {
+            return base;
+          }
         }).attr("x", function(d) {
           return x(d.y0);
         }).attr("height", y.rangeBand()).attr("width", function(d) {
@@ -117,13 +131,24 @@
         }).enter().append("text").text(function(d) {
           return d.y;
         }).attr("font-family", "sans-serif").attr("font-size", "11px").attr("fill", "white").attr("y", function(d, i) {
-          return (height / 2) + 5;
+          var h;
+          h = margin.top + (height * (i + 1)) / 2;
+          if (has2Samples) {
+            if (d.x === 1) {
+              return h;
+            } else {
+              return h - 17;
+            }
+          } else {
+            return h;
+          }
         }).attr("x", function(d) {
           return ((d.y0 + (d.y / 2)) / yStackMax * width) - parseInt(String(d.y).split("").length * 3);
         });
         xAxis = d3.svg.axis().scale(x).tickSize(0.8).tickPadding(6).orient("bottom");
         if (showXAxis) {
-          return svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + height + ")").call(xAxis);
+          axisPos = has2Samples ? height + 20 : height;
+          return svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + axisPos + ")").call(xAxis);
         }
       };
       id = "carbon";
@@ -224,15 +249,25 @@
           data = [d["transport"], d["housing"], d["food"], d["goods"], d["services"]];
           return makeStackedChart(data, $el.find(".progressive").get(0));
         });
-        return vent.on("infowindow:rendered", function(d, $el) {
+        vent.on("infowindow:rendered", function(d, $el) {
           var data, region;
           if (d["null"] === "Loading content...") {
             return;
           }
           data = [d["transport"], d["housing"], d["food"], d["goods"], d["services"]];
           region = [12.7, 11.7, 8.0, 6.0, 6.8];
-          makeStackedChart(data, $el.find(".progressive").get(0), false);
-          return makeStackedChart(region, $el.find(".progressive-region").get(0), true);
+          return makeStackedChart([data, region], $el.find(".progressive").get(0), true);
+        });
+        return $("#layer_selector li").on("click", function(e) {
+          var $li, activeLi, activeSublayers, layerName;
+          $li = $(e.target);
+          layerName = $li.data("sublayer");
+          $li.toggleClass("active");
+          activeLi = $li.parent().find(".active");
+          activeSublayers = activeLi.map(function(i, item) {
+            return $(item).data("sublayer");
+          });
+          return _.each(layers, function(value, k) {});
         });
       });
     };

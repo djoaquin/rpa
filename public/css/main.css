@@ -6873,6 +6873,9 @@ button.close {
 .page.carbon .progressive, .page.carbon .progressive-region {
   position: relative;
   left: -5px; }
+.page.carbon .progressive + b {
+  position: relative;
+  top: -79px; }
 .page.carbon .cartodb-infowindow {
   width: 560px !important;
   max-width: 560px !important; }

@@ -21,10 +21,10 @@ var n = 3, // number of layers
     //and put it into an array where x is the index and y is the number
     layers = stack(d3.range(n).map(function(d) {
                 var a = [];
-            for (var i = 0; i < m; ++i) {
-              a[i] = {x: i, y: data[i]['pop' + (d+1)]};
-            }
-          return a;
+                for (var i = 0; i < m; ++i) {
+                  a[i] = {x: i, y: data[i]['pop' + (d+1)]};
+                }
+                return a;
              })),
 
     //the largest single layer

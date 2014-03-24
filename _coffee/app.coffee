@@ -27,16 +27,19 @@ class Workspace extends Backbone.Router
   carbon: ->
     makeStackedChart = (data,target, showXAxis=true)->
 
-      n = data.length  # number of layers
-      m = 1
+      n = 5 #data.length  # number of layers
+      has2Samples = _.isArray(data[0])
+      m = if has2Samples then 2 else 1
 
       stack = d3.layout.stack()
       # Transorm data, an object literal, into an array that can be fed into the function below
-      d = [0..n-1]
-      d = d.map((i)->
-                  [0..m-1].map((j)->
-                    {x: j, y: parseFloat(data[i].toFixed(2))}
+      d = [0..n-1].map((i)->
+                if has2Samples
+                  [0..1].map((j)->
+                    {x: j, y: parseFloat(data[j][i].toFixed(2))}
                   )
+                else
+                  [{x: 0, y: parseFloat(data[i].toFixed(2))}]
                )
       layers = stack(d)
 
@@ -49,8 +52,8 @@ class Workspace extends Backbone.Router
       bottomMargin = if showXAxis then 40 else 0
       margin  = {top: 5, right: 5, bottom: bottomMargin, left: 5}
       width   = 505 - margin.left - margin.right
-      itemHeight = if showXAxis then 80 else 40
-      height  = itemHeight - margin.top - margin.bottom
+      itemHeight = if has2Samples then 60 else 80
+      height  = (itemHeight*m) - margin.top - margin.bottom
 
       x = d3.scale.linear()
           .domain([0, yStackMax])
@@ -78,11 +81,22 @@ class Workspace extends Backbone.Router
             .style("fill", (d, i)-> color(i) )
       layer.selectAll("rect")
           .data((d)-> d)
-          .enter().append("rect")
-          .attr("y", (d)-> y(d.x))
-        .attr("x", (d)-> x(d.y0))
-          .attr("height", y.rangeBand())
-          .attr("width", (d)-> x(d.y))
+          .enter()
+            .append("rect")
+            .attr("y", (d)->
+                base = y(d.x)
+                if has2Samples
+                  if d.x is 1
+                    base + 20
+                  else
+                    base
+                else
+                  base
+              )
+            .attr("x", (d)-> x(d.y0))
+            .attr("height", y.rangeBand())
+            .attr("width", (d)-> x(d.y))
+
       layer.selectAll("text")
         .data((d)-> d)
         .enter()
@@ -92,7 +106,14 @@ class Workspace extends Backbone.Router
         .attr("font-size", "11px")
         .attr("fill", "white")
         .attr("y", (d, i)->
-            (height/2) + 5
+            h = margin.top + (height * (i + 1))/2
+            if has2Samples
+              if d.x is 1
+                h
+              else
+                h - 17
+            else h
+
           )
         .attr("x", (d)-> ((d.y0 + (d.y/2))/yStackMax * width) - parseInt(String(d.y).split("").length * 3))
       xAxis = d3.svg.axis()
@@ -101,15 +122,15 @@ class Workspace extends Backbone.Router
           .tickPadding(6)
           .orient("bottom")
       if showXAxis
+        axisPos = if has2Samples
+          height + 20
+        else
+          height
         svg.append("g")
             .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
+            .attr("transform", "translate(0," + axisPos + ")")
             .call(xAxis)
-
-
-    # makeStackedChart({a: 5, b: 55, c: 65}, ".content")
-
-
+            
     id = "carbon"
     url = "http://rpa.cartodb.com/api/v2/viz/7d0015c0-aed2-11e3-a656-0e73339ffa50/viz.json"
     cartodb
@@ -244,11 +265,31 @@ class Workspace extends Backbone.Router
           )
         vent.on "infowindow:rendered", (d, $el)->
           return if d["null"] is "Loading content..."
-          # d = _.filter(data,(v,k)-> _.isNumber(v))
           data = [d["transport"],d["housing"],d["food"],d["goods"],d["services"]]
           region = [12.7, 11.7, 8.0, 6.0, 6.8]
-          makeStackedChart(data, $el.find(".progressive").get(0), false)
-          makeStackedChart(region, $el.find(".progressive-region").get(0), true)
+          makeStackedChart([data,region], $el.find(".progressive").get(0), true)
+          # makeStackedChart(region, $el.find(".progressive-region").get(0), true)
+
+
+        $("#layer_selector li").on "click", (e)->
+          $li = $(e.target)
+          layerName = $li.data("sublayer")
+
+          # Toggle the active class
+          $li.toggleClass("active")
+
+          activeLi =  $li.parent().find(".active")
+          activeSublayers = activeLi.map((i,item)-> $(item).data("sublayer"))
+
+          # Show the last active layer
+          # TODO: loop through the sublayers. Deactivate all. Then activate the targeted layer.
+          _.each(layers, (value,k)->
+            # if k in activeSublayers
+            #   value["sublayer"].show()
+            # else
+            #   value["sublayer"].hide()
+
+          )
 
 
   property: ->

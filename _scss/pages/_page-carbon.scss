@@ -54,6 +54,10 @@
     .tick{font-size:10px;}
   }
   .progressive, .progressive-region{position:relative;left:-5px;}
+  .progressive + b {
+    position:relative;
+    top:-79px;
+  }
   .cartodb-infowindow{
     width:560px !important;
     max-width:560px !important;
