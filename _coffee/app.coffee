@@ -143,6 +143,8 @@ class Workspace extends Backbone.Router
         layer.setInteraction(true)
         layer_zip.hide()
 
+        default_sublayers = {county: layer_county, zip: layer_zip}
+
         colors =
           transport: "#f9b314"
           housing: "#eb0000"
@@ -181,6 +183,7 @@ class Workspace extends Backbone.Router
                         polygon-fill: #{shade(hex,-0.2)};
                       }
                     """
+              # console.log css
               interactivity = ["cartodb_id"]
               interactivity = interactivity.concat(columns(table).split(","))
               sublayer = layer.createSubLayer(
@@ -229,36 +232,34 @@ class Workspace extends Backbone.Router
             )
           )
         )
-        adjust_vis = (show_table, hide_table)->
+        adjust_layer_vis = (opts)->
+          default_sublayers[opts["show"]].show()
+          default_sublayers[opts["hide"]].hide()
+
+        activeSublayer = "total"
+        adjust_sublayer_vis = (opts)->
           # loop through sublayer and show/hide layers
           _.each(sublayers, (value, layer_name)->
-              value[show_table].show()
-              value[hide_table].hide()
+              value[opts["hide"]].hide()
+              if layer_name is activeSublayer
+                value[opts["show"]].show()
             )
         # By default, hide the zip layer, and show the county layer
-        adjust_vis(tables[1], tables[0])
+        adjust_sublayer_vis(show: tables[1], hide: tables[0])
 
         map = vis.getNativeMap()
         map.on 'zoomend', (a,b,c)->
           $(".cartodb-tooltip").hide()
           zoomLevel = map.getZoom()
-          # TODO: check to ensure that this conditional is only executed during a state transition
           if zoomLevel > 9
-            # hide the county layer
-            # show the zip layer
-            hide_table = tables[1]
-            show_table = tables[0]
-            layer_county.hide()
-            layer_zip.show()
+            # hide the sublayers in the county layer, show the zip layer
+            adjust_sublayer_vis(show: tables[0], hide: tables[1])
+            adjust_layer_vis(show: "zip", hide: "county")
           else
-            # show the county layer
-            # hide the zip layer
-            hide_table = tables[0]
-            show_table = tables[1]
-            layer_county.show()
-            layer_zip.hide()
+            # hide the sublayers in the zip layer, show the county layer
+            adjust_sublayer_vis(show: tables[1], hide: tables[0])
+            adjust_layer_vis(show: "county", hide: "zip")
 
-          adjust_vis(show_table, hide_table)
 
         vent.on("tooltip:rendered", (d,$el)->
             data = [d["transport"],d["housing"],d["food"],d["goods"],d["services"]]
@@ -269,28 +270,24 @@ class Workspace extends Backbone.Router
           data = [d["transport"],d["housing"],d["food"],d["goods"],d["services"]]
           region = [12.7, 11.7, 8.0, 6.0, 6.8]
           makeStackedChart([data,region], $el.find(".progressive").get(0), true)
-          # makeStackedChart(region, $el.find(".progressive-region").get(0), true)
-
 
         $("#layer_selector li").on "click", (e)->
           $li = $(e.target)
+          $li.siblings("li").removeClass("active")
+          $li.addClass("active")
+
           layerName = $li.data("sublayer")
+          activeSublayer = layerName
+          legend = $(".cartodb-legend .cartodb-legend")
+          legend.removeClass()
+          legend.addClass("cartodb-legend #{layerName}-layer")
 
-          # Toggle the active class
-          $li.toggleClass("active")
-
-          activeLi =  $li.parent().find(".active")
-          activeSublayers = activeLi.map((i,item)-> $(item).data("sublayer"))
-
-          # Show the last active layer
-          # TODO: loop through the sublayers. Deactivate all. Then activate the targeted layer.
-          _.each(layers, (value,k)->
-            # if k in activeSublayers
-            #   value["sublayer"].show()
-            # else
-            #   value["sublayer"].hide()
-
+          zoomLevel = map.getZoom()
+          current_table = if zoomLevel > 9 then tables[0] else tables[1]
+          _.each(sublayers, (sublayer,k)->
+            sublayer[current_table].hide()
           )
+          sublayers[layerName][current_table].show()
 
 
   property: ->
@@ -427,7 +424,6 @@ class Workspace extends Backbone.Router
         # Create the sublayer for subway routes
         layers[1].setInteraction(true)
         schoolLayer = layers[1].getSubLayer(1)
-        console.log schoolLayer
         schoolLayer = schoolLayer.setInteractivity("cartodb_id, schlrank, rank_perce, schnam, localname")
 
         tooltip = new cdb.geo.ui.Tooltip(

@@ -160,12 +160,16 @@
         legends: true,
         zoom: 9
       }).done(function(vis, layers) {
-        var adjust_vis, colors, columns, county_cols, layer, layer_county, layer_zip, map, shared_cols, sublayers, tables, zip_cols;
+        var activeSublayer, adjust_layer_vis, adjust_sublayer_vis, colors, columns, county_cols, default_sublayers, layer, layer_county, layer_zip, map, shared_cols, sublayers, tables, zip_cols;
         layer = layers[1];
         layer_county = layers[1].getSubLayer(0);
         layer_zip = layers[1].getSubLayer(1);
         layer.setInteraction(true);
         layer_zip.hide();
+        default_sublayers = {
+          county: layer_county,
+          zip: layer_zip
+        };
         colors = {
           transport: "#f9b314",
           housing: "#eb0000",
@@ -220,30 +224,47 @@
             });
           });
         });
-        adjust_vis = function(show_table, hide_table) {
+        adjust_layer_vis = function(opts) {
+          default_sublayers[opts["show"]].show();
+          return default_sublayers[opts["hide"]].hide();
+        };
+        activeSublayer = "total";
+        adjust_sublayer_vis = function(opts) {
           return _.each(sublayers, function(value, layer_name) {
-            value[show_table].show();
-            return value[hide_table].hide();
+            value[opts["hide"]].hide();
+            if (layer_name === activeSublayer) {
+              return value[opts["show"]].show();
+            }
           });
         };
-        adjust_vis(tables[1], tables[0]);
+        adjust_sublayer_vis({
+          show: tables[1],
+          hide: tables[0]
+        });
         map = vis.getNativeMap();
         map.on('zoomend', function(a, b, c) {
-          var hide_table, show_table, zoomLevel;
+          var zoomLevel;
           $(".cartodb-tooltip").hide();
           zoomLevel = map.getZoom();
           if (zoomLevel > 9) {
-            hide_table = tables[1];
-            show_table = tables[0];
-            layer_county.hide();
-            layer_zip.show();
+            adjust_sublayer_vis({
+              show: tables[0],
+              hide: tables[1]
+            });
+            return adjust_layer_vis({
+              show: "zip",
+              hide: "county"
+            });
           } else {
-            hide_table = tables[0];
-            show_table = tables[1];
-            layer_county.show();
-            layer_zip.hide();
+            adjust_sublayer_vis({
+              show: tables[1],
+              hide: tables[0]
+            });
+            return adjust_layer_vis({
+              show: "county",
+              hide: "zip"
+            });
           }
-          return adjust_vis(show_table, hide_table);
         });
         vent.on("tooltip:rendered", function(d, $el) {
           var data;
@@ -260,15 +281,21 @@
           return makeStackedChart([data, region], $el.find(".progressive").get(0), true);
         });
         return $("#layer_selector li").on("click", function(e) {
-          var $li, activeLi, activeSublayers, layerName;
+          var $li, current_table, layerName, legend, zoomLevel;
           $li = $(e.target);
+          $li.siblings("li").removeClass("active");
+          $li.addClass("active");
           layerName = $li.data("sublayer");
-          $li.toggleClass("active");
-          activeLi = $li.parent().find(".active");
-          activeSublayers = activeLi.map(function(i, item) {
-            return $(item).data("sublayer");
+          activeSublayer = layerName;
+          legend = $(".cartodb-legend .cartodb-legend");
+          legend.removeClass();
+          legend.addClass("cartodb-legend " + layerName + "-layer");
+          zoomLevel = map.getZoom();
+          current_table = zoomLevel > 9 ? tables[0] : tables[1];
+          _.each(sublayers, function(sublayer, k) {
+            return sublayer[current_table].hide();
           });
-          return _.each(layers, function(value, k) {});
+          return sublayers[layerName][current_table].show();
         });
       });
     };
@@ -360,7 +387,6 @@
         var schoolLayer, tooltip;
         layers[1].setInteraction(true);
         schoolLayer = layers[1].getSubLayer(1);
-        console.log(schoolLayer);
         schoolLayer = schoolLayer.setInteractivity("cartodb_id, schlrank, rank_perce, schnam, localname");
         tooltip = new cdb.geo.ui.Tooltip({
           template: "<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <div class=\"title\"  style=\"padding-bottom:10px\">\n          <h3>{{schnam}}</h3>\n          <span>{{localname}}</span>\n        </div>\n\n        {{#rank_perce}}\n          <div>School ranking:\n            <span class=\"{{schlrank}}\"><b class=\"school-ranking\">{{rank_perce}}</b> <b> ({{schlrank}}) </b></span>\n          </div>\n        {{/rank_perce}}\n        {{^rank_perce}}\n          <div class=\"{{schlrank}}\">No data available</div>\n        {{/rank_perce}}\n      </div>\n   </div>\n</div>",

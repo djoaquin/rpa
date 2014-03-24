@@ -6906,6 +6906,23 @@ button.close {
       .page.vulnerable #layer_selector ul li.active {
         background: rgba(0, 0, 0, 0.1); }
 
+.page.carbon #layer_selector {
+  position: absolute;
+  left: 10px;
+  bottom: 10px;
+  padding: 0; }
+  .page.carbon #layer_selector ul {
+    list-style: none;
+    margin: 0;
+    padding: 0; }
+    .page.carbon #layer_selector ul li {
+      cursor: pointer;
+      padding: 5px 10px;
+      display: block;
+      width: 100%;
+      text-decoration: none; }
+      .page.carbon #layer_selector ul li.active {
+        background: rgba(0, 0, 0, 0.1); }
 .page.carbon .x.axis .tick {
   font-size: 10px; }
 .page.carbon .progressive, .page.carbon .progressive-region {

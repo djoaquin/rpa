@@ -7,7 +7,33 @@ class: carbon
 {% include navbar.html%}
 
 <div class="content">
-  <div class="map" id="carbon"></div>
+  <div class="map">
+    <div id="carbon" class="mapInner"></div>
+    <div id="layer_selector" class="cartodb-infobox">
+      <ul>
+        <li data-sublayer="food">
+          Food
+        </li>
+        <li data-sublayer="goods">
+          Goods
+        </li>
+        <li data-sublayer="services">
+          Services
+        </li>
+        <li data-sublayer="transport">
+          Transport
+        </li>
+        <li data-sublayer="housing">
+          Housing
+        </li>
+        <li data-sublayer="total" class="active">
+          Total
+        </li>
+      </ul>
+    </div>
+
+  </div>
+
 </div>
 {% include footer.html %}
 
