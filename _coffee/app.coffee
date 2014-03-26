@@ -315,11 +315,9 @@ class Workspace extends Backbone.Router
               <div class="cartodb-popup">
                  <div class="cartodb-popup-content-wrapper">
                     <div class="cartodb-popup-content">
-                      <p>{{namelsad10}}</p>
+                      <p><b>{{namelsad10}}</b></p>
                       <p>{{localname}}</p>
-                      <p>{{retaxrate}}</p>
-                      <p>{{retax_acs}}</p>
-                      <p>{{med_val}}</p>
+                      <p class="property-tax">Property Tax: <b class="tax-rate">{{retaxrate}}</b></p>
                     </div>
                  </div>
               </div>
@@ -334,11 +332,9 @@ class Workspace extends Backbone.Router
               <div class="cartodb-popup">
                  <div class="cartodb-popup-content-wrapper">
                     <div class="cartodb-popup-content">
-                      <p>{{namelsad10}}</p>
+                      <p><b>{{namelsad10}}</b></p>
                       <p>{{localname}}</p>
-                      <p>{{retaxrate}}</p>
-                      <p>{{retax_acs}}</p>
-                      <p>{{med_val}}</p>
+                      <p class="property-tax">Property Tax: <b class="tax-rate">{{retaxrate}}</b></p>
                     </div>
                  </div>
               </div>
@@ -362,6 +358,7 @@ class Workspace extends Backbone.Router
 
         vent.on("tooltip:rendered", (data)->
             # console.log "Do stuff", data
+            $(".tax-rate").text((parseFloat(data["retaxrate"])*100).toFixed(2)+"%")
           )
 
   walkability: ->

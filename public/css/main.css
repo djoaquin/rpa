@@ -6709,6 +6709,61 @@ button.close {
   display: block;
   float: left;
   margin: -2px 4px 0 0; }
+#property .cartodb-tooltip {
+  background-color: white;
+  border: solid 1px rgba(0, 0, 0, 0.1);
+  border-bottom-left-radius: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-top-right-radius: 5px;
+  border-top-right-radius: 5px;
+  border-top-left-radius: 5px;
+  border-bottom-right-radius: 5px;
+  border-bottom-left-radius: 5px;
+  box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.1);
+  border: solid 3px rgba(0, 0, 0, 0.2);
+  width: 345px; }
+  #property .cartodb-tooltip .property-tax {
+    border-top: solid 1px #999999;
+    padding-top: 10px;
+    margin-top: 10px; }
+    #property .cartodb-tooltip .property-tax:before {
+      content: " ";
+      width: 10px;
+      height: 10px;
+      background-color: #00b6d5;
+      display: block;
+      float: left;
+      margin-top: 3px;
+      margin-right: 5px; }
+  #property .cartodb-tooltip .title-case {
+    border-bottom: solid 1px #555555;
+    padding-bottom: 5px;
+    margin-top: 0; }
+  #property .cartodb-tooltip .tooltip-legend > div {
+    float: left;
+    margin-right: 29px; }
+    #property .cartodb-tooltip .tooltip-legend > div:before {
+      content: "•";
+      font-size: 1.8em;
+      line-height: 1em;
+      position: relative;
+      top: 4px;
+      left: -1px; }
+    #property .cartodb-tooltip .tooltip-legend > div.food:before {
+      color: #2fb0c4; }
+    #property .cartodb-tooltip .tooltip-legend > div.goods:before {
+      color: #3f4040; }
+    #property .cartodb-tooltip .tooltip-legend > div.services:before {
+      color: #695b94; }
+    #property .cartodb-tooltip .tooltip-legend > div.transport:before {
+      color: #f9b314; }
+    #property .cartodb-tooltip .tooltip-legend > div.housing:before {
+      color: #eb0000; }
+    #property .cartodb-tooltip .tooltip-legend > div.total:before {
+      color: green; }
+  #property .cartodb-tooltip .cartodb-popup, #property .cartodb-tooltip .cartodb-popup-content-wrapper {
+    background-image: none; }
 
 #carbon .cartodb-legend.cartodb-legend > div div:nth-child(1) {
   margin-bottom: 10px; }

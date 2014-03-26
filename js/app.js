@@ -321,13 +321,13 @@
         propertyLayerNYC = propertyLayerNYC.setInteractivity("namelsad10, localname, retaxrate, retax_acs, med_val");
         propertyLayerNYC.hide();
         tooltip = new cdb.geo.ui.Tooltip({
-          template: "<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <p>{{namelsad10}}</p>\n        <p>{{localname}}</p>\n        <p>{{retaxrate}}</p>\n        <p>{{retax_acs}}</p>\n        <p>{{med_val}}</p>\n      </div>\n   </div>\n</div>",
+          template: "<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <p><b>{{namelsad10}}</b></p>\n        <p>{{localname}}</p>\n        <p class=\"property-tax\">Property Tax: <b class=\"tax-rate\">{{retaxrate}}</b></p>\n      </div>\n   </div>\n</div>",
           layer: propertyLayerNoNYC,
           offset_top: -50
         });
         vis.container.append(tooltip.render().el);
         tooltip2 = new cdb.geo.ui.Tooltip({
-          template: "<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <p>{{namelsad10}}</p>\n        <p>{{localname}}</p>\n        <p>{{retaxrate}}</p>\n        <p>{{retax_acs}}</p>\n        <p>{{med_val}}</p>\n      </div>\n   </div>\n</div>",
+          template: "<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <p><b>{{namelsad10}}</b></p>\n        <p>{{localname}}</p>\n        <p class=\"property-tax\">Property Tax: <b class=\"tax-rate\">{{retaxrate}}</b></p>\n      </div>\n   </div>\n</div>",
           layer: propertyLayerNYC,
           offset_top: -50
         });
@@ -344,7 +344,9 @@
             return propertyLayerNYC.hide();
           }
         });
-        return vent.on("tooltip:rendered", function(data) {});
+        return vent.on("tooltip:rendered", function(data) {
+          return $(".tax-rate").text((parseFloat(data["retaxrate"]) * 100).toFixed(2) + "%");
+        });
       });
     };
 

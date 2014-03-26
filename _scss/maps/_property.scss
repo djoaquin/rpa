@@ -1,3 +1,5 @@
+@import "../partials/utilities";
+
 #property{
   .property-legend{
     // Income colors
@@ -22,5 +24,39 @@
       }
     }
   }
+
+
+
+  .cartodb-tooltip{
+    background-color:white;
+    @include shared-borders();
+
+
+
+    // padding:20px 20px;
+    border:solid 3px rgba(0,0,0,0.2);
+    width:345px;
+
+    .property-tax{
+      border-top:solid 1px $gray-light;
+      padding-top:10px;
+      margin-top:10px;
+      &:before{
+        content:" ";
+        width:10px;
+        height:10px;
+        background-color:#00b6d5;
+        display:block;
+        float:left;
+        margin-top:3px;
+        margin-right:5px;
+      };
+    }
+    @include shared();
+    .cartodb-popup, .cartodb-popup-content-wrapper{
+      background-image:none;
+    }
+  }
+
 
 }
