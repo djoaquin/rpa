@@ -1,3 +1,5 @@
+@import "bootstrap/variables";
+
 #walkability{
   .walkability-legend{
     // Income colors
@@ -7,19 +9,57 @@
     $color4: #7791bf;
     $color5: #743682;
 
-    $i:1;
-    @each $color in $color1, $color2, $color3, $color4, $color5 {
-      p:nth-child(#{$i}):before{
-        content:"";
-        height:20px;
-        width:20px;
-        background-color: $color;
+    $subway_line: $gray-light;
+    $rail_line: #000;
 
-        display: block;
-        float: left;
-        margin: -2px 4px 0 0;
+    .legend-title{
+      margin-top:10px;
+      margin-bottom:20px;
+      display:inline-block;
+    }
+    .items{
+      padding-bottom:20px;
+      $i:1;
+      @each $color in $color1, $color2, $color3, $color4, $color5 {
+        p{
+          margin-bottom:5px;
+        }
+        p:nth-child(#{$i}):before{
+          content:"";
+          height:20px;
+          width:10px;
+          background-color: $color;
+
+          display: block;
+          float: left;
+          margin: -2px 8px 0 0;
+        }
+        $i: $i + 1;
       }
-      $i: $i + 1;
+
+      border-bottom:solid 1px #ccc;
+    }
+    .legend-bottom{
+      margin-top:10px;
+      $i:1;
+      @each $color in $rail_line, $subway_line {
+        p{
+          margin-bottom:10px;
+        }
+        p:nth-child(#{$i}):before{
+          content:"";
+          height:15px;
+          width:3px;
+          position:relative;
+          top:3px;
+          background-color: $color;
+
+          display: block;
+          float: left;
+          margin: -2px 8px 0 0;
+        }
+        $i: $i + 1;
+      }
     }
   }
 

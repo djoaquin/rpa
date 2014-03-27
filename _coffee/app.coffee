@@ -387,20 +387,12 @@ class Workspace extends Backbone.Router
               <div class="cartodb-popup">
                  <div class="cartodb-popup-content-wrapper">
                     <div class="cartodb-popup-content">
-                      <p>{{namelsad10}}</p>
-                      <p>{{localities}}</p>
-                      <p>{{walk_sco_1}}</p>
-                      <p>{{walk_sco_2}}</p>
-                      <p>{{rail_stops}}</p>
-                      <p>{{bank_score}}</p>
-                      <p>{{books_scor}}</p>
-                      <p>{{coffee_sco}}</p>
-                      <p>{{enternatinm}}</p>
-                      <p>{{grocery_sc}}</p>
-                      <p>{{park_score}}</p>
-                      <p>{{restaurant}}</p>
-                      <p>{{school sco}}</p>
-                      <p>{{shopping_s}}</p>
+                      <div class='walkability-title'>
+                        <p><b>{{namelsad10}}</b></p>
+                        <p>{{localities}}</p>
+                      </div>
+                      <p class="walk">Walkability: <b class="walkability-score">{{walk_sco_1}}</b></p>
+                      <div class="progress"><div class="progress-bar" style="width:{{walk_sco_1}}%"></div></div>
                     </div>
                  </div>
               </div>

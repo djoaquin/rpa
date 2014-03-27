@@ -370,7 +370,7 @@
         walkabilityLayer = layers[1].getSubLayer(0);
         walkabilityLayer = walkabilityLayer.setInteractivity("cartodb_id, namelsad10, localities, walk_sco_1, walk_sco_2, rail_stops, bank_score, books_scor, coffee_sco, entertainm, grocery_sc, park_score, restaurant, school_sco, shopping_s");
         tooltip = new cdb.geo.ui.Tooltip({
-          template: "<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <p>{{namelsad10}}</p>\n        <p>{{localities}}</p>\n        <p>{{walk_sco_1}}</p>\n        <p>{{walk_sco_2}}</p>\n        <p>{{rail_stops}}</p>\n        <p>{{bank_score}}</p>\n        <p>{{books_scor}}</p>\n        <p>{{coffee_sco}}</p>\n        <p>{{enternatinm}}</p>\n        <p>{{grocery_sc}}</p>\n        <p>{{park_score}}</p>\n        <p>{{restaurant}}</p>\n        <p>{{school sco}}</p>\n        <p>{{shopping_s}}</p>\n      </div>\n   </div>\n</div>",
+          template: "<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <div class='walkability-title'>\n          <p><b>{{namelsad10}}</b></p>\n          <p>{{localities}}</p>\n        </div>\n        <p class=\"walk\">Walkability: <b class=\"walkability-score\">{{walk_sco_1}}</b></p>\n        <div class=\"progress\"><div class=\"progress-bar\" style=\"width:{{walk_sco_1}}%\"></div></div>\n      </div>\n   </div>\n</div>",
           layer: walkabilityLayer,
           offset_top: -50
         });
