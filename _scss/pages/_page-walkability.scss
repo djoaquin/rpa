@@ -14,6 +14,7 @@
   @include shared();
   .cartodb-popup, .cartodb-popup-content-wrapper{
     background-image:none;
+    p{font-size:15px;}
   }
 
   .cartodb-infowindow{
@@ -22,7 +23,7 @@
     @include shared();
 
     .walkability-title{
-      b{font-size:1.3em;}
+      b{font-size:1.3em;margin-bottom:5px;display:inline-block;}
     }
 
     .cartodb-popup-tip-container{
@@ -31,20 +32,26 @@
       bottom: -17px;
     }
     .cartodb-popup{
-      @include windowfix(545px, 275px);
-      @include shared-borders();
       border:solid 3px rgba(0,0,0,0.2);
+    }
+
+    $width:375px;
+    $height:275px;
+
+    .cartodb-popup{
+      @include windowfix($width, $height);
+      @include shared-borders();
       .cartodb-popup-content-wrapper{
-        @include windowfix(530px, 260px);
+        @include windowfix($width - 15px, $height - 15px);
         overflow:hidden;
         .cartodb-popup-content{
-          @include windowfix(510px, 260px);
+          @include windowfix($width - 35px, $height - 15px);
           overflow:visible !important;
           .jspContainer{
-            @include windowfix(510px, 260px);
+            @include windowfix($width - 40px, $height - 15px);
             .jspVerticalBar{display:none !important;}
             .jspPane{
-              @include windowfix(510px, 260px);
+              @include windowfix($width - 40px, $height - 15px);
             }
           }
         }
