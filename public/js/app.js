@@ -360,7 +360,7 @@
         legends: true,
         zoom: 9
       }).done(function(vis, layers) {
-        var color1, color2, color3, color4, color5, tooltip, walkabilityLayer;
+        var color1, color2, color3, color4, color5, score_to_color, tooltip, walkabilityLayer;
         color1 = "#ffefc9";
         color2 = "#fdde9c";
         color3 = "#80c5d8";
@@ -370,12 +370,36 @@
         walkabilityLayer = layers[1].getSubLayer(0);
         walkabilityLayer = walkabilityLayer.setInteractivity("cartodb_id, namelsad10, localities, walk_sco_1, walk_sco_2, rail_stops, bank_score, books_scor, coffee_sco, entertainm, grocery_sc, park_score, restaurant, school_sco, shopping_s");
         tooltip = new cdb.geo.ui.Tooltip({
-          template: "<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <div class='walkability-title'>\n          <p><b>{{namelsad10}}</b></p>\n          <p>{{localities}}</p>\n        </div>\n        <p class=\"walk\">Walkability: <b class=\"walkability-score\">{{walk_sco_1}}</b></p>\n        <div class=\"progress\"><div class=\"progress-bar\" style=\"width:{{walk_sco_1}}%\"></div></div>\n      </div>\n   </div>\n</div>",
+          template: "<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <div class='walkability-title'>\n          <p><b>{{namelsad10}}</b></p>\n          <p>{{localities}}</p>\n        </div>\n        <p class=\"walk\">Walkability: <b class=\"walkability-score\">{{walk_sco_1}}</b></p>\n        <div class=\"progress walk_sco_1\"><div class=\"progress-bar\" style=\"width:{{walk_sco_1}}%\"></div></div>\n      </div>\n   </div>\n</div>",
           layer: walkabilityLayer,
           offset_top: -50
         });
         vis.container.append(tooltip.render().el);
-        return vent.on("tooltip:rendered", function(data) {});
+        score_to_color = {
+          "Very Car Dependent": "#ffefc9",
+          "Somewhat Car Dependent": "#fdde9c",
+          "Somewhat Walkable": "#80c5d8",
+          "Very Walkable": "#7791bf",
+          "Walker's Paradise": "#743682"
+        };
+        vent.on("infowindow:rendered", function(data, $el) {
+          var color;
+          color = score_to_color[data["walk_sco_2"]];
+          $el.find(".progress.walk_sco_1 .progress-bar").css("background-color", color);
+          return $el.find(".walkability-score").each(function() {
+            var text;
+            text = $(this).text();
+            if (!text) {
+              return;
+            }
+            return $(this).text(parseFloat(text).toFixed(2));
+          });
+        });
+        return vent.on("tooltip:rendered", function(data, $el) {
+          var color;
+          color = score_to_color[data["walk_sco_2"]];
+          return $el.find(".progress.walk_sco_1 .progress-bar").css("background-color", color);
+        });
       });
     };
 

@@ -392,7 +392,7 @@ class Workspace extends Backbone.Router
                         <p>{{localities}}</p>
                       </div>
                       <p class="walk">Walkability: <b class="walkability-score">{{walk_sco_1}}</b></p>
-                      <div class="progress"><div class="progress-bar" style="width:{{walk_sco_1}}%"></div></div>
+                      <div class="progress walk_sco_1"><div class="progress-bar" style="width:{{walk_sco_1}}%"></div></div>
                     </div>
                  </div>
               </div>
@@ -402,9 +402,28 @@ class Workspace extends Backbone.Router
         )
         vis.container.append(tooltip.render().el)
 
-        vent.on("tooltip:rendered", (data)->
-            # console.log "Do stuff", data
-          )
+
+        score_to_color =
+          "Very Car Dependent": "#ffefc9"
+          "Somewhat Car Dependent": "#fdde9c"
+          "Somewhat Walkable": "#80c5d8"
+          "Very Walkable": "#7791bf"
+          "Walker's Paradise": "#743682"
+
+        vent.on "infowindow:rendered", (data,$el)->
+          color = score_to_color[data["walk_sco_2"]]
+          $el.find(".progress.walk_sco_1 .progress-bar").css("background-color", color)
+          $el.find(".walkability-score").each(->
+              text = $(this).text()
+              return unless text
+              $(this).text(parseFloat(text).toFixed(2))
+            )
+
+        vent.on "tooltip:rendered", (data,$el)->
+          # console.log "Do stuff", data
+          color = score_to_color[data["walk_sco_2"]]
+          $el.find(".progress.walk_sco_1 .progress-bar").css("background-color", color)
+
   schools: ->
     cartodb
       .createVis('schoolPerf', 'http://rpa.cartodb.com/api/v2/viz/5bc0d9be-a264-11e3-bc17-0e10bcd91c2b/viz.json', searchControl: true, layer_selector: false, legends: true, zoom:11)
