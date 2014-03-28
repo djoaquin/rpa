@@ -310,7 +310,7 @@
         legends: true,
         zoom: 9
       }).done(function(vis, layers) {
-        var color1, color2, color3, map, propertyLayerNYC, propertyLayerNoNYC, tooltip, tooltip2;
+        var color1, color2, color3, map, propertyLayerNYC, propertyLayerNoNYC, rate_to_color, tooltip, tooltip2;
         color1 = "#ffefc9";
         color2 = "#fdde9c";
         color3 = "#80c5d8";
@@ -344,8 +344,27 @@
             return propertyLayerNYC.hide();
           }
         });
-        return vent.on("tooltip:rendered", function(data) {
-          return $(".tax-rate").text((parseFloat(data["retaxrate"]) * 100).toFixed(2) + "%");
+        rate_to_color = function(rate) {
+          rate = parseFloat(rate);
+          if (rate <= 0.005) {
+            return "color1";
+          } else if (rate > 0.005 && rate <= 0.01) {
+            return "color2";
+          } else if (rate > 0.01 && rate <= 0.015) {
+            return "color3";
+          } else if (rate > 0.015 && rate <= 0.02) {
+            return "color4";
+          } else if (rate > 0.02) {
+            return "color5";
+          } else {
+            return "#000000";
+          }
+        };
+        return vent.on("tooltip:rendered", function(data, $el) {
+          var color;
+          $(".tax-rate").text((parseFloat(data["retaxrate"]) * 100).toFixed(2) + "%");
+          color = rate_to_color(data["retaxrate"]);
+          return $el.find(".property-tax").attr("id", color);
         });
       });
     };

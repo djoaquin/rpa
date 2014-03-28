@@ -1,15 +1,16 @@
 @import "../partials/utilities";
 
 #property{
-  .property-legend{
-    // Income colors
-    $color1: #2C7FB8;
-    $color2: #7FCDBB;
-    $color3: #EDF8B1;
+  $color1: #f3c0b5;
+  $color2: #e8947f;
+  $color3: #d36546;
+  $color4: #b02b04;
+  $color5: #892300;
 
+  .property-legend{
     $i:1;
     .items{
-      @each $color in $color1, $color2, $color3 {
+      @each $color in $color1, $color2, $color3, $color4, $color5 {
         p:nth-child(#{$i}):before{
           content:"";
           height:20px;
@@ -45,13 +46,39 @@
         content:" ";
         width:10px;
         height:10px;
-        background-color:#00b6d5;
         display:block;
         float:left;
         margin-top:3px;
         margin-right:5px;
       };
     }
+
+    #color1{
+      &:before{
+        background-color: $color1;
+      }
+    }
+    #color2{
+      &:before{
+        background-color: $color2;
+      }
+    }
+    #color3{
+      &:before{
+        background-color: $color3;
+      }
+    }
+    #color4{
+      &:before{
+        background-color: $color4;
+      }
+    }
+    #color5{
+      &:before{
+        background-color: $color5;
+      }
+    }
+
     @include shared();
     .cartodb-popup, .cartodb-popup-content-wrapper{
       background-image:none;

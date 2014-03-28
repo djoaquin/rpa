@@ -356,9 +356,26 @@ class Workspace extends Backbone.Router
             propertyLayerNYC.hide()
 
 
-        vent.on("tooltip:rendered", (data)->
+        rate_to_color = (rate)->
+          rate = parseFloat(rate)
+          if rate <= 0.005
+            "color1"
+          else if rate > 0.005 and rate <= 0.01
+            "color2"
+          else if rate > 0.01 and rate <= 0.015
+            "color3"
+          else if rate > 0.015 and rate <= 0.02
+            "color4"
+          else if rate > 0.02
+            "color5"
+          else
+            # This color shall mean the rate was undefined. Hm...
+            "#000000"
+        vent.on("tooltip:rendered", (data, $el)->
             # console.log "Do stuff", data
             $(".tax-rate").text((parseFloat(data["retaxrate"])*100).toFixed(2)+"%")
+            color = rate_to_color(data["retaxrate"])
+            $el.find(".property-tax").attr("id", color)
           )
 
   walkability: ->

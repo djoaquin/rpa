@@ -6732,7 +6732,7 @@ button.close {
   content: "";
   height: 20px;
   width: 20px;
-  background-color: #2c7fb8;
+  background-color: #f3c0b5;
   display: block;
   float: left;
   margin: -2px 4px 0 0; }
@@ -6740,7 +6740,7 @@ button.close {
   content: "";
   height: 20px;
   width: 20px;
-  background-color: #7fcdbb;
+  background-color: #e8947f;
   display: block;
   float: left;
   margin: -2px 4px 0 0; }
@@ -6748,7 +6748,23 @@ button.close {
   content: "";
   height: 20px;
   width: 20px;
-  background-color: #edf8b1;
+  background-color: #d36546;
+  display: block;
+  float: left;
+  margin: -2px 4px 0 0; }
+#property .property-legend .items p:nth-child(4):before {
+  content: "";
+  height: 20px;
+  width: 20px;
+  background-color: #b02b04;
+  display: block;
+  float: left;
+  margin: -2px 4px 0 0; }
+#property .property-legend .items p:nth-child(5):before {
+  content: "";
+  height: 20px;
+  width: 20px;
+  background-color: #892300;
   display: block;
   float: left;
   margin: -2px 4px 0 0; }
@@ -6774,11 +6790,20 @@ button.close {
       content: " ";
       width: 10px;
       height: 10px;
-      background-color: #00b6d5;
       display: block;
       float: left;
       margin-top: 3px;
       margin-right: 5px; }
+  #property .cartodb-tooltip #color1:before {
+    background-color: #f3c0b5; }
+  #property .cartodb-tooltip #color2:before {
+    background-color: #e8947f; }
+  #property .cartodb-tooltip #color3:before {
+    background-color: #d36546; }
+  #property .cartodb-tooltip #color4:before {
+    background-color: #b02b04; }
+  #property .cartodb-tooltip #color5:before {
+    background-color: #892300; }
   #property .cartodb-tooltip .title-case {
     border-bottom: solid 1px #555555;
     padding-bottom: 5px;
