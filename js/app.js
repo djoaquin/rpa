@@ -356,8 +356,6 @@
             return "color4";
           } else if (rate > 0.02) {
             return "color5";
-          } else {
-            return "#000000";
           }
         };
         return vent.on("tooltip:rendered", function(data, $el) {
@@ -395,8 +393,8 @@
         });
         vis.container.append(tooltip.render().el);
         score_to_color = {
-          "Very Car Dependent": "#ffefc9",
-          "Somewhat Car Dependent": "#fdde9c",
+          "Very Car-Dependent": "#ffefc9",
+          "Car-Dependent": "#fdde9c",
           "Somewhat Walkable": "#80c5d8",
           "Very Walkable": "#7791bf",
           "Walker's Paradise": "#743682"
@@ -404,6 +402,7 @@
         vent.on("infowindow:rendered", function(data, $el) {
           var color;
           color = score_to_color[data["walk_sco_2"]];
+          $el.find(".progress .progress-bar").css("background-color", "#8e8e8e");
           $el.find(".progress.walk_sco_1 .progress-bar").css("background-color", color);
           return $el.find(".walkability-score").each(function() {
             var text;

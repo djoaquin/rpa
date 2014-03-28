@@ -368,9 +368,6 @@ class Workspace extends Backbone.Router
             "color4"
           else if rate > 0.02
             "color5"
-          else
-            # This color shall mean the rate was undefined. Hm...
-            "#000000"
         vent.on("tooltip:rendered", (data, $el)->
             # console.log "Do stuff", data
             $(".tax-rate").text((parseFloat(data["retaxrate"])*100).toFixed(2)+"%")
@@ -421,14 +418,15 @@ class Workspace extends Backbone.Router
 
 
         score_to_color =
-          "Very Car Dependent": "#ffefc9"
-          "Somewhat Car Dependent": "#fdde9c"
+          "Very Car-Dependent": "#ffefc9"
+          "Car-Dependent": "#fdde9c"
           "Somewhat Walkable": "#80c5d8"
           "Very Walkable": "#7791bf"
           "Walker's Paradise": "#743682"
 
         vent.on "infowindow:rendered", (data,$el)->
           color = score_to_color[data["walk_sco_2"]]
+          $el.find(".progress .progress-bar").css("background-color", "#8e8e8e")
           $el.find(".progress.walk_sco_1 .progress-bar").css("background-color", color)
           $el.find(".walkability-score").each(->
               text = $(this).text()
