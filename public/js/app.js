@@ -1,8 +1,7 @@
 (function() {
   var Workspace, formatMoney, shade,
     __hasProp = {}.hasOwnProperty,
-    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-    __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; };
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
   formatMoney = function() {
     return $(".currency").each(function() {
@@ -612,29 +611,31 @@
           });
         });
         return $("#layer_selector li").on("click", function(e) {
-          var $li, activeLi, activeSublayers, dbs_and_flood_zone, layerName;
+          var $li, activeLi, activeSublayer, dbs_and_flood_zone, layerName;
           $li = $(e.target);
           layerName = $li.data("sublayer");
-          $li.toggleClass("active");
+          if ($li.hasClass("active")) {
+            return true;
+          }
           activeLi = $li.parent().find(".active");
-          activeSublayers = activeLi.map(function(i, item) {
-            return $(item).data("sublayer");
-          });
+          activeLi.removeClass("active");
+          $li.toggleClass("active");
+          activeSublayer = $li.data("sublayer");
           dbs_and_flood_zone = _.extend(dbs, {
             flood_zone: []
           });
           return _.each(dbs_and_flood_zone, function(value, k) {
-            if (__indexOf.call(activeSublayers, k) >= 0) {
-              if (k === "flood_zone") {
-                return floodZoneLayer.show();
-              } else {
-                return value["layer"].show();
-              }
+            if (activeSublayer === "All") {
+              return value["layer"].show();
             } else {
               if (k === "flood_zone") {
-                return floodZoneLayer.hide();
+
               } else {
-                return value["layer"].hide();
+                if (k === activeSublayer) {
+                  return value["layer"].show();
+                } else {
+                  return value["layer"].hide();
+                }
               }
             }
           });

@@ -717,25 +717,30 @@ class Workspace extends Backbone.Router
           $li = $(e.target)
           layerName = $li.data("sublayer")
 
+          return true if $li.hasClass("active")
+
+          activeLi =  $li.parent().find(".active")
+          activeLi.removeClass("active")
+
           # Toggle the active class
           $li.toggleClass("active")
 
-          activeLi =  $li.parent().find(".active")
-          activeSublayers = activeLi.map((i,item)-> $(item).data("sublayer"))
+          activeSublayer = $li.data("sublayer")
 
           # Show the last active layer
           dbs_and_flood_zone = _.extend(dbs,{flood_zone: []})
           _.each(dbs_and_flood_zone, (value,k)->
-            if k in activeSublayers
-              if k is "flood_zone"
-                floodZoneLayer.show()
-              else
-                value["layer"].show()
+            # TODO: handle the case of the All
+            if activeSublayer is "All"
+              value["layer"].show()
             else
               if k is "flood_zone"
-                floodZoneLayer.hide()
+                # TODO:
               else
-                value["layer"].hide()
+                if k is activeSublayer
+                  value["layer"].show()
+                else
+                  value["layer"].hide()
 
           )
 
