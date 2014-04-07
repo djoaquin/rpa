@@ -15,7 +15,7 @@
     @include hide-text();
     display: inline-block;
 
-    background: url("/images/logo.jpg") left top no-repeat;
+    background: url("#{$siteBase}/images/logo.jpg") left top no-repeat;
     @include size(79px,29px);
   }
 
