@@ -1,8 +1,11 @@
 @import "bootstrap";
 @import "font-awesome";
 
+@import "partials/variables";
+@import "partials/fonts";
 @import "partials/base";
 @import "partials/utilities";
+@import "partials/navbar";
 
 @import "maps/discretionary";
 @import "maps/vulnerable";
@@ -15,6 +18,7 @@
 @import "pages/page-vulnerable";
 @import "pages/page-carbon";
 @import "pages/page-walkability";
+@import "pages/page-home";
 
 
 

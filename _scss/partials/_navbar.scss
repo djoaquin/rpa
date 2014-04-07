@@ -1,0 +1,57 @@
+.navbar.navbar-default{
+  margin-bottom:0;
+  border: none;
+  background-color:white;
+  height:60px;
+  width:100%;
+  & > .container{
+    margin-top:20px;
+    margin-bottom:15px;
+  }
+
+  @include box-shadow(1px 1px 5px rgba(0, 0, 0, 0.3));
+
+  .navbar-brand{
+    @include hide-text();
+    display: inline-block;
+
+    background: url("/images/logo.jpg") left top no-repeat;
+    @include size(79px,29px);
+  }
+
+  .page-name{
+    margin-top: 7px;
+    margin-left: 15px;
+    font-size: 0.9em;
+  }
+
+  .ch-nav{
+    list-style:none;
+    li{
+      float:left;
+      margin-right:20px;
+      color:$gray-light;
+      &.active{
+        font-weight:700;
+        color:black;
+      }
+    }
+
+    border-right:solid 1px $gray-light;
+    margin-right:20px;
+
+    &:before{
+      content: "CHAPTERS:";
+      float:left;
+      margin-right:20px;
+      color:$golden;
+
+    }
+  }
+
+  .social{
+    span{
+      margin-right:10px;
+    }
+  }
+}

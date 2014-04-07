@@ -1,4 +1,4 @@
-  
+
 .map{
   width:100%;height:700px;
   & > .mapInner{
@@ -18,5 +18,15 @@
   .cartodb-logo{display:none !important;}
 }
 .content{
-  margin-top:-20px;
+  margin-top:5px;
 }
+
+.footer{
+  height:60px;
+  background-color:$olive;
+  color:white;
+  .container{
+    padding-top:20px;
+  }
+}
+

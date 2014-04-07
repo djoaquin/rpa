@@ -1,0 +1,47 @@
+@import "../partials/utilities";
+
+.page.home{
+  .jumbotron{
+    background-color:$golden;
+    // height:553px;
+    padding-top:110px;
+    padding-bottom:110px;
+  }
+  .hero{
+    h1{
+      font-size:3em;
+      border-bottom:solid 1px black;
+      display: block;
+      margin: 0 auto 40px;
+      width: 600px;
+      line-height:1.8em;
+      color:white;
+    }
+  }
+
+  .row{
+    padding-bottom:80px;
+    margin-bottom:80px;
+    border-bottom:solid 1px $gray-lighter;
+
+    .img-circle{
+      @include box-shadow(1px 3px 12px rgba(0, 0, 0, 0.6))
+    }
+
+    .ch-title{
+      margin-top:0;
+    }
+    .ch-name{
+      margin-bottom:5px;
+      font-size: 1.1em;
+      color:$golden;
+    }
+    .ch-links{
+      padding-left:15px;
+      color:$gray-light;
+      a{
+        color:$gray-light;
+      }
+    }
+  }
+}
