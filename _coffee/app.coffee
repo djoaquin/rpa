@@ -390,8 +390,69 @@ class Workspace extends Backbone.Router
         # TODO: how can we interpret the walkability score? (Walk_Sco_1)
 
         # Create the sublayer for subway routes
-        layers[1].setInteraction(true)
-        walkabilityLayer = layers[1].getSubLayer(0)
+        layer = layers[1]
+        layer.setInteraction(true)
+        walkabilityLayer = layer.getSubLayer(0)
+
+
+
+        station_layers = [
+            {
+              type: "Train station"
+              name_column: "station_na"
+              table: "rpa_trainstations"
+            }
+            {
+              type: "Subway station"
+              name_column: "station_na"
+              table: "rpa_subwaystations"
+            }
+          ]
+        # Describe and define the sublayers
+        _.each(station_layers,(value,k)->
+          # Take a union of all the tables
+          table = value["table"]
+          ret = "#{table}.cartodb_id,#{table}.the_geom, #{table}.the_geom_webmercator, #{table}.#{value['name_column']}"
+          sql = "SELECT #{ret} FROM #{table}"
+
+          # Create the CSS
+          red = "#ba0000"
+          css = """
+                  ##{table} {marker-fill: #{red}; marker-line-width:0;::line {line-width: 1;line-color: #{red};}[zoom <= 10] {marker-width: 4;}[zoom > 10] {marker-width: 6;}}
+                """
+
+          if table is "rpa_subwaystations"
+            css += "##{table}[zoom < 10] {marker-opacity: 0;}"
+
+          if sql and css
+            interactivity = ["cartodb_id", value['name_column']]
+            sublayer = layer.createSubLayer(
+              sql: sql,
+              cartocss: css
+              interactivity: interactivity
+            )
+            value["layer"] = sublayer
+        )
+
+
+        # # Create a tooltip for every single sublayer
+        # _.each(station_layers,(value,k)->
+        #   vis.addOverlay(
+        #     layer: value["layer"]
+        #     type: 'tooltip'
+        #     offset_top: -30
+        #     template: """
+        #       <div style="background:white;padding:5px 10px;">
+        #         <div style="margin-bottom:10px">
+        #           <h3 class="title-case" style="margin:0">{{ #{value['name_column']} }}</h3>
+        #         </div>
+        #         <div>
+        #           #{value['type']}
+        #         </div>
+        #       </div>
+        #     """
+        #   )
+        # )
 
         walkabilityLayer = walkabilityLayer.setInteractivity("cartodb_id, namelsad10, localities, walk_sco_1, walk_sco_2, rail_stops, bank_score, books_scor, coffee_sco, entertainm, grocery_sc, park_score, restaurant, school_sco, shopping_s")
 

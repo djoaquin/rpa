@@ -377,14 +377,46 @@
         legends: true,
         zoom: 9
       }).done(function(vis, layers) {
-        var color1, color2, color3, color4, color5, score_to_color, tooltip, walkabilityLayer;
+        var color1, color2, color3, color4, color5, layer, score_to_color, station_layers, tooltip, walkabilityLayer;
         color1 = "#ffefc9";
         color2 = "#fdde9c";
         color3 = "#80c5d8";
         color4 = "#7791bf";
         color5 = "#743682";
-        layers[1].setInteraction(true);
-        walkabilityLayer = layers[1].getSubLayer(0);
+        layer = layers[1];
+        layer.setInteraction(true);
+        walkabilityLayer = layer.getSubLayer(0);
+        station_layers = [
+          {
+            type: "Train station",
+            name_column: "station_na",
+            table: "rpa_trainstations"
+          }, {
+            type: "Subway station",
+            name_column: "station_na",
+            table: "rpa_subwaystations"
+          }
+        ];
+        _.each(station_layers, function(value, k) {
+          var css, interactivity, red, ret, sql, sublayer, table;
+          table = value["table"];
+          ret = "" + table + ".cartodb_id," + table + ".the_geom, " + table + ".the_geom_webmercator, " + table + "." + value['name_column'];
+          sql = "SELECT " + ret + " FROM " + table;
+          red = "#ba0000";
+          css = "#" + table + " {marker-fill: " + red + "; marker-line-width:0;::line {line-width: 1;line-color: " + red + ";}[zoom <= 10] {marker-width: 4;}[zoom > 10] {marker-width: 6;}}";
+          if (table === "rpa_subwaystations") {
+            css += "#" + table + "[zoom < 10] {marker-opacity: 0;}";
+          }
+          if (sql && css) {
+            interactivity = ["cartodb_id", value['name_column']];
+            sublayer = layer.createSubLayer({
+              sql: sql,
+              cartocss: css,
+              interactivity: interactivity
+            });
+            return value["layer"] = sublayer;
+          }
+        });
         walkabilityLayer = walkabilityLayer.setInteractivity("cartodb_id, namelsad10, localities, walk_sco_1, walk_sco_2, rail_stops, bank_score, books_scor, coffee_sco, entertainm, grocery_sc, park_score, restaurant, school_sco, shopping_s");
         tooltip = new cdb.geo.ui.Tooltip({
           template: "<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <div class='walkability-title'>\n          <p><b>{{namelsad10}}</b></p>\n          <p>{{localities}}</p>\n        </div>\n        <p class=\"walk\">Walkability: <b class=\"walkability-score\">{{walk_sco_1}}</b></p>\n        <div class=\"progress walk_sco_1\"><div class=\"progress-bar\" style=\"width:{{walk_sco_1}}%\"></div></div>\n      </div>\n   </div>\n</div>",
