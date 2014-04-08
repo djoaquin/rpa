@@ -20,6 +20,7 @@ class Workspace extends Backbone.Router
     "schools.html" : "schools"
     "vulnerable.html" : "vulnerable"
     "discretionary.html" : "discretionary"
+    "c/2.html" : "discretionary"
     "walkability.html" : "walkability"
     "property.html" : "property"
     "carbon.html" : "carbon"
@@ -747,7 +748,6 @@ class Workspace extends Backbone.Router
 
 
   discretionary: ->
-
     makeChart = (data, mhi, id="#donut")->
       blue       =  "#47b3d2";  # disp_income
       reddish    =  "#f12b15";  # trans
@@ -779,14 +779,15 @@ class Workspace extends Backbone.Router
       taxes: 10344
 
     # $ ->
-    makeChart(data, 72140, "#standalone_donut")
+    if $("#standalone_donut").length > 0
+      makeChart(data, 72140, "#standalone_donut")
 
     # DISCRETIONARY INCOME
     cartodb
       .createVis('discretionaryIncome', 'http://rpa.cartodb.com/api/v2/viz/62e94d78-9f1e-11e3-b420-0ed66c7bc7f3/viz.json', legends: true, searchControl: true, zoom: 8, infowindow: true, layer_selector: false)
       .done (vis,layers)->
         map = vis.getNativeMap()
-
+        map.scrollWheelZoom.disable()
         dataLayers = layers[1]
         dataLayers.setInteraction(true)
 

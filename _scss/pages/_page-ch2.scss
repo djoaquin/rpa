@@ -1,5 +1,96 @@
 @import "../partials/utilities";
 
 .page.ch2{
-  
+  .jumbotron{
+    background: url("/images/ch2/hero.jpg") left top no-repeat;
+    background-size:100%;
+    height:553px;
+    padding-top:200px;
+    padding-bottom:110px;
+    margin-bottom:0px;
+  }
+  .hero{
+    background:black;
+    width:800px;
+    .title-group{
+      position:relative;
+      border-top: solid 1px $gray-light;
+
+      margin: 30px auto 40px;
+      width: 600px;
+
+    }
+    .hero-nav{
+      color:$gray-light;
+      a{color:$gray-light;}
+      text-transform:uppercase;
+      text-align:center;
+      position: relative;
+      top: -10px;
+      background: rgb(0, 0, 0);
+      width: 100px;
+      margin: 0 auto;
+    }
+
+    .ch-title{
+      font-size:3em;
+      display: block;
+      line-height:1.2em;
+      color:white;
+      text-align:center;
+      margin-top:0;
+      font-family:serif;
+    }
+  }
+  .intro{
+    padding-top:120px;
+    padding-bottom:110px;
+    background:$offwhite;
+    font-size:1.2em;
+  }
+
+  .row{
+    padding:120px 0;
+    border-bottom:solid 1px $gray-lighter;
+    .item{
+      margin:0 auto;
+      float:none;
+    }
+
+  }
+
+  .bottom-nav{
+    padding-top:80px;
+    padding-bottom:80px;
+    .nav-btn{
+      width:40%;
+      display:inline-block;
+      color:black;
+      text-decoration:none;
+      .btn-label{color:$gray-light;margin-bottom:7px;}
+    }
+    .prev{
+      margin-right:4%;
+      text-align:right;
+      span{
+        margin-right:10px;
+      }
+    }
+    .next{
+      margin-left:10%;
+      text-align:left;
+      span{
+        margin-left:10px;
+      }
+    }
+    .ch-name{
+      font-size:2em;
+      span{
+        font-size:0.5em;
+        line-height:1.4em;
+        vertical-align:middle;
+      }
+    }
+  }
+
 }
