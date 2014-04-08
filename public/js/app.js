@@ -631,7 +631,7 @@
               if (k === "flood_zone") {
 
               } else {
-                if (k === activeSublayer) {
+                if (k === activeSublayer || _.contains(activeSublayer, k)) {
                   return value["layer"].show();
                 } else {
                   return value["layer"].hide();

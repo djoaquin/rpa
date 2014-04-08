@@ -737,7 +737,7 @@ class Workspace extends Backbone.Router
               if k is "flood_zone"
                 # TODO:
               else
-                if k is activeSublayer
+                if k is activeSublayer or _.contains(activeSublayer, k)
                   value["layer"].show()
                 else
                   value["layer"].hide()
