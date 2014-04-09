@@ -1,32 +1,7 @@
 (function() {
-  var Workspace, formatMoney, shade,
+  var Workspace,
     __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
-
-  formatMoney = function() {
-    return $(".currency").each(function() {
-      var c;
-      c = $(this).text();
-      if (c[0] === "$") {
-        return true;
-      }
-      c = accounting.formatMoney(Number(c), {
-        precision: 0
-      });
-      return $(this).text(c);
-    });
-  };
-
-  shade = function(color, percent) {
-    var B, G, R, f, p, t;
-    f = parseInt(color.slice(1), 16);
-    t = (percent < 0 ? 0 : 255);
-    p = (percent < 0 ? percent * -1 : percent);
-    R = f >> 16;
-    G = f >> 8 & 0x00FF;
-    B = f & 0x0000FF;
-    return "#" + (0x1000000 + (Math.round((t - R) * p) + R) * 0x10000 + (Math.round((t - G) * p) + G) * 0x100 + (Math.round((t - B) * p) + B)).toString(16).slice(1);
-  };
 
   Workspace = (function(_super) {
     __extends(Workspace, _super);
@@ -39,119 +14,19 @@
       "schools.html": "schools",
       "vulnerable.html": "vulnerable",
       "discretionary.html": "discretionary",
-      "c/2.html": "discretionary",
       "walkability.html": "walkability",
       "property.html": "property",
-      "carbon.html": "carbon"
+      "carbon.html": "carbon",
+      "c/1.html": "discretionary",
+      "c/2.html": "discretionary",
+      "c/3.html": "discretionary",
+      "c/4.html": "discretionary",
+      "c/5.html": "discretionary",
+      "c/6.html": "discretionary"
     };
 
     Workspace.prototype.carbon = function() {
-      var id, makeStackedChart, url;
-      makeStackedChart = function(data, target, showXAxis) {
-        var axisPos, bottomMargin, color, d, has2Samples, height, itemHeight, layer, layers, m, margin, n, stack, svg, width, x, xAxis, y, yGroupMax, yStackMax, _i, _ref, _results;
-        if (showXAxis == null) {
-          showXAxis = true;
-        }
-        n = 5;
-        has2Samples = _.isArray(data[0]);
-        m = has2Samples ? 2 : 1;
-        stack = d3.layout.stack();
-        d = (function() {
-          _results = [];
-          for (var _i = 0, _ref = n - 1; 0 <= _ref ? _i <= _ref : _i >= _ref; 0 <= _ref ? _i++ : _i--){ _results.push(_i); }
-          return _results;
-        }).apply(this).map(function(i) {
-          if (has2Samples) {
-            return [0, 1].map(function(j) {
-              return {
-                x: j,
-                y: parseFloat(data[j][i].toFixed(2))
-              };
-            });
-          } else {
-            return [
-              {
-                x: 0,
-                y: parseFloat(data[i].toFixed(2))
-              }
-            ];
-          }
-        });
-        layers = stack(d);
-        yGroupMax = d3.max(layers, function(layer) {
-          return d3.max(layer, function(d) {
-            return d.y;
-          });
-        });
-        yStackMax = d3.max(layers, function(layer) {
-          return d3.max(layer, function(d) {
-            return d.y0 + d.y;
-          });
-        });
-        yStackMax = yStackMax < 60 ? 60 : yStackMax;
-        bottomMargin = showXAxis ? 40 : 0;
-        margin = {
-          top: 5,
-          right: 5,
-          bottom: bottomMargin,
-          left: 5
-        };
-        width = 505 - margin.left - margin.right;
-        itemHeight = has2Samples ? 60 : 80;
-        height = (itemHeight * m) - margin.top - margin.bottom;
-        x = d3.scale.linear().domain([0, yStackMax]).range([0, width]);
-        y = d3.scale.ordinal().domain(d3.range(m)).rangeRoundBands([2, height], .08);
-        color = function(i) {
-          return ["#f9b314", "#eb0000", "#2fb0c4", "#3f4040", "#695b94"][i];
-        };
-        svg = d3.select(target).append("svg").attr("width", width + margin.left + margin.right).attr("height", height + margin.top + margin.bottom).append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-        layer = svg.selectAll(".layer").data(layers).enter().append("g").attr("class", "layer").style("fill", function(d, i) {
-          return color(i);
-        });
-        layer.selectAll("rect").data(function(d) {
-          return d;
-        }).enter().append("rect").attr("y", function(d) {
-          var base;
-          base = y(d.x);
-          if (has2Samples) {
-            if (d.x === 1) {
-              return base + 20;
-            } else {
-              return base;
-            }
-          } else {
-            return base;
-          }
-        }).attr("x", function(d) {
-          return x(d.y0);
-        }).attr("height", y.rangeBand()).attr("width", function(d) {
-          return x(d.y);
-        });
-        layer.selectAll("text").data(function(d) {
-          return d;
-        }).enter().append("text").text(function(d) {
-          return d.y;
-        }).attr("font-family", "sans-serif").attr("font-size", "11px").attr("fill", "white").attr("y", function(d, i) {
-          var h;
-          h = margin.top + (height * (i + 1)) / 2;
-          if (has2Samples) {
-            if (d.x === 1) {
-              return h;
-            } else {
-              return h - 17;
-            }
-          } else {
-            return h;
-          }
-        }).attr("x", function(d) {
-          return ((d.y0 + (d.y / 2)) / yStackMax * width) - parseInt(String(d.y).split("").length * 3);
-        });
-        xAxis = d3.svg.axis().scale(x).tickSize(0.8).tickPadding(6).orient("bottom");
-        if (showXAxis) {
-          axisPos = has2Samples ? height + 20 : height;
-          return svg.append("g").attr("class", "x axis").attr("transform", "translate(0," + axisPos + ")").call(xAxis);
-        }
-      };
+      var id, url;
       id = "carbon";
       url = "http://rpa.cartodb.com/api/v2/viz/7d0015c0-aed2-11e3-a656-0e73339ffa50/viz.json";
       return cartodb.createVis(id, url, {
@@ -465,7 +340,7 @@
         schoolLayer = layers[1].getSubLayer(1);
         schoolLayer = schoolLayer.setInteractivity("cartodb_id, schlrank, rank_perce, schnam, localname");
         tooltip = new cdb.geo.ui.Tooltip({
-          template: "<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <div class=\"title\"  style=\"padding-bottom:10px\">\n          <h3>{{schnam}}</h3>\n          <span>{{localname}}</span>\n        </div>\n\n        {{#rank_perce}}\n          <div>School ranking:\n            <span class=\"{{schlrank}}\"><b class=\"school-ranking\">{{rank_perce}}</b> <b> ({{schlrank}}) </b></span>\n          </div>\n        {{/rank_perce}}\n        {{^rank_perce}}\n          <div class=\"{{schlrank}}\">No data available</div>\n        {{/rank_perce}}\n      </div>\n   </div>\n</div>",
+          template: "<div class=\"cartodb-popup\">\n   <div class=\"cartodb-popup-content-wrapper\">\n      <div class=\"cartodb-popup-content\">\n        <div class=\"title\"  style=\"padding-bottom:10px\">\n          <h3>{{schnam}}</h3>\n          <span>{{localname}}</span>\n        </div>\n        {{#rank_perce}}\n          <div>School ranking:\n            <span class=\"{{schlrank}}\"><b class=\"school-ranking\">{{rank_perce}}</b> <b> ({{schlrank}}) </b></span>\n          </div>\n        {{/rank_perce}}\n        {{^rank_perce}}\n          <div class=\"{{schlrank}}\">No data available</div>\n        {{/rank_perce}}\n      </div>\n   </div>\n</div>",
           layer: schoolLayer,
           offset_top: -50
         });
@@ -761,12 +636,22 @@
   })(Backbone.Router);
 
   $(function() {
-    var router;
+    var chapter, liIndex, router;
     router = new Workspace();
-    return Backbone.history.start({
+    Backbone.history.start({
       pushState: true,
       root: root
     });
+    chapter = location.pathname.match(/c\/(.+)\.html/)[1];
+    if (chapter) {
+      liIndex = parseInt(chapter) - 1;
+      $(".ch-nav li:eq(" + liIndex + ")").addClass("active");
+      return $(".ch-nav li").each(function(i) {
+        var $a;
+        $a = $(this).find("a");
+        return $a.attr("href", "/c/" + (i + 1) + ".html");
+      });
+    }
   });
 
 }).call(this);

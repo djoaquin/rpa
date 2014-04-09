@@ -1,0 +1,11 @@
+@import "mixin-ch";
+@import "../partials/utilities";
+
+.page{
+  &.ch2{
+    @include shared-chapter-styles();
+    .jumbotron{
+      background-image: url("#{$siteBase}/images/ch2/hero.jpg");
+    }
+  }
+}

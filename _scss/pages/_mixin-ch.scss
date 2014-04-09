@@ -1,9 +1,10 @@
 @import "../partials/utilities";
 
-.page.ch2{
+@mixin shared-chapter-styles {
   .jumbotron{
-    background: url("#{$siteBase}/images/ch2/hero.jpg") left top no-repeat;
     background-size:100%;
+    background-repeat: no-repeat;
+    background-position: left top ;
     height:553px;
     padding-top:200px;
     padding-bottom:110px;
@@ -92,5 +93,4 @@
       }
     }
   }
-
 }

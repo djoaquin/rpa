@@ -1,137 +1,19 @@
-formatMoney = ->
-  $(".currency").each(()->
-      c = $(this).text()
-      # Do not proceed if it's already been formatted
-      return true if c[0] is "$"
-      c = accounting.formatMoney(Number(c), precision:0)
-      $(this).text(c)
-    )
-shade = (color, percent) ->
-  f = parseInt(color.slice(1), 16)
-  t = (if percent < 0 then 0 else 255)
-  p = (if percent < 0 then percent * -1 else percent)
-  R = f >> 16
-  G = f >> 8 & 0x00FF
-  B = f & 0x0000FF
-  "#" + (0x1000000 + (Math.round((t - R) * p) + R) * 0x10000 + (Math.round((t - G) * p) + G) * 0x100 + (Math.round((t - B) * p) + B)).toString(16).slice(1)
-
 class Workspace extends Backbone.Router
   routes:
     "schools.html" : "schools"
     "vulnerable.html" : "vulnerable"
     "discretionary.html" : "discretionary"
-    "c/2.html" : "discretionary"
     "walkability.html" : "walkability"
     "property.html" : "property"
     "carbon.html" : "carbon"
+    "c/1.html" : "discretionary"
+    "c/2.html" : "discretionary"
+    "c/3.html" : "discretionary"
+    "c/4.html" : "discretionary"
+    "c/5.html" : "discretionary"
+    "c/6.html" : "discretionary"
 
   carbon: ->
-    makeStackedChart = (data,target, showXAxis=true)->
-
-      n = 5 #data.length  # number of layers
-      has2Samples = _.isArray(data[0])
-      m = if has2Samples then 2 else 1
-
-      stack = d3.layout.stack()
-      # Transorm data, an object literal, into an array that can be fed into the function below
-      d = [0..n-1].map((i)->
-                if has2Samples
-                  [0..1].map((j)->
-                    {x: j, y: parseFloat(data[j][i].toFixed(2))}
-                  )
-                else
-                  [{x: 0, y: parseFloat(data[i].toFixed(2))}]
-               )
-      layers = stack(d)
-
-
-      #the largest single layer
-      yGroupMax = d3.max(layers, (layer)-> d3.max(layer, (d)-> d.y ) )
-      #the largest stack
-      yStackMax = d3.max(layers, (layer)-> d3.max(layer, (d)-> d.y0 + d.y ) )
-      yStackMax = if yStackMax < 60 then 60 else yStackMax
-
-      bottomMargin = if showXAxis then 40 else 0
-      margin  = {top: 5, right: 5, bottom: bottomMargin, left: 5}
-      width   = 505 - margin.left - margin.right
-      itemHeight = if has2Samples then 60 else 80
-      height  = (itemHeight*m) - margin.top - margin.bottom
-
-      x = d3.scale.linear()
-          .domain([0, yStackMax])
-          .range([0, width])
-      y = d3.scale.ordinal()
-          .domain(d3.range(m))
-          .rangeRoundBands([2, height], .08)
-      color = (i)->
-        [
-          "#f9b314"
-          "#eb0000"
-          "#2fb0c4"
-          "#3f4040"
-          "#695b94"][i]
-      svg = d3.select(target).append("svg")
-              .attr("width", width + margin.left + margin.right)
-              .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-              .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
-      layer = svg.selectAll(".layer")
-          .data(layers)
-          .enter()
-            .append("g")
-            .attr("class", "layer")
-            .style("fill", (d, i)-> color(i) )
-      layer.selectAll("rect")
-          .data((d)-> d)
-          .enter()
-            .append("rect")
-            .attr("y", (d)->
-                base = y(d.x)
-                if has2Samples
-                  if d.x is 1
-                    base + 20
-                  else
-                    base
-                else
-                  base
-              )
-            .attr("x", (d)-> x(d.y0))
-            .attr("height", y.rangeBand())
-            .attr("width", (d)-> x(d.y))
-
-      layer.selectAll("text")
-        .data((d)-> d)
-        .enter()
-        .append("text")
-        .text((d)-> d.y )
-        .attr("font-family", "sans-serif")
-        .attr("font-size", "11px")
-        .attr("fill", "white")
-        .attr("y", (d, i)->
-            h = margin.top + (height * (i + 1))/2
-            if has2Samples
-              if d.x is 1
-                h
-              else
-                h - 17
-            else h
-
-          )
-        .attr("x", (d)-> ((d.y0 + (d.y/2))/yStackMax * width) - parseInt(String(d.y).split("").length * 3))
-      xAxis = d3.svg.axis()
-          .scale(x)
-          .tickSize(0.8)
-          .tickPadding(6)
-          .orient("bottom")
-      if showXAxis
-        axisPos = if has2Samples
-          height + 20
-        else
-          height
-        svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + axisPos + ")")
-            .call(xAxis)
 
     id = "carbon"
     url = "http://rpa.cartodb.com/api/v2/viz/7d0015c0-aed2-11e3-a656-0e73339ffa50/viz.json"
@@ -389,13 +271,10 @@ class Workspace extends Backbone.Router
         color5 = "#743682"
 
         # TODO: how can we interpret the walkability score? (Walk_Sco_1)
-
         # Create the sublayer for subway routes
         layer = layers[1]
         layer.setInteraction(true)
         walkabilityLayer = layer.getSubLayer(0)
-
-
 
         station_layers = [
             {
@@ -434,26 +313,6 @@ class Workspace extends Backbone.Router
             )
             value["layer"] = sublayer
         )
-
-
-        # # Create a tooltip for every single sublayer
-        # _.each(station_layers,(value,k)->
-        #   vis.addOverlay(
-        #     layer: value["layer"]
-        #     type: 'tooltip'
-        #     offset_top: -30
-        #     template: """
-        #       <div style="background:white;padding:5px 10px;">
-        #         <div style="margin-bottom:10px">
-        #           <h3 class="title-case" style="margin:0">{{ #{value['name_column']} }}</h3>
-        #         </div>
-        #         <div>
-        #           #{value['type']}
-        #         </div>
-        #       </div>
-        #     """
-        #   )
-        # )
 
         walkabilityLayer = walkabilityLayer.setInteractivity("cartodb_id, namelsad10, localities, walk_sco_1, walk_sco_2, rail_stops, bank_score, books_scor, coffee_sco, entertainm, grocery_sc, park_score, restaurant, school_sco, shopping_s")
 
@@ -495,7 +354,6 @@ class Workspace extends Backbone.Router
               return unless text
               $(this).text(parseFloat(text).toFixed(2))
             )
-
         vent.on "tooltip:rendered", (data,$el)->
           # console.log "Do stuff", data
           color = score_to_color[data["walk_sco_2"]]
@@ -520,7 +378,6 @@ class Workspace extends Backbone.Router
                         <h3>{{schnam}}</h3>
                         <span>{{localname}}</span>
                       </div>
-
                       {{#rank_perce}}
                         <div>School ranking:
                           <span class="{{schlrank}}"><b class="school-ranking">{{rank_perce}}</b> <b> ({{schlrank}}) </b></span>
@@ -545,8 +402,6 @@ class Workspace extends Backbone.Router
             $(".school-ranking").text("#{rank}%")
           )
 
-
-
   vulnerable: ->
     cartodb
       .createVis('vulnerableInfra', 'http://rpa.cartodb.com/api/v2/viz/533c5970-9f4f-11e3-ad24-0ed66c7bc7f3/viz.json', zoom: 9, searchControl: true, layer_selector: false, legends: false)
@@ -557,9 +412,6 @@ class Workspace extends Backbone.Router
         layer = layers[1]
         floodZoneLayer = layer.getSubLayer(0)
         layer.setInteraction(true)
-
-
-
 
         # Declare the database tables backing the layers
         red = "#ba0000"
@@ -742,10 +594,7 @@ class Workspace extends Backbone.Router
                   value["layer"].show()
                 else
                   value["layer"].hide()
-
           )
-
-
 
   discretionary: ->
     makeChart = (data, mhi, id="#donut")->
@@ -929,3 +778,12 @@ $ ->
 
   router = new Workspace()
   Backbone.history.start(pushState: true, root: root)
+
+  # TODO: update the links of the navigation paths on the chapter pages
+  chapter = location.pathname.match(/c\/(.+)\.html/)[1]
+  if chapter
+    liIndex = parseInt(chapter) - 1
+    $(".ch-nav li:eq(#{liIndex})").addClass("active")
+    $(".ch-nav li").each (i)->
+      $a = $(this).find("a")
+      $a.attr("href","/c/#{i+1}.html")
