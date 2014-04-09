@@ -1,2 +1,8 @@
 language: ruby
 script: "bundle exec jekyll build"
+rvm:
+  -2.0.0-p247
+# whitelist
+branches:
+  only:
+    - gh-pages
