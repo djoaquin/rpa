@@ -661,22 +661,56 @@
   })(Backbone.Router);
 
   $(function() {
-    var chapter, liIndex, router, _ref;
+    var chapter, fci, lastChapter, lci, liIndex, nextChapter, router, sch, _ref;
     router = new Workspace();
     Backbone.history.start({
       pushState: true,
       root: root
     });
-    chapter = (_ref = location.pathname.match(/c\/(.+)\.html/)) != null ? _ref[1] : void 0;
+    fci = 0;
+    lci = 4;
+    lastChapter = function(cc) {
+      if (cc > fci) {
+        return cc - 1;
+      } else {
+        return lci;
+      }
+    };
+    nextChapter = function(cc) {
+      if (cc < lci) {
+        return cc + 1;
+      } else {
+        return fci;
+      }
+    };
+    sch = function(anchor, chapter) {
+      return anchor.attr("href", "" + root + "/c/" + chapter + ".html");
+    };
+    chapter = parseInt((_ref = location.pathname.match(/c\/(.+)\.html/)) != null ? _ref[1] : void 0);
     if (chapter) {
-      liIndex = parseInt(chapter) - 1;
+      liIndex = chapter - 1;
       $(".ch-nav li:eq(" + liIndex + ")").addClass("active");
-      return $(".ch-nav li").each(function(i) {
+      $(".hero-nav a, .bottom-nav a").each(function() {
         var $a;
-        $a = $(this).find("a");
-        return $a.attr("href", "/c/" + (i + 1) + ".html");
+        $a = $(this);
+        if ($a.hasClass("prev")) {
+          sch($a, lastChapter(chapter));
+          if (liIndex === fci) {
+            return $a.remove();
+          }
+        } else {
+          sch($a, nextChapter(chapter));
+          if (liIndex === lci) {
+            return $a.remove();
+          }
+        }
       });
     }
+    return $(".ch-nav li").each(function(i) {
+      var $a;
+      $a = $(this).find("a");
+      return sch($a, i + 1);
+    });
   });
 
 }).call(this);
