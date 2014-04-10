@@ -273,12 +273,12 @@
           }
         ];
         _.each(station_layers, function(value, k) {
-          var css, interactivity, red, ret, sql, sublayer, table;
+          var css, dot_color, interactivity, ret, sql, sublayer, table;
           table = value["table"];
           ret = "" + table + ".cartodb_id," + table + ".the_geom, " + table + ".the_geom_webmercator, " + table + "." + value['name_column'];
           sql = "SELECT " + ret + " FROM " + table;
-          red = "#ba0000";
-          css = "#" + table + " {marker-fill: " + red + "; marker-line-width:0;::line {line-width: 1;line-color: " + red + ";}[zoom <= 10] {marker-width: 4;}[zoom > 10] {marker-width: 6;}}";
+          dot_color = table === "rpa_trainstations" ? "#000000" : "#ba0000";
+          css = "#" + table + " {marker-fill: " + dot_color + "; marker-line-width:0;::line {line-width: 1;line-color: " + dot_color + ";}[zoom <= 10] {marker-width: 4;}[zoom > 10] {marker-width: 6;}}";
           if (table === "rpa_subwaystations") {
             css += "#" + table + "[zoom < 10] {marker-opacity: 0;}";
           }
@@ -335,8 +335,9 @@
         legends: true,
         zoom: 11
       }).done(function(vis, layers) {
-        var schoolLayer, tooltip;
+        var raceLayer, schoolLayer, tooltip;
         layers[1].setInteraction(true);
+        raceLayer = layers[1].getSubLayer(0);
         schoolLayer = layers[1].getSubLayer(1);
         schoolLayer = schoolLayer.setInteractivity("cartodb_id, schlrank, rank_perce, schnam, localname");
         tooltip = new cdb.geo.ui.Tooltip({
@@ -345,7 +346,7 @@
           offset_top: -50
         });
         vis.container.append(tooltip.render().el);
-        return vent.on("tooltip:rendered", function(data) {
+        vent.on("tooltip:rendered", function(data) {
           var rank;
           rank = data["rank_perce"];
           if (!rank) {
@@ -353,6 +354,30 @@
           }
           rank = (parseFloat(rank) * 100).toFixed(2);
           return $(".school-ranking").text("" + rank + "%");
+        });
+        return $("#layer_selector li").on("click", function(e) {
+          var $li, activeLi, activeSublayer, borders, color, css, layerName, table;
+          $li = $(e.target);
+          layerName = $li.data("sublayer");
+          if ($li.hasClass("active")) {
+            return true;
+          }
+          activeLi = $li.parent().find(".active");
+          activeLi.removeClass("active");
+          $li.toggleClass("active");
+          activeSublayer = $li.data("sublayer");
+          if (activeSublayer === "race") {
+            table = "whiteprcnt";
+            color = "#be0000";
+            borders = [0.1, 0.25, 0.50, 0.75, 1];
+          } else {
+            table = "hh_median";
+            color = "#beb4aa";
+            borders = [40125, 57344, 76061, 99075, 250000];
+          }
+          css = "#schoolrank2012_racepoverty_income_rparegion{\n\n  polygon-fill: " + color + ";\n\n  [ " + table + " <= " + borders[0] + "] {\n     polygon-opacity: 0.2;\n  }\n  [ " + table + " > " + borders[0] + "][ " + table + " <= " + borders[1] + "] {\n     polygon-opacity: 0.4;\n  }\n  [ " + table + " > " + borders[1] + "][ " + table + " <= " + borders[2] + "] {\n     polygon-opacity: 0.6;\n  }\n  [ " + table + " > " + borders[2] + "][ " + table + " <= " + borders[3] + "] {\n     polygon-opacity: 0.8;\n  }\n  [ " + table + " > " + borders[3] + "][ " + table + " <= " + borders[4] + "] {\n     polygon-opacity: 1;\n  }\n}";
+          raceLayer.setCartoCSS(css);
+          return console.log(css);
         });
       });
     };
@@ -636,13 +661,13 @@
   })(Backbone.Router);
 
   $(function() {
-    var chapter, liIndex, router;
+    var chapter, liIndex, router, _ref;
     router = new Workspace();
     Backbone.history.start({
       pushState: true,
       root: root
     });
-    chapter = location.pathname.match(/c\/(.+)\.html/)[1];
+    chapter = (_ref = location.pathname.match(/c\/(.+)\.html/)) != null ? _ref[1] : void 0;
     if (chapter) {
       liIndex = parseInt(chapter) - 1;
       $(".ch-nav li:eq(" + liIndex + ")").addClass("active");

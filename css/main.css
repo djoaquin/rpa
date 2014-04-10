@@ -6597,16 +6597,26 @@ button.close {
   color: #ba0000; }
 #schoolPerf .school-rank-legend div p:nth-child(4) {
   color: #a7907b; }
-#schoolPerf .colors div:nth-child(5) {
+#schoolPerf .median-income .colors div:nth-child(5) {
   background-color: #beb4aa; }
-#schoolPerf .colors div:nth-child(4) {
+#schoolPerf .median-income .colors div:nth-child(4) {
   background-color: rgba(190, 180, 170, 0.8); }
-#schoolPerf .colors div:nth-child(3) {
+#schoolPerf .median-income .colors div:nth-child(3) {
   background-color: rgba(190, 180, 170, 0.6); }
-#schoolPerf .colors div:nth-child(2) {
+#schoolPerf .median-income .colors div:nth-child(2) {
   background-color: rgba(190, 180, 170, 0.4); }
-#schoolPerf .colors div:nth-child(1) {
+#schoolPerf .median-income .colors div:nth-child(1) {
   background-color: rgba(190, 180, 170, 0.2); }
+#schoolPerf .race .colors div:nth-child(5) {
+  background-color: #be0000; }
+#schoolPerf .race .colors div:nth-child(4) {
+  background-color: rgba(190, 0, 0, 0.8); }
+#schoolPerf .race .colors div:nth-child(3) {
+  background-color: rgba(190, 0, 0, 0.6); }
+#schoolPerf .race .colors div:nth-child(2) {
+  background-color: rgba(190, 0, 0, 0.4); }
+#schoolPerf .race .colors div:nth-child(1) {
+  background-color: rgba(190, 0, 0, 0.2); }
 #schoolPerf div.cartodb-infowindow {
   width: 397.5px !important;
   height: 150px !important;
@@ -6970,6 +6980,24 @@ button.close {
 #carbon .cartodb-legend.services-layer div:nth-child(3):before {
   background-color: #695b94; }
 
+.page.schools #layer_selector {
+  left: 10px;
+  position: absolute;
+  bottom: 30px;
+  padding: 0; }
+  .page.schools #layer_selector ul {
+    list-style: none;
+    margin: 0;
+    padding: 0; }
+    .page.schools #layer_selector ul li {
+      cursor: pointer;
+      padding: 5px 10px;
+      display: block;
+      width: 100%;
+      text-decoration: none; }
+      .page.schools #layer_selector ul li.active {
+        background: rgba(0, 0, 0, 0.1); }
+
 .page.discretionary {
   min-height: 1000px; }
   .page.discretionary .standalone {
@@ -7070,9 +7098,9 @@ button.close {
       display: none; }
 
 .page.vulnerable #layer_selector {
+  right: 10px;
   position: absolute;
   bottom: 30px;
-  right: 10px;
   padding: 0; }
   .page.vulnerable #layer_selector ul {
     list-style: none;

@@ -50,15 +50,37 @@
   $color4: rgba($color1, 0.4);
   $color5: rgba($color1, 0.2);
 
-  .colors{
-    $i:5;
-    @each $color in $color1, $color2, $color3, $color4, $color5 {
-      div:nth-child(#{$i}){
-        background-color: $color;
+  .median-income{
+    .colors{
+      $i:5;
+      @each $color in $color1, $color2, $color3, $color4, $color5 {
+        div:nth-child(#{$i}){
+          background-color: $color;
+        }
+        $i: $i - 1;
       }
-      $i: $i - 1;
     }
   }
+
+  // Race colors
+  $color1: #be0000;
+  $color2: rgba($color1, 0.8);
+  $color3: rgba($color1, 0.6);
+  $color4: rgba($color1, 0.4);
+  $color5: rgba($color1, 0.2);
+
+  .race{
+    .colors{
+      $i:5;
+      @each $color in $color1, $color2, $color3, $color4, $color5 {
+        div:nth-child(#{$i}){
+          background-color: $color;
+        }
+        $i: $i - 1;
+      }
+    }
+  }
+
 
   @include popup(397.5px,150px);
 

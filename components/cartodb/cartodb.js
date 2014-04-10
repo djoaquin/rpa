@@ -24300,7 +24300,7 @@ cdb.geo.ui.Infowindow = cdb.core.View.extend({
 
   initialize: function(){
     var self = this;
-    
+
     _.bindAll(this, "render", "setLatLng", "_setTemplate", "_updatePosition",
       "_update", "toggle", "show", "hide");
 

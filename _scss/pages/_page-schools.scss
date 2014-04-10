@@ -1,0 +1,9 @@
+@import "../partials/utilities";
+
+.page.schools{
+  #layer_selector{
+    left:10px;
+
+    @include layer_selector();
+  }
+}

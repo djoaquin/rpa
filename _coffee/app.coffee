@@ -296,9 +296,9 @@ class Workspace extends Backbone.Router
           sql = "SELECT #{ret} FROM #{table}"
 
           # Create the CSS
-          red = "#ba0000"
+          dot_color = if table is "rpa_trainstations" then "#000000" else "#ba0000"
           css = """
-                  ##{table} {marker-fill: #{red}; marker-line-width:0;::line {line-width: 1;line-color: #{red};}[zoom <= 10] {marker-width: 4;}[zoom > 10] {marker-width: 6;}}
+                  ##{table} {marker-fill: #{dot_color}; marker-line-width:0;::line {line-width: 1;line-color: #{dot_color};}[zoom <= 10] {marker-width: 4;}[zoom > 10] {marker-width: 6;}}
                 """
 
           if table is "rpa_subwaystations"
@@ -366,6 +366,8 @@ class Workspace extends Backbone.Router
 
         # Create the sublayer for subway routes
         layers[1].setInteraction(true)
+        raceLayer = layers[1].getSubLayer(0)
+
         schoolLayer = layers[1].getSubLayer(1)
         schoolLayer = schoolLayer.setInteractivity("cartodb_id, schlrank, rank_perce, schnam, localname")
 
@@ -401,6 +403,56 @@ class Workspace extends Backbone.Router
             rank = (parseFloat(rank) * 100).toFixed(2)
             $(".school-ranking").text("#{rank}%")
           )
+
+        $("#layer_selector li").on "click", (e)->
+          $li = $(e.target)
+          layerName = $li.data("sublayer")
+
+          return true if $li.hasClass("active")
+
+          activeLi =  $li.parent().find(".active")
+          activeLi.removeClass("active")
+
+          # Toggle the active class
+          $li.toggleClass("active")
+
+          activeSublayer = $li.data("sublayer")
+
+
+          if activeSublayer is "race"
+            table = "whiteprcnt"
+            color = "#be0000"
+            borders = [0.1,0.25,0.50,0.75,1]
+          else
+            table = "hh_median"
+            color = "#beb4aa"
+            borders = [40125,57344,76061,99075,250000]
+          # TODO: change the css on the racepoverty layer
+          css = """
+              #schoolrank2012_racepoverty_income_rparegion{
+
+                polygon-fill: #{color};
+
+                [ #{table} <= #{borders[0]}] {
+                   polygon-opacity: 0.2;
+                }
+                [ #{table} > #{borders[0]}][ #{table} <= #{borders[1]}] {
+                   polygon-opacity: 0.4;
+                }
+                [ #{table} > #{borders[1]}][ #{table} <= #{borders[2]}] {
+                   polygon-opacity: 0.6;
+                }
+                [ #{table} > #{borders[2]}][ #{table} <= #{borders[3]}] {
+                   polygon-opacity: 0.8;
+                }
+                [ #{table} > #{borders[3]}][ #{table} <= #{borders[4]}] {
+                   polygon-opacity: 1;
+                }
+              }
+            """
+          raceLayer.setCartoCSS(css)
+          console.log css
+
 
   vulnerable: ->
     cartodb
@@ -780,7 +832,7 @@ $ ->
   Backbone.history.start(pushState: true, root: root)
 
   # TODO: update the links of the navigation paths on the chapter pages
-  chapter = location.pathname.match(/c\/(.+)\.html/)[1]
+  chapter = location.pathname.match(/c\/(.+)\.html/)?[1]
   if chapter
     liIndex = parseInt(chapter) - 1
     $(".ch-nav li:eq(#{liIndex})").addClass("active")
