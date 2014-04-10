@@ -6352,8 +6352,8 @@ button.close {
 
 @font-face {
   font-family: 'FontAwesome';
-  src: url("/fonts/fontawesome-webfont.eot?v=4.0.3");
-  src: url("/fonts/fontawesome-webfont.eot?#iefix&v=4.0.3") format("embedded-opentype"), url("/fonts/fontawesome-webfont.woff?v=4.0.3") format("woff"), url("/fonts/fontawesome-webfont.ttf?v=4.0.3") format("truetype"), url("/fonts/fontawesome-webfont.svg?v=4.0.3#fontawesomeregular") format("svg");
+  src: url("/rpa/fonts/fontawesome-webfont.eot?v=4.0.3");
+  src: url("/rpa/fonts/fontawesome-webfont.eot?#iefix&v=4.0.3") format("embedded-opentype"), url("/rpa/fonts/fontawesome-webfont.woff?v=4.0.3") format("woff"), url("/rpa/fonts/fontawesome-webfont.ttf?v=4.0.3") format("truetype"), url("/rpa/fonts/fontawesome-webfont.svg?v=4.0.3#fontawesomeregular") format("svg");
   font-weight: normal;
   font-style: normal; }
 
@@ -6402,7 +6402,7 @@ button.close {
     background-color: transparent;
     border: 0;
     display: inline-block;
-    background: url("/images/logo.jpg") left top no-repeat;
+    background: url("/rpa/images/logo.jpg") left top no-repeat;
     width: 79px;
     height: 29px; }
   .navbar.navbar-default .page-name {
@@ -7523,18 +7523,18 @@ button.close {
   padding-bottom: 110px;
   background: #f0eee8;
   font-size: 1.2em; }
-.page.ch2 .row {
+.page.ch2 .site .row {
   padding: 120px 0;
   border-bottom: solid 1px #eeeeee; }
-  .page.ch2 .row .item {
+  .page.ch2 .site .row .item {
     margin: 0 auto;
     float: none; }
 .page.ch2 .bottom-nav {
   padding-top: 80px;
   padding-bottom: 80px; }
+  .page.ch2 .bottom-nav .row {
+    margin: 0; }
   .page.ch2 .bottom-nav .nav-btn {
-    width: 40%;
-    display: inline-block;
     color: black;
     text-decoration: none; }
     .page.ch2 .bottom-nav .nav-btn .btn-label {
@@ -7542,12 +7542,14 @@ button.close {
       margin-bottom: 7px; }
   .page.ch2 .bottom-nav .prev {
     margin-right: 4%;
-    text-align: right; }
+    text-align: right;
+    float: left; }
     .page.ch2 .bottom-nav .prev span {
       margin-right: 10px; }
   .page.ch2 .bottom-nav .next {
     margin-left: 10%;
-    text-align: left; }
+    text-align: left;
+    float: right; }
     .page.ch2 .bottom-nav .next span {
       margin-left: 10px; }
   .page.ch2 .bottom-nav .ch-name {
@@ -7557,4 +7559,4 @@ button.close {
       line-height: 1.4em;
       vertical-align: middle; }
 .page.ch2 .jumbotron {
-  background-image: url("/images/ch2/hero.jpg"); }
+  background-image: url("/rpa/images/ch2/hero.jpg"); }

@@ -50,22 +50,27 @@
     font-size:1.2em;
   }
 
-  .row{
-    padding:120px 0;
-    border-bottom:solid 1px $gray-lighter;
-    .item{
-      margin:0 auto;
-      float:none;
-    }
+  .site{
+    .row{
+      padding:120px 0;
+      border-bottom:solid 1px $gray-lighter;
+      .item{
+        margin:0 auto;
+        float:none;
+      }
 
+    }
   }
 
   .bottom-nav{
     padding-top:80px;
     padding-bottom:80px;
+    .row{
+      margin:0;
+    }
     .nav-btn{
-      width:40%;
-      display:inline-block;
+      // width:40%;
+      // display:inline-block;
       color:black;
       text-decoration:none;
       .btn-label{color:$gray-light;margin-bottom:7px;}
@@ -73,6 +78,7 @@
     .prev{
       margin-right:4%;
       text-align:right;
+      float:left;
       span{
         margin-right:10px;
       }
@@ -80,6 +86,7 @@
     .next{
       margin-left:10%;
       text-align:left;
+      float:right;
       span{
         margin-left:10px;
       }
