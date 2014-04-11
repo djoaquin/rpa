@@ -2,5 +2,37 @@ name: Regional Plan Association
 markdown: redcarpet
 destination: public
 exclude: ["CNAME", "Rakefile", "README.md", "public", "Guardfile", "Gemfile", "Gemfile.lock", ".sass-cache", "tmp", "vendor"]
-# root: ""
-root: "/rpa"
+root: ""
+# root: "/rpa"
+
+prose:
+  rooturl: 'c'
+  siteurl: 'http://volkanunsal.github.io/rpa/'
+  relativeLinks: 'http://volkanunsal.github.io/rpa/links.jsonp'
+  media: 'media'
+  metadata:
+    c:
+      - name: "layout"
+        field:
+          element: "hidden"
+          value: "chapter"
+      - name: "chapter_title"
+        field:
+          element: "text"
+          label: "Title"
+          value: ""
+      - name: "chapter_intro"
+        field:
+          element: "text"
+          label: "Intro"
+          value: ""
+      - name: "map_id"
+        field:
+          element: "text"
+          label: "Map Id"
+          value: ""
+      - name: "chapter_number"
+        field:
+          element: "text"
+          label: "Chapter Number"
+          value: ""

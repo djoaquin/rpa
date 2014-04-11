@@ -52,13 +52,16 @@
 
   .site{
     .row{
-      padding:120px 0;
+      padding:0;
       border-bottom:solid 1px $gray-lighter;
       .item{
         margin:0 auto;
         float:none;
       }
 
+      h3{
+        margin-top:120px;
+      }
     }
   }
 

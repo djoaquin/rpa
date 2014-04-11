@@ -832,8 +832,8 @@ $ ->
   Backbone.history.start(pushState: true, root: root)
 
   # TODO: update the links of the navigation paths on the chapter pages
-  fci = 0 #firstChapterIndex
-  lci = 4 #lastChapterIndex
+  fci = 1 #firstChapterIndex
+  lci = 5 #lastChapterIndex
   lastChapter = (cc)-> if cc > fci then cc - 1 else lci
   nextChapter = (cc)-> if cc < lci then cc + 1 else fci
 
@@ -849,10 +849,10 @@ $ ->
       $a = $(this)
       if $a.hasClass("prev")
         sch($a,lastChapter(chapter))
-        if liIndex is fci then $a.remove()
+        if chapter is fci then $a.remove()
       else
         sch($a,nextChapter(chapter))
-        if liIndex is lci then $a.remove()
+        if chapter is lci then $a.remove()
 
 
   $(".ch-nav li").each (i)->

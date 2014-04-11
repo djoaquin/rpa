@@ -1,0 +1,38 @@
+---
+layout: default
+section: chapter
+---
+{% include navbar.html %}
+<div class="site">
+  <div class="jumbotron">
+    <div class="hero container">
+      <div class="title-group">
+        <nav class="hero-nav">
+          <a class="fa fa-caret-left prev" href="javascript:;"></a>
+          CHAPTER {{page.chapter_number}}
+          <a class="fa fa-caret-right next" href="javascript:;"></a>
+        </nav>
+        <h1 class="ch-title">{{page.chapter_title}}</h1>
+      </div>
+    </div>
+
+  </div>
+  <div class="intro">
+    <div class="container">
+      {{page.chapter_intro}}
+    </div>
+  </div>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-10 item">
+        {{content}}
+      </div>
+    </div>
+  </div>
+  <div class="map">
+    <div id="{{page.map_id}}" class="mapInner"></div>
+  </div>
+
+</div>
+{% include bottomNav.html %}{% include footer.html %}

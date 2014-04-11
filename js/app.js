@@ -667,8 +667,8 @@
       pushState: true,
       root: root
     });
-    fci = 0;
-    lci = 4;
+    fci = 1;
+    lci = 5;
     lastChapter = function(cc) {
       if (cc > fci) {
         return cc - 1;
@@ -695,12 +695,12 @@
         $a = $(this);
         if ($a.hasClass("prev")) {
           sch($a, lastChapter(chapter));
-          if (liIndex === fci) {
+          if (chapter === fci) {
             return $a.remove();
           }
         } else {
           sch($a, nextChapter(chapter));
-          if (liIndex === lci) {
+          if (chapter === lci) {
             return $a.remove();
           }
         }
